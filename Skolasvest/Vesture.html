@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<!--
+COLORS
+f1cac5 - Light orange thingy
+32373B - Black
+ecfaf2 - White-ish
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="stylesheet" href="/Skolasvest/CSS/Vesture.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <button class="menu-toggle">&#9776;</button>
+        <div class="nav-wrapper">
+        <div class="nav-left">
+            <div class="dropdown" id="SchoolDropdown">
+                <a href="#" class="hover-underline dropdown-trigger">Par Skolu▼</a>
+                <div class="dropdown-content"> <!--Vajag 3 file-->
+                    <a href="/skola/ParMumsNav.html">Par mums</a>
+                    <a href="/skola/DokumentiNav.html">Dokumentācija</a>
+                    <a href="/skola/SasniegumiNav.html">Sasniegumi</a>
+                </div>
+            </div>
+            <div class="dropdown" id="AdmissionDropdown">
+                <a href="/Pienemsana/Uznemsana.html" class="hover-underline dropdown-trigger">Uzņemšana</a>
+            </div>
+            <a href="/Skolasvest/Vesture.html" class="hover-underline">Skolas vēsture</a> <!--Parunāt ar Sk.Vitu-->
+            <a href="/SkolaMainPage/Lapa.html" class="hover-underline">🏠︎</a>
+        </div>
+        <div class="nav-right">
+            <a href="/Kontakti/KontaktiMain.html" class="hover-underline">Kontakti</a>
+            <a href="https://www.facebook.com/kalvene.pamatskola.9/?locale=lv_LV" target="_blank" class="facebook-icon">
+                <i class="fab fa-facebook-square"></i>
+            </a>
+        </div>
+    </div>
+    </nav>
+    <div class="page-content">
+        <div class="history-container">
+    <img src="/SkolaMainPage/SkolasAtteli/Bilde3.jpg" alt="Tāšu Padures Muiža">
+    <div class="history-text">
+        <h2>Tāšu Padures muižas vēsture</h2>
+        <p>Tāšu Padures muižas pils mūsdienās pazīstama kā Kalvenes pamatskola, kas dibināta 1922. gadā. Skolas ēka būvēta 19. gadsimtā pēc vēlīnā klasicisma stila parauga kā grāfa Keizerlinga medību pils. Šeit 1919.gada sākumā notika pirmo mobilizēto viru pulcēšanās, kas atsaucās mobilizācijas aicinājumam un ieradās muižā.</p>
+        <p><strong>18. gadsimta sākums:</strong> Tāšu Padures muiža izveidojās kā nozīmīgs lauku īpašums Kurzemē, kalpojot par vietu, kur pārvaldnieki un muižnieki pārraudzīja plašas lauksaimniecības zemes un mežus. Šajā laikā muiža bija cieši saistīta ar apkārtējām zemnieku saimniecībām, kas nodrošināja muižkungu ar darba spēku un pārtiku.</p>
+        <p><strong>19. gadsimts:</strong> Šajā periodā muiža piedzīvoja ievērojamu attīstību un modernizāciju. Tika uzbūvētas jaunas ēkas, paplašināti saimniecības kompleksi un veidoti ainavu parki, kas atspoguļoja muižkungu vēlmi pēc statusa un izsmalcinātības. Tāšu Padures muiža kļuva par vienu no nozīmīgākajām reģiona saimniecībām.</p>
+        <p><strong>20. gadsimts:</strong> Pēc Pirmā pasaules kara un Latvijas neatkarības iegūšanas, muižas zeme tika atsavināta un sadalīta jaunsaimniekiem agrārās reformas ietvaros. Muižas ēkas zaudēja savu sākotnējo funkciju, taču daļa no tās arhitektūras mantojuma saglabājās, liecinot par kādreizējo greznumu.</p>
+        <p><strong>Mūsdienas:</strong> Mūsdienās Tāšu Padures muiža ir vēsturisks piemineklis, kas atspoguļo Latvijas lauku aristokrātijas dzīvesveidu. Daļa ēku ir atjaunotas, lai saglabātu kultūras mantojumu un veicinātu vietējo tūrisma attīstību. Muižas ainava un arhitektūra joprojām iedvesmo apmeklētājus un atgādina par senajām muižniecības tradīcijām.</p>
+    </div>
+</div>
+</div>
+</div>
+</div>
+    <footer>
+    © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
+    </footer>
+</body>
+</html>
+    <script>
+        function setupDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const menu = dropdown.querySelector('.dropdown-content');
+    let hideTimeout;
+
+    const showMenu = () => {
+        clearTimeout(hideTimeout);
+        menu.classList.add('show');
+    };
+
+    const hideMenu = () => {
+        hideTimeout = setTimeout(() => {
+            menu.classList.remove('show');
+        }, 200);
+    };
+
+    dropdown.addEventListener('mouseenter', showMenu);
+    dropdown.addEventListener('mouseleave', hideMenu);
+}
+
+setupDropdown('SchoolDropdown');
+setupDropdown('AdmissionDropdown');
+
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.menu-toggle');
+  const navbar = document.querySelector('.navbar');
+
+  toggle.addEventListener('click', () => {
+    navbar.classList.toggle('expanded');
+  });
+});
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-trigger").forEach(trigger => {
+      trigger.addEventListener("click", function (e) {
+        const parent = this.closest(".dropdown");
+        parent.classList.toggle("open");
+      });
+    });
+  });
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<!--
+COLORS
+f1cac5 - Light orange thingy
+32373B - Black
+ecfaf2 - White-ish
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="stylesheet" href="/Pienemsana/CSS/Uznemsana.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <button class="menu-toggle">&#9776;</button>
+        <div class="nav-wrapper">
+        <div class="nav-left">
+            <div class="dropdown" id="SchoolDropdown">
+                <a href="#" class="hover-underline dropdown-trigger">Par Skolu▼</a>
+                <div class="dropdown-content"> <!--Vajag 3 file-->
+                    <a href="/skola/ParMumsNav.html">Par mums</a>
+                    <a href="/skola/DokumentiNav.html">Dokumentācija</a>
+                    <a href="/skola/SasniegumiNav.html">Sasniegumi</a>
+                </div>
+            </div>
+            <div class="dropdown" id="AdmissionDropdown">
+                <a href="/Pienemsana/Uznemsana.html" class="hover-underline dropdown-trigger">Uzņemšana</a>
+            </div>
+            <a href="/Skolasvest/Vesture.html" class="hover-underline">Skolas vēsture</a> <!--Parunāt ar Sk.Vitu-->
+            <a href="/SkolaMainPage/Lapa.html" class="hover-underline">🏠︎</a>
+        </div>
+        <div class="nav-right">
+            <a href="/Kontakti/KontaktiMain.html" class="hover-underline">Kontakti</a>
+            <a href="https://www.facebook.com/kalvene.pamatskola.9/?locale=lv_LV" target="_blank" class="facebook-icon">
+                <i class="fab fa-facebook-square"></i>
+            </a>
+        </div>
+    </div>
+    </nav>
+    <div class="page-content">
+    <div class="main-container">
+    <div class="left-content">
+        <h2>Dokumentācija</h2>
+        <ul>
+            <li>Pašnovērtējuma ziņojums</li>
+            <li>Kārtība par izglītojamo uzņemšanu un izstāšanos skolā</li>
+            <li>Iesniegumi par uzņemšanu skolā:
+                <ul>
+                    <li>
+                        <a href="/Pienemsana/Pamatskola_iesniegums.docx" download class="download-button">
+                            Pamatizglītības programma (21011111)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Pienemsana/Pirmskola_Iesniegums.docx" download class="download-button">
+                            Pirmsskolas izglītības programma (01011111)
+                        </a>
+                        </li>
+                    <li>Speciālā programma ar mācīšanās traucējumiem (21015611)</li>
+                    <li>Speciālā programma ar garīgiem traucējumiem (21015811)</li>
+                </ul>
+    </div>
+    <div class="right-info">
+        <div class="address-box">
+            <p><strong>Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443</p>
+        </div>
+        <div class="map-button">
+            <i class="fa-solid fa-location-dot"></i>
+            <a href="https://maps.google.com/?q=Kalvenes+pamatskola" target="_blank">Skatīt kartē ></a>
+        </div>
+    </div>
+</div>
+</div>
+<footer>
+    © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
+  </footer>
+    <script>
+        function setupDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const menu = dropdown.querySelector('.dropdown-content');
+    let hideTimeout;
+
+    const showMenu = () => {
+        clearTimeout(hideTimeout);
+        menu.classList.add('show');
+    };
+
+    const hideMenu = () => {
+        hideTimeout = setTimeout(() => {
+            menu.classList.remove('show');
+        }, 200);
+    };
+
+    dropdown.addEventListener('mouseenter', showMenu);
+    dropdown.addEventListener('mouseleave', hideMenu);
+}
+
+setupDropdown('SchoolDropdown');
+setupDropdown('AdmissionDropdown');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('.menu-toggle');
+    const navbar = document.querySelector('.navbar');
+
+  toggle.addEventListener('click', () => {
+    navbar.classList.toggle('expanded');
+  });
+});
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-trigger").forEach(trigger => {
+      trigger.addEventListener("click", function (e) {
+        const parent = this.closest(".dropdown");
+        parent.classList.toggle("open");
+      });
+    });
+  });
+    </script>
+</body>
+</html>

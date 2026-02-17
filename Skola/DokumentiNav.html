@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dokumentācija</title>
+  <link rel="stylesheet" href="/Skola/CSS/DokumentiNav.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar">
+        <button class="menu-toggle">&#9776;</button>
+        <div class="nav-wrapper">
+        <div class="nav-left">
+            <div class="dropdown" id="SchoolDropdown">
+                <a href="#" class="hover-underline dropdown-trigger">Par Skolu▼</a>
+                <div class="dropdown-content"> <!--Vajag 3 file-->
+                    <a href="/skola/ParMumsNav.html">Par mums</a>
+                    <a href="/skola/DokumentiNav.html">Dokumentācija</a>
+                    <a href="/skola/SasniegumiNav.html">Sasniegumi</a>
+                </div>
+            </div>
+            <div class="dropdown" id="AdmissionDropdown">
+                <a href="/Pienemsana/Uznemsana.html" class="hover-underline dropdown-trigger">Uzņemšana</a>
+            </div>
+            <a href="/Skolasvest/Vesture.html" class="hover-underline">Skolas vēsture</a> <!--Parunāt ar Sk.Vitu-->
+            <a href="/SkolaMainPage/Lapa.html" class="hover-underline">🏠︎</a>
+        </div>
+        <div class="nav-right">
+            <a href="/Kontakti/KontaktiMain.html" class="hover-underline">Kontakti</a>
+            <a href="https://www.facebook.com/kalvene.pamatskola.9/?locale=lv_LV" target="_blank" class="facebook-icon">
+                <i class="fab fa-facebook-square"></i>
+            </a>
+        </div>
+    </div>
+    </nav>
+  <div class="page-content">
+  <main class="content">
+  <section class="hero">
+    <h1>Skolas dokumentācija</h1>
+    <p>Šeit pieejami svarīgākie dokumenti, kas nosaka mūsu skolas ikdienas darbību, drošību un kārtību.</p>
+  </section>
+
+  <section class="documents-grid">
+    <div class="doc-card">
+      <h2>Iekšējās kārtības noteikumi</h2>
+      <p>Noteikumi, kas regulē skolēnu uzvedību un skolas iekšējo kārtību.</p>
+      <a href="/Skola/Dokumenti/Ieksejas kartibas noteikumi.pdf" class="button" target="_blank">Lasīt</a>
+    </div>
+    <div class="doc-card">
+      <h2>Kārtība Skolēnu mantu pārbaude</h2>
+      <p>Kārtība, kādā tiek veikta skolēnu personīgās mantas pārbaude.</p>
+      <a href="/Skola/Dokumenti/Kartiba Skolenu mantu parbaude 2025_docx.pdf" class="button" target="_blank">Apskatīt</a>
+    </div>
+    <div class="doc-card">
+      <h2>Vērtēšana 2024/2025</h2>
+      <p>Informācija par vērtēšanu 2024/2025 gadu.</p>
+      <a href="/Skola/Dokumenti/vertesana2024(labota).docx" class="button" target="_blank">Lejupielādēt</a>
+    </div>
+    <div class="doc-card">
+      <h2>Konsultāciju grafiks</h2>
+      <p>Oficiālais skolas konsultācijas grafiks.</p>
+      <a href="/Skola/Dokumenti/Konsultaciju grafiks 2024_2025.pdf" class="button" target="_blank">Skatīt</a>
+    </div>
+    </div>  
+  </section>
+
+  <footer>
+    © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
+  </footer>
+</main>
+  <script>
+    function setupDropdown(id) {
+      const dropdown = document.getElementById(id);
+      const menu = dropdown.querySelector('.dropdown-content');
+      let hideTimeout;
+
+      dropdown.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+        menu.classList.add('show');
+      });
+
+      dropdown.addEventListener('mouseleave', () => {
+        hideTimeout = setTimeout(() => {
+          menu.classList.remove('show');
+        }, 200);
+      });
+    }
+
+    setupDropdown('SchoolDropdown');
+    setupDropdown('AdmissionDropdown');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.querySelector('.menu-toggle');
+    const navbar = document.querySelector('.navbar');
+
+  toggle.addEventListener('click', () => {
+    navbar.classList.toggle('expanded');
+  });
+});
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-trigger").forEach(trigger => {
+      trigger.addEventListener("click", function (e) {
+        const parent = this.closest(".dropdown");
+        parent.classList.toggle("open");
+      });
+    });
+  });
+  </script>
+</body>
+</html>
