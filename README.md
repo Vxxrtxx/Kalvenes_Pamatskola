@@ -42,7 +42,7 @@ Mājaslapas mērķis:
 
 ## 📂 Projekta struktūra (piemērs)
 
-```bash
+```md
 SkolaMainPage/
 │
 ├── Lapa.html
