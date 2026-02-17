@@ -7,7 +7,7 @@ Tā nodrošina ērtu piekļuvi informācijai par skolu, uzņemšanu, vēsturi, a
 
 ## Par projektu
 
-Šis projekts ir mājaslapa skolai **:contentReference[oaicite:0]{index=0}**.
+Šis projekts ir mājaslapa skolai Kalvenes Pamatskola.
 
 Mājaslapas mērķis:
 - Sniedz informāciju par skolu
