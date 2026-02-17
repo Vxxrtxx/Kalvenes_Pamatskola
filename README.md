@@ -42,8 +42,19 @@ Mājaslapas mērķis:
 
 ## 📂 Projekta struktūra (piemērs)
 
-<pre> ```bash SkolaMainPage/ │ ├── Lapa.html ├── script.js ├── nav.css │ ├── SkolasAtteli/ ├── skola/ ├── Pienemsana/ ├── Kontakti/ └── Skolasvest/ ``` </pre>
-
+```bash
+SkolaMainPage/
+│
+├── Lapa.html
+├── script.js
+├── nav.css
+│
+├── SkolasAtteli/
+├── skola/
+├── Pienemsana/
+├── Kontakti/
+└── Skolasvest/
+```
 
 ---
 
