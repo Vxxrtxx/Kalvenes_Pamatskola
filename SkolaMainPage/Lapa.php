@@ -1,16 +1,19 @@
+<?php
+$conn = new mysqli("localhost", "root", "", "school_site");
 
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$hero = $conn->query("SELECT * FROM content WHERE id=1")->fetch_assoc();
+$aktualitates = $conn->query("SELECT * FROM aktualitates");
+?>
 <!DOCTYPE html>
-<!--
-COLORS
-f1cac5 - Light orange thingy
-32373B - Black
-ecfaf2 - White-ish
--->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <link rel="stylesheet" href="nav.css">
+    <link rel="stylesheet" href="/KalvenesPamataskola/SkolaMainPage/Nav.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
             <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,32 +51,27 @@ ecfaf2 - White-ish
 <div class="page-content">
     <section class="hero">
     <video autoplay muted loop playsinline class="hero-video">
-        <source src="/SkolaMainPage/SkolasAtteli/Kalvenes skola video3.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        <source src="<?= !empty($hero['video_path']) ? $hero['video_path'] : '/videos/skola.mp4' ?>" type="video/mp4">
     </video>
+
     <div class="hero-content">
-        <h1>Kalvenes pamatskola</h1>
-        <p>Izglītība nākotnei</p>
+        <h1><?= !empty($hero['title']) ? htmlspecialchars($hero['title']) : 'Kalvenes pamatskola' ?></h1>
+        <p><?= !empty($hero['subtitle']) ? htmlspecialchars($hero['subtitle']) : 'Mūsu nākotne sākas šeit' ?></p>
     </div>
 </section>
-
-    <section class="aktualitates">
-        <h2>Aktualitātes</h2>
-        <div class="aktualitates-container">
-            <div class="aktualitate-card">
-                <img src="/SkolaMainPage/SkolasAtteli/Bilde1.jpg" alt="Aktualitāte 1">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="aktualitate-card">
-                <img src="/SkolaMainPage/SkolasAtteli/Bilde1.jpg" alt="Aktualitāte 2">
-                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
-            </div>
-            <div class="aktualitate-card">
-                <img src="/SkolaMainPage/SkolasAtteli/Bilde1.jpg" alt="Aktualitāte 3">
-                <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
-            </div>
+    <?php if($aktualitates && $aktualitates->num_rows > 0): ?>
+    <?php while($row = $aktualitates->fetch_assoc()): ?>
+        <div class="aktualitate-card">
+            <img src="<?= $row['image'] ?>">
+            <p><?= htmlspecialchars($row['text']) ?></p>
         </div>
-    </section>
+    <?php endwhile; ?>
+<?php else: ?>
+    <div class="aktualitate-card">
+        <img src="/images/bilde1.jpg">
+        <p>Tava oriģinālā aktualitāte</p>
+    </div>
+<?php endif; ?>
 
     <section class="timeline-section">
         <h2>Kāpēc izvēlēties Kalvenes pamatskolu?</h2>

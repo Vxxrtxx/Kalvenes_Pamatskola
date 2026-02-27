@@ -189,3 +189,22 @@ button:hover {
 .delete:hover {
     background: #dc2626;
 }
+body{
+    font-family: Arial;
+    background:#111;
+    color:white;
+    padding:40px;
+}
+input,textarea,button{
+    display:block;
+    margin:10px 0;
+    padding:8px;
+}
+img{
+    border-radius:8px;
+}
+button{
+    background:#f1cac5;
+    border:none;
+    cursor:pointer;
+}
