@@ -8,19 +8,18 @@ $timeline = $connOk ? $conn->query("SELECT * FROM timeline ORDER BY id DESC LIMI
 
 function asset_url(?string $path): string {
     if (!$path) return "";
-
     $path = trim($path);
 
     if (str_starts_with($path, "/admin/")) {
         $path = "/KalvenesPamataskola" . $path;
     } elseif (str_starts_with($path, "/SkolaMainPage/")) {
         $path = "/KalvenesPamataskola" . $path;
-    } elseif (!str_starts_with($path, "/KalvenesPamataskola/") && str_starts_with($path, "/")) {
+    } elseif (str_starts_with($path, "/") && !str_starts_with($path, "/KalvenesPamataskola/")) {
         $path = "/KalvenesPamataskola" . $path;
     }
 
     $parts = explode("/", $path);
-    $parts = array_map(function($p) { return rawurlencode($p); }, $parts);
+    $parts = array_map(static function ($p) { return rawurlencode($p); }, $parts);
     return implode("/", $parts);
 }
 ?>
@@ -29,6 +28,8 @@ function asset_url(?string $path): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+
+    <!-- CSS PATH (confirmed working earlier) -->
     <link rel="stylesheet" href="/KalvenesPamataskola/SkolaMainPage/Nav.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,7 +77,11 @@ function asset_url(?string $path): string {
 <!-- HERO -->
 <section class="hero">
     <video autoplay muted loop playsinline class="hero-video">
-        <source src="<?= !empty($hero['video_path']) ? htmlspecialchars($hero['video_path']) : '/KalvenesPamataskola/SkolaMainPage/SkolasAtteli/Kalvenes skola video3.mp4' ?>" type="video/mp4">
+        <source src="<?=
+            asset_url(
+                (!empty($hero['video_path']) ? $hero['video_path'] : '/KalvenesPamataskola/SkolaMainPage/SkolasAtteli/Kalvenes skola video3.mp4')
+            )
+        ?>" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <div class="hero-content">
@@ -93,7 +98,7 @@ function asset_url(?string $path): string {
         <?php if ($aktualitates && $aktualitates->num_rows > 0): ?>
             <?php while($row = $aktualitates->fetch_assoc()): ?>
                 <div class="aktualitate-card">
-                    <img src="<?= htmlspecialchars($row['image']) ?>" alt="Aktualitāte">
+                    <img src="<?= asset_url($row['image']) ?>" alt="Aktualitāte">
                     <p><?= htmlspecialchars($row['text']) ?></p>
                 </div>
             <?php endwhile; ?>
@@ -124,7 +129,7 @@ function asset_url(?string $path): string {
         <?php if ($timeline && $timeline->num_rows > 0): ?>
             <?php while($row = $timeline->fetch_assoc()): ?>
                 <div class="timeline-card">
-                    <img src="<?= htmlspecialchars($row['image']) ?>" alt="Timeline">
+                    <img src="<?= asset_url($row['image']) ?>" alt="Timeline">
                     <div class="timeline-text">
                         <h3><?= htmlspecialchars($row['title']) ?></h3>
                         <p><?= htmlspecialchars($row['description']) ?></p>
@@ -132,7 +137,7 @@ function asset_url(?string $path): string {
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-            <!-- Fallback (your original static cards, including timeline-text wrapper for CSS) -->
+            <!-- Fallback (your original static cards) -->
             <div class="timeline-card">
                 <img src="/KalvenesPamataskola/SkolaMainPage/SkolasAtteli/Bilde1.jpg" alt="Ak1">
                 <div class="timeline-text">
@@ -168,5 +173,13 @@ function asset_url(?string $path): string {
 </footer>
 
 <script src="/KalvenesPamataskola/SkolaMainPage/script.js"></script>
+
+<!-- Mobile menu toggle (works with your CSS rules .navbar.expanded ...) -->
+<script>
+document.querySelector(".menu-toggle")?.addEventListener("click", function () {
+  document.querySelector(".navbar")?.classList.toggle("expanded");
+});
+</script>
+
 </body>
 </html>
