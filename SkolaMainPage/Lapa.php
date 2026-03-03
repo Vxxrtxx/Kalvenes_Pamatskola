@@ -30,8 +30,8 @@ function asset_url(?string $path): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
 
     <!-- CSS PATH (confirmed working earlier) -->
-    <link rel="stylesheet" href="/KalvenesPamataskola/SkolaMainPage/Nav.css">
-
+    <link rel="stylesheet" href="/Kalvenes_Pamatskola/SkolaMainPage/Nav.css">
+    <script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,8 +171,6 @@ function asset_url(?string $path): string {
 <footer class="end-container">
     <p>© 2025 Kalvenes pamatskola. All rights reserved.</p>
 </footer>
-
-<script src="/KalvenesPamataskola/SkolaMainPage/script.js"></script>
 
 <!-- Mobile menu toggle (works with your CSS rules .navbar.expanded ...) -->
 <script>

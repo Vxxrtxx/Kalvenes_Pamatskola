@@ -1,138 +1,205 @@
 <?php
-include "config.php";
+// ====== DB CONNECT ======
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-/* ---------- helpers ---------- */
-function uploadImage(string $inputName, string $destDir, array $allowedExt = ["jpg","jpeg","png","webp"]): ?string {
-    if (empty($_FILES[$inputName]["name"])) return null;
+$conn = new mysqli("localhost", "root", "", "school_site");
+$conn->set_charset("utf8mb4");
+
+// Auto-detect project folder name (first segment after localhost/)
+$PROJECT = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0]; // e.g. Kalvenes_Pamatskola
+
+// Panel base URL (this file lives in /Kalvenes_Pamatskola/Control-Panel/index.php)
+$PANEL_BASE_URL = "/" . $PROJECT . "/Control-Panel";
+$UPLOAD_WEB_DIR = $PANEL_BASE_URL . "/uploads";          // URL used by browser
+$UPLOAD_FS_DIR  = __DIR__ . DIRECTORY_SEPARATOR . "uploads"; // filesystem path
+
+// Website assets dir for hero videos (in your main page folder)
+$HERO_VIDEO_WEB_DIR = "/" . $PROJECT . "/SkolaMainPage/SkolasAtteli";
+$HERO_VIDEO_FS_DIR  = __DIR__ . "/../SkolaMainPage/SkolasAtteli";
+
+$msg = "";
+
+// ====== HELPERS ======
+function safe_filename(string $name): string {
+    $base = preg_replace('/[^a-zA-Z0-9_\-]/', '_', pathinfo($name, PATHINFO_FILENAME));
+    $ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    return [$base, $ext];
+}
+
+function upload_file(string $inputName, string $destFsDir, string $destWebDir, array $allowedExt): array {
+    // returns [ok(bool), webPath(?string), error(?string)]
+    if (empty($_FILES[$inputName]["name"])) {
+        return [false, null, "No file selected"];
+    }
 
     $name = $_FILES[$inputName]["name"];
     $tmp  = $_FILES[$inputName]["tmp_name"];
     $err  = $_FILES[$inputName]["error"];
 
-    if ($err !== UPLOAD_ERR_OK) return null;
+    if ($err !== UPLOAD_ERR_OK) {
+        return [false, null, "Upload error code: $err"];
+    }
 
     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowedExt, true)) return null;
+    if (!in_array($ext, $allowedExt, true)) {
+        return [false, null, "Invalid file type. Allowed: " . implode(", ", $allowedExt)];
+    }
 
-    if (!is_dir($destDir)) mkdir($destDir, 0777, true);
+    if (!is_dir($destFsDir)) {
+        if (!mkdir($destFsDir, 0777, true)) {
+            return [false, null, "Failed to create upload folder"];
+        }
+    }
 
-    $safeBase = preg_replace('/[^a-zA-Z0-9_\-]/', '_', pathinfo($name, PATHINFO_FILENAME));
-    $finalName = time() . "_" . $safeBase . "." . $ext;
-    $finalPath = rtrim($destDir, "/\\") . DIRECTORY_SEPARATOR . $finalName;
+    $base = preg_replace('/[^a-zA-Z0-9_\-]/', '_', pathinfo($name, PATHINFO_FILENAME));
+    $finalName = time() . "_" . $base . "." . $ext;
+    $finalFs   = rtrim($destFsDir, "/\\") . DIRECTORY_SEPARATOR . $finalName;
 
-    if (!move_uploaded_file($tmp, $finalPath)) return null;
+    if (!move_uploaded_file($tmp, $finalFs)) {
+        return [false, null, "Failed to move uploaded file"];
+    }
 
-    // return web path (IMPORTANT)
-    return "/KalvenesPamataskola/admin/uploads/" . $finalName;
+    $webPath = rtrim($destWebDir, "/") . "/" . $finalName;
+    return [true, $webPath, null];
 }
 
-/* ---------- HERO UPDATE ---------- */
+// ====== HERO UPDATE ======
 if (isset($_POST["update_hero"])) {
-    $title = $_POST["title"] ?? "";
-    $subtitle = $_POST["subtitle"] ?? "";
+    $title = trim($_POST["title"] ?? "");
+    $subtitle = trim($_POST["subtitle"] ?? "");
 
-    // update text
     $stmt = $conn->prepare("UPDATE content SET title=?, subtitle=? WHERE id=1");
     $stmt->bind_param("ss", $title, $subtitle);
     $stmt->execute();
 
-    // optional video upload
     if (!empty($_FILES["video"]["name"])) {
-        $videoName = $_FILES["video"]["name"];
-        $videoTmp  = $_FILES["video"]["tmp_name"];
+        [$ok, $videoWeb, $err] = upload_file(
+            "video",
+            $GLOBALS["HERO_VIDEO_FS_DIR"],
+            $GLOBALS["HERO_VIDEO_WEB_DIR"],
+            ["mp4","webm","ogg"]
+        );
 
-        $videoExt = strtolower(pathinfo($videoName, PATHINFO_EXTENSION));
-        $allowedVideo = ["mp4","webm","ogg"];
-        if (in_array($videoExt, $allowedVideo, true)) {
-            $dest = __DIR__ . "/../SkolaMainPage/SkolasAtteli";
-            if (!is_dir($dest)) mkdir($dest, 0777, true);
-
-            $safeBase = preg_replace('/[^a-zA-Z0-9_\-]/', '_', pathinfo($videoName, PATHINFO_FILENAME));
-            $finalName = time() . "_" . $safeBase . "." . $videoExt;
-
-            move_uploaded_file($videoTmp, $dest . "/" . $finalName);
-
-            $videoPath = "/KalvenesPamataskola/SkolaMainPage/SkolasAtteli/" . $finalName;
+        if ($ok && $videoWeb) {
             $stmt2 = $conn->prepare("UPDATE content SET video_path=? WHERE id=1");
-            $stmt2->bind_param("s", $videoPath);
+            $stmt2->bind_param("s", $videoWeb);
             $stmt2->execute();
+            $msg = "Hero updated (video uploaded).";
+        } else {
+            $msg = "Hero updated, but video failed: " . ($err ?? "Unknown error");
         }
+    } else {
+        $msg = "Hero updated.";
     }
 
-    header("Location: index.php");
+    header("Location: index.php?msg=" . urlencode($msg));
     exit;
 }
 
-/* ---------- ADD AKTUALITATE ---------- */
+// ====== ADD AKTUALITATE ======
 if (isset($_POST["add_akt"])) {
-    $text = $_POST["text"] ?? "";
-
-    $imgPath = uploadImage("image", __DIR__ . "/uploads");
-    if ($imgPath) {
-        $stmt = $conn->prepare("INSERT INTO aktualitates (image, text) VALUES (?, ?)");
-        $stmt->bind_param("ss", $imgPath, $text);
-        $stmt->execute();
+    $text = trim($_POST["text"] ?? "");
+    if ($text === "") {
+        header("Location: index.php?msg=" . urlencode("Aktualitāte text is empty."));
+        exit;
     }
 
-    header("Location: index.php");
+    [$ok, $imgWeb, $err] = upload_file(
+        "image",
+        $UPLOAD_FS_DIR,
+        $UPLOAD_WEB_DIR,
+        ["jpg","jpeg","png","webp"]
+    );
+
+    if (!$ok || !$imgWeb) {
+        header("Location: index.php?msg=" . urlencode("Image upload failed: " . ($err ?? "Unknown error")));
+        exit;
+    }
+
+    $stmt = $conn->prepare("INSERT INTO aktualitates (image, text) VALUES (?, ?)");
+    $stmt->bind_param("ss", $imgWeb, $text);
+    $stmt->execute();
+
+    header("Location: index.php?msg=" . urlencode("Aktualitāte added."));
     exit;
 }
 
-/* ---------- DELETE AKTUALITATE ---------- */
+// ====== DELETE AKTUALITATE ======
 if (isset($_GET["delete_akt"])) {
     $id = (int)$_GET["delete_akt"];
     $stmt = $conn->prepare("DELETE FROM aktualitates WHERE id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
-    header("Location: index.php");
+    header("Location: index.php?msg=" . urlencode("Aktualitāte deleted."));
     exit;
 }
 
-/* ---------- ADD TIMELINE ---------- */
+// ====== ADD TIMELINE ======
 if (isset($_POST["add_time"])) {
-    $title = $_POST["time_title"] ?? "";
-    $desc  = $_POST["time_desc"] ?? "";
+    $title = trim($_POST["time_title"] ?? "");
+    $desc  = trim($_POST["time_desc"] ?? "");
 
-    $imgPath = uploadImage("time_img", __DIR__ . "/uploads");
-    if ($imgPath) {
-        $stmt = $conn->prepare("INSERT INTO timeline (image, title, description) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $imgPath, $title, $desc);
-        $stmt->execute();
+    if ($title === "" || $desc === "") {
+        header("Location: index.php?msg=" . urlencode("Timeline title/description is empty."));
+        exit;
     }
 
-    header("Location: index.php");
+    [$ok, $imgWeb, $err] = upload_file(
+        "time_img",
+        $UPLOAD_FS_DIR,
+        $UPLOAD_WEB_DIR,
+        ["jpg","jpeg","png","webp"]
+    );
+
+    if (!$ok || !$imgWeb) {
+        header("Location: index.php?msg=" . urlencode("Image upload failed: " . ($err ?? "Unknown error")));
+        exit;
+    }
+
+    $stmt = $conn->prepare("INSERT INTO timeline (image, title, description) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $imgWeb, $title, $desc);
+    $stmt->execute();
+
+    header("Location: index.php?msg=" . urlencode("Timeline added."));
     exit;
 }
 
-/* ---------- DELETE TIMELINE ---------- */
+// ====== DELETE TIMELINE ======
 if (isset($_GET["delete_time"])) {
     $id = (int)$_GET["delete_time"];
     $stmt = $conn->prepare("DELETE FROM timeline WHERE id=?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
-    header("Location: index.php");
+    header("Location: index.php?msg=" . urlencode("Timeline deleted."));
     exit;
 }
 
-/* ---------- FETCH DATA ---------- */
+// ====== FETCH DATA ======
 $hero = $conn->query("SELECT * FROM content WHERE id=1")->fetch_assoc();
 $akt  = $conn->query("SELECT * FROM aktualitates ORDER BY id DESC");
 $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
-?>
 
+$msg = $_GET["msg"] ?? "";
+?>
 <!DOCTYPE html>
 <html lang="lv">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="style.css">
-    <title>Admin Panel</title>
+    <title>Control Panel</title>
 </head>
 <body>
 
-<h1>Admin Panel</h1>
+<h1>Control Panel</h1>
+
+<?php if ($msg): ?>
+    <p style="padding:10px 12px;border-radius:10px;background:rgba(0,0,0,0.08);display:inline-block;">
+        <?= htmlspecialchars($msg) ?>
+    </p>
+<?php endif; ?>
 
 <h2>Hero Section</h2>
 <form method="POST" enctype="multipart/form-data">
@@ -141,6 +208,10 @@ $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
     <input type="file" name="video" accept="video/mp4,video/webm,video/ogg">
     <button type="submit" name="update_hero">Update Hero</button>
 </form>
+
+<p style="opacity:.75;margin-top:8px;">
+    Current video: <code><?= htmlspecialchars($hero["video_path"] ?? "") ?></code>
+</p>
 
 <hr>
 
@@ -155,6 +226,9 @@ $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
     <div style="margin:14px 0;">
         <img src="<?= htmlspecialchars($row["image"]) ?>" width="120" style="border-radius:10px;">
         <p><?= htmlspecialchars($row["text"]) ?></p>
+        <div style="opacity:.7;font-size:.9rem;">
+            <code><?= htmlspecialchars($row["image"]) ?></code>
+        </div>
         <a href="?delete_akt=<?= (int)$row["id"] ?>">Delete</a>
     </div>
 <?php endwhile; ?>
@@ -174,6 +248,9 @@ $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
         <img src="<?= htmlspecialchars($row["image"]) ?>" width="120" style="border-radius:10px;">
         <h4><?= htmlspecialchars($row["title"]) ?></h4>
         <p><?= htmlspecialchars($row["description"]) ?></p>
+        <div style="opacity:.7;font-size:.9rem;">
+            <code><?= htmlspecialchars($row["image"]) ?></code>
+        </div>
         <a href="?delete_time=<?= (int)$row["id"] ?>">Delete</a>
     </div>
 <?php endwhile; ?>
