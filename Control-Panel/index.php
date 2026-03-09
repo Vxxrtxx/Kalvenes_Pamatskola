@@ -6,7 +6,7 @@ $conn = new mysqli("localhost", "root", "", "school_site");
 $conn->set_charset("utf8mb4");
 
 // Auto-detect project folder name
-$PROJECT = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0]; // e.g. Kalvenes_Pamatskola
+$PROJECT = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
 
 $PANEL_BASE_URL = "/" . $PROJECT . "/Control-Panel";
 $UPLOAD_WEB_DIR = $PANEL_BASE_URL . "/uploads";
@@ -189,66 +189,134 @@ $msg = $_GET["msg"] ?? "";
 <h1>Control Panel</h1>
 
 <?php if ($msg): ?>
-    <p style="padding:10px 12px;border-radius:10px;background:rgba(0,0,0,0.08);display:inline-block;">
+    <div class="flash-message">
         <?= htmlspecialchars($msg) ?>
-    </p>
+    </div>
 <?php endif; ?>
 
-<h2>Hero Section</h2>
-<form method="POST" enctype="multipart/form-data">
-    <input type="text" name="title" value="<?= htmlspecialchars($hero["title"] ?? "") ?>" placeholder="Title" required>
-    <input type="text" name="subtitle" value="<?= htmlspecialchars($hero["subtitle"] ?? "") ?>" placeholder="Subtitle" required>
-    <input type="file" name="video" accept="video/mp4,video/webm,video/ogg">
-    <button type="submit" name="update_hero">Update Hero</button>
-</form>
+<div class="panel-shell">
 
-<p style="opacity:.75;margin-top:8px;">
-    Current video: <code><?= htmlspecialchars($hero["video_path"] ?? "") ?></code>
-</p>
-
-<hr>
-
-<h2>Aktualitātes</h2>
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" accept="image/png,image/jpeg,image/webp" required>
-    <input type="text" name="title" placeholder="Header / Title" required>
-    <textarea name="text" placeholder="Description / bottom text" required></textarea>
-    <button type="submit" name="add_akt">Add</button>
-</form>
-
-<?php while($row = $akt->fetch_assoc()): ?>
-    <div style="margin:14px 0;">
-        <img src="<?= htmlspecialchars($row["image"]) ?>" width="120" style="border-radius:10px;">
-        <h4><?= htmlspecialchars($row["title"] ?? "") ?></h4>
-        <p><?= htmlspecialchars($row["text"]) ?></p>
-        <div style="opacity:.7;font-size:.9rem;">
-            <code><?= htmlspecialchars($row["image"]) ?></code>
+    <section class="panel-card">
+        <div class="section-header">
+            <div>
+                <h2>Hero Section</h2>
+                <p class="subtext">Main homepage title, subtitle, and hero video.</p>
+            </div>
         </div>
-        <a href="?delete_akt=<?= (int)$row["id"] ?>">Delete</a>
-    </div>
-<?php endwhile; ?>
 
-<hr>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="hero-title">Title</label>
+                <input id="hero-title" type="text" name="title" value="<?= htmlspecialchars($hero["title"] ?? "") ?>" placeholder="Title" required>
+            </div>
 
-<h2>Timeline</h2>
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="time_img" accept="image/png,image/jpeg,image/webp" required>
-    <input type="text" name="time_title" placeholder="Title" required>
-    <textarea name="time_desc" placeholder="Description" required></textarea>
-    <button type="submit" name="add_time">Add</button>
-</form>
+            <div class="form-group">
+                <label for="hero-subtitle">Subtitle</label>
+                <input id="hero-subtitle" type="text" name="subtitle" value="<?= htmlspecialchars($hero["subtitle"] ?? "") ?>" placeholder="Subtitle" required>
+            </div>
 
-<?php while($row = $time->fetch_assoc()): ?>
-    <div style="margin:14px 0;">
-        <img src="<?= htmlspecialchars($row["image"]) ?>" width="120" style="border-radius:10px;">
-        <h4><?= htmlspecialchars($row["title"]) ?></h4>
-        <p><?= htmlspecialchars($row["description"]) ?></p>
-        <div style="opacity:.7;font-size:.9rem;">
-            <code><?= htmlspecialchars($row["image"]) ?></code>
+            <div class="form-group">
+                <label for="hero-video">Video</label>
+                <input id="hero-video" type="file" name="video" accept="video/mp4,video/webm,video/ogg">
+            </div>
+
+            <button type="submit" name="update_hero">Update Hero</button>
+        </form>
+
+        <p class="hero-meta">
+            Current video: <code><?= htmlspecialchars($hero["video_path"] ?? "") ?></code>
+        </p>
+    </section>
+
+    <section class="panel-card">
+        <div class="section-header">
+            <div>
+                <h2>Aktualitātes</h2>
+                <p class="subtext">Add homepage news cards with image, title, and description.</p>
+            </div>
         </div>
-        <a href="?delete_time=<?= (int)$row["id"] ?>">Delete</a>
-    </div>
-<?php endwhile; ?>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="akt-image">Image</label>
+                <input id="akt-image" type="file" name="image" accept="image/png,image/jpeg,image/webp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="akt-title">Title</label>
+                <input id="akt-title" type="text" name="title" placeholder="Header / Title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="akt-text">Description</label>
+                <textarea id="akt-text" name="text" placeholder="Description / bottom text" required></textarea>
+            </div>
+
+            <button type="submit" name="add_akt">Add</button>
+        </form>
+
+        <div class="items-grid">
+            <?php while($row = $akt->fetch_assoc()): ?>
+                <div class="item-card">
+                    <img src="<?= htmlspecialchars($row["image"]) ?>" alt="Aktualitāte">
+                    <div class="item-content">
+                        <h4><?= htmlspecialchars($row["title"] ?? "") ?></h4>
+                        <p><?= htmlspecialchars($row["text"]) ?></p>
+                        <div class="item-meta">
+                            <code><?= htmlspecialchars($row["image"]) ?></code>
+                        </div>
+                    </div>
+                    <a class="delete-link" href="?delete_akt=<?= (int)$row["id"] ?>">Delete</a>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </section>
+
+    <section class="panel-card">
+        <div class="section-header">
+            <div>
+                <h2>Timeline</h2>
+                <p class="subtext">Add homepage benefit cards with image, title, and description.</p>
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="time-img">Image</label>
+                <input id="time-img" type="file" name="time_img" accept="image/png,image/jpeg,image/webp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time-title">Title</label>
+                <input id="time-title" type="text" name="time_title" placeholder="Title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time-desc">Description</label>
+                <textarea id="time-desc" name="time_desc" placeholder="Description" required></textarea>
+            </div>
+
+            <button type="submit" name="add_time">Add</button>
+        </form>
+
+        <div class="items-grid">
+            <?php while($row = $time->fetch_assoc()): ?>
+                <div class="item-card">
+                    <img src="<?= htmlspecialchars($row["image"]) ?>" alt="Timeline">
+                    <div class="item-content">
+                        <h4><?= htmlspecialchars($row["title"]) ?></h4>
+                        <p><?= htmlspecialchars($row["description"]) ?></p>
+                        <div class="item-meta">
+                            <code><?= htmlspecialchars($row["image"]) ?></code>
+                        </div>
+                    </div>
+                    <a class="delete-link" href="?delete_time=<?= (int)$row["id"] ?>">Delete</a>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </section>
+
+</div>
 
 </body>
 </html>
