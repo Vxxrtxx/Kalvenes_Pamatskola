@@ -387,7 +387,7 @@ body, html {
   object-fit: cover;
 }
 .aktualitate-card p {
-  padding: 20px;
+  padding: 0 20px 20px;
   font-weight: 700;
   color: #32373B;
 }
@@ -444,4 +444,16 @@ footer {
   border-top: 4px solid #32373B;
   box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.15);
   margin-top: auto;
+}
+.aktualitate-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #32373B;
+  margin: 18px 20px 8px;
+}
+
+.aktualitate-card p {
+  padding: 0 20px 20px;
+  font-weight: 700;
+  color: #32373B;
 }

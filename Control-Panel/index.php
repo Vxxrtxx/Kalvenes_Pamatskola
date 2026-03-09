@@ -5,29 +5,20 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $conn = new mysqli("localhost", "root", "", "school_site");
 $conn->set_charset("utf8mb4");
 
-// Auto-detect project folder name (first segment after localhost/)
+// Auto-detect project folder name
 $PROJECT = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0]; // e.g. Kalvenes_Pamatskola
 
-// Panel base URL (this file lives in /Kalvenes_Pamatskola/Control-Panel/index.php)
 $PANEL_BASE_URL = "/" . $PROJECT . "/Control-Panel";
-$UPLOAD_WEB_DIR = $PANEL_BASE_URL . "/uploads";          // URL used by browser
-$UPLOAD_FS_DIR  = __DIR__ . DIRECTORY_SEPARATOR . "uploads"; // filesystem path
+$UPLOAD_WEB_DIR = $PANEL_BASE_URL . "/uploads";
+$UPLOAD_FS_DIR  = __DIR__ . DIRECTORY_SEPARATOR . "uploads";
 
-// Website assets dir for hero videos (in your main page folder)
 $HERO_VIDEO_WEB_DIR = "/" . $PROJECT . "/SkolaMainPage/SkolasAtteli";
 $HERO_VIDEO_FS_DIR  = __DIR__ . "/../SkolaMainPage/SkolasAtteli";
 
 $msg = "";
 
 // ====== HELPERS ======
-function safe_filename(string $name): string {
-    $base = preg_replace('/[^a-zA-Z0-9_\-]/', '_', pathinfo($name, PATHINFO_FILENAME));
-    $ext  = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-    return [$base, $ext];
-}
-
 function upload_file(string $inputName, string $destFsDir, string $destWebDir, array $allowedExt): array {
-    // returns [ok(bool), webPath(?string), error(?string)]
     if (empty($_FILES[$inputName]["name"])) {
         return [false, null, "No file selected"];
     }
@@ -75,8 +66,8 @@ if (isset($_POST["update_hero"])) {
     if (!empty($_FILES["video"]["name"])) {
         [$ok, $videoWeb, $err] = upload_file(
             "video",
-            $GLOBALS["HERO_VIDEO_FS_DIR"],
-            $GLOBALS["HERO_VIDEO_WEB_DIR"],
+            $HERO_VIDEO_FS_DIR,
+            $HERO_VIDEO_WEB_DIR,
             ["mp4","webm","ogg"]
         );
 
@@ -98,9 +89,11 @@ if (isset($_POST["update_hero"])) {
 
 // ====== ADD AKTUALITATE ======
 if (isset($_POST["add_akt"])) {
-    $text = trim($_POST["text"] ?? "");
-    if ($text === "") {
-        header("Location: index.php?msg=" . urlencode("Aktualitāte text is empty."));
+    $title = trim($_POST["title"] ?? "");
+    $text  = trim($_POST["text"] ?? "");
+
+    if ($title === "" || $text === "") {
+        header("Location: index.php?msg=" . urlencode("Aktualitāte title or description is empty."));
         exit;
     }
 
@@ -116,8 +109,8 @@ if (isset($_POST["add_akt"])) {
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO aktualitates (image, text) VALUES (?, ?)");
-    $stmt->bind_param("ss", $imgWeb, $text);
+    $stmt = $conn->prepare("INSERT INTO aktualitates (image, title, text) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $imgWeb, $title, $text);
     $stmt->execute();
 
     header("Location: index.php?msg=" . urlencode("Aktualitāte added."));
@@ -218,13 +211,15 @@ $msg = $_GET["msg"] ?? "";
 <h2>Aktualitātes</h2>
 <form method="POST" enctype="multipart/form-data">
     <input type="file" name="image" accept="image/png,image/jpeg,image/webp" required>
-    <textarea name="text" placeholder="Text" required></textarea>
+    <input type="text" name="title" placeholder="Header / Title" required>
+    <textarea name="text" placeholder="Description / bottom text" required></textarea>
     <button type="submit" name="add_akt">Add</button>
 </form>
 
 <?php while($row = $akt->fetch_assoc()): ?>
     <div style="margin:14px 0;">
         <img src="<?= htmlspecialchars($row["image"]) ?>" width="120" style="border-radius:10px;">
+        <h4><?= htmlspecialchars($row["title"] ?? "") ?></h4>
         <p><?= htmlspecialchars($row["text"]) ?></p>
         <div style="opacity:.7;font-size:.9rem;">
             <code><?= htmlspecialchars($row["image"]) ?></code>
