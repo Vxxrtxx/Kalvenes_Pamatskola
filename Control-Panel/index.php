@@ -89,11 +89,12 @@ if (isset($_POST["update_hero"])) {
 
 // ====== ADD AKTUALITATE ======
 if (isset($_POST["add_akt"])) {
-    $title = trim($_POST["title"] ?? "");
-    $text  = trim($_POST["text"] ?? "");
+    $title   = trim($_POST["title"] ?? "");
+    $text    = trim($_POST["text"] ?? "");
+    $details = trim($_POST["details"] ?? "");
 
-    if ($title === "" || $text === "") {
-        header("Location: index.php?msg=" . urlencode("Aktualitāte title or description is empty."));
+    if ($title === "" || $text === "" || $details === "") {
+        header("Location: index.php?msg=" . urlencode("Aktualitāte fields cannot be empty."));
         exit;
     }
 
@@ -109,8 +110,13 @@ if (isset($_POST["add_akt"])) {
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO aktualitates (image, title, text) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $imgWeb, $title, $text);
+    $slug = strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $title), '-'));
+    if ($slug === '') {
+        $slug = 'aktualitate-' . time();
+    }
+
+    $stmt = $conn->prepare("INSERT INTO aktualitates (image, slug, title, text, details) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $imgWeb, $slug, $title, $text, $details);
     $stmt->execute();
 
     header("Location: index.php?msg=" . urlencode("Aktualitāte added."));
@@ -130,11 +136,12 @@ if (isset($_GET["delete_akt"])) {
 
 // ====== ADD TIMELINE ======
 if (isset($_POST["add_time"])) {
-    $title = trim($_POST["time_title"] ?? "");
-    $desc  = trim($_POST["time_desc"] ?? "");
+    $title   = trim($_POST["time_title"] ?? "");
+    $desc    = trim($_POST["time_desc"] ?? "");
+    $details = trim($_POST["time_details"] ?? "");
 
-    if ($title === "" || $desc === "") {
-        header("Location: index.php?msg=" . urlencode("Timeline title/description is empty."));
+    if ($title === "" || $desc === "" || $details === "") {
+        header("Location: index.php?msg=" . urlencode("Timeline fields cannot be empty."));
         exit;
     }
 
@@ -150,8 +157,13 @@ if (isset($_POST["add_time"])) {
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO timeline (image, title, description) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $imgWeb, $title, $desc);
+    $slug = strtolower(trim(preg_replace('/[^a-zA-Z0-9]+/', '-', $title), '-'));
+    if ($slug === '') {
+        $slug = 'timeline-' . time();
+    }
+
+    $stmt = $conn->prepare("INSERT INTO timeline (image, slug, title, description, details) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $imgWeb, $slug, $title, $desc, $details);
     $stmt->execute();
 
     header("Location: index.php?msg=" . urlencode("Timeline added."));
@@ -232,7 +244,7 @@ $msg = $_GET["msg"] ?? "";
         <div class="section-header">
             <div>
                 <h2>Aktualitātes</h2>
-                <p class="subtext">Add homepage news cards with image, title, and description.</p>
+                <p class="subtext">Add homepage news cards with image, title, description, and full details page text.</p>
             </div>
         </div>
 
@@ -248,8 +260,13 @@ $msg = $_GET["msg"] ?? "";
             </div>
 
             <div class="form-group">
-                <label for="akt-text">Description</label>
-                <textarea id="akt-text" name="text" placeholder="Description / bottom text" required></textarea>
+                <label for="akt-text">Short Description</label>
+                <textarea id="akt-text" name="text" placeholder="Short text shown on card" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="akt-details">Full Details</label>
+                <textarea id="akt-details" name="details" placeholder="Full text for the More Info page" required></textarea>
             </div>
 
             <button type="submit" name="add_akt">Add</button>
@@ -262,6 +279,8 @@ $msg = $_GET["msg"] ?? "";
                     <div class="item-content">
                         <h4><?= htmlspecialchars($row["title"] ?? "") ?></h4>
                         <p><?= htmlspecialchars($row["text"]) ?></p>
+                        <p><strong>Slug:</strong> <?= htmlspecialchars($row["slug"] ?? "") ?></p>
+                        <p><strong>Full details:</strong> <?= htmlspecialchars($row["details"] ?? "") ?></p>
                         <div class="item-meta">
                             <code><?= htmlspecialchars($row["image"]) ?></code>
                         </div>
@@ -276,7 +295,7 @@ $msg = $_GET["msg"] ?? "";
         <div class="section-header">
             <div>
                 <h2>Timeline</h2>
-                <p class="subtext">Add homepage benefit cards with image, title, and description.</p>
+                <p class="subtext">Add homepage benefit cards with image, title, description, and full details page text.</p>
             </div>
         </div>
 
@@ -292,8 +311,13 @@ $msg = $_GET["msg"] ?? "";
             </div>
 
             <div class="form-group">
-                <label for="time-desc">Description</label>
-                <textarea id="time-desc" name="time_desc" placeholder="Description" required></textarea>
+                <label for="time-desc">Short Description</label>
+                <textarea id="time-desc" name="time_desc" placeholder="Short text shown on card" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="time-details">Full Details</label>
+                <textarea id="time-details" name="time_details" placeholder="Full text for the More Info page" required></textarea>
             </div>
 
             <button type="submit" name="add_time">Add</button>
@@ -306,6 +330,8 @@ $msg = $_GET["msg"] ?? "";
                     <div class="item-content">
                         <h4><?= htmlspecialchars($row["title"]) ?></h4>
                         <p><?= htmlspecialchars($row["description"]) ?></p>
+                        <p><strong>Slug:</strong> <?= htmlspecialchars($row["slug"] ?? "") ?></p>
+                        <p><strong>Full details:</strong> <?= htmlspecialchars($row["details"] ?? "") ?></p>
                         <div class="item-meta">
                             <code><?= htmlspecialchars($row["image"]) ?></code>
                         </div>
