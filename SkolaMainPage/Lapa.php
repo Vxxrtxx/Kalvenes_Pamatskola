@@ -105,6 +105,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                     >
                     <h3><?= htmlspecialchars($row['title'] ?? '') ?></h3>
                     <p><?= htmlspecialchars($row['text']) ?></p>
+                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=<?= urlencode($row['slug']) ?>">More info</a>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
@@ -112,16 +113,19 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 1">
                 <h3>Ziema</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <a class="more-info-btn" href="#">Vairāk informācija</a>
             </div>
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 2">
                 <h3>Izglītība</h3>
                 <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
+                <a class="more-info-btn" href="#">Vairāk informācija</a>
             </div>
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 3">
                 <h3>Kalvenes skola</h3>
                 <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
+                <a class="more-info-btn" href="#">Vairāk informācija</a>
             </div>
         <?php endif; ?>
     </div>
@@ -141,6 +145,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                     <div class="timeline-text">
                         <h3><?= htmlspecialchars($row['title']) ?></h3>
                         <p><?= htmlspecialchars($row['description']) ?></p>
+                        <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=<?= urlencode($row['slug']) ?>">Vairāk informācija</a>
                     </div>
                 </div>
             <?php endwhile; ?>
@@ -150,6 +155,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Kvalitatīva izglītība</h3>
                     <p>Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm</p>
+                    <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
             </div>
 
@@ -158,6 +164,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Atbalstoša vide</h3>
                     <p>Veidojam draudzīgu un drošu vidi katram skolēnam.</p>
+                    <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
             </div>
 
@@ -166,6 +173,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Izaugsmes iespējas</h3>
                     <p>Palīdzam attīstīt katra skolēna talantus un prasmes.</p>
+                    <a class="more-info-btn" href="#">More info</a>
                 </div>
             </div>
         <?php endif; ?>
@@ -179,11 +187,6 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
 </footer>
 
 <script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js"></script>
-<script>
-document.querySelector(".menu-toggle")?.addEventListener("click", function () {
-    document.querySelector(".navbar")?.classList.toggle("expanded");
-});
-</script>
 
 </body>
 </html>
