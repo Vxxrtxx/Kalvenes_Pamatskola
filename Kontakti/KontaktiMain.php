@@ -16,7 +16,7 @@ $contacts = $conn && !$conn->connect_error ? $conn->query("SELECT * FROM contact
     <nav class="navbar">
         <button class="menu-toggle">&#9776;</button>
         <div class="nav-wrapper">
-        <div class="logo">KALVENES</div>
+        <div class="logo">KALVENES PAMATSKOLA</div>
         <div class="nav-left">
             <div class="dropdown" id="SchoolDropdown">
                 <a href="#" class="hover-underline dropdown-trigger">Par Skolu▼</a>

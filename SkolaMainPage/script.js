@@ -1,10 +1,10 @@
 ﻿// ============================================
-// KALVENES PAMATSKOLA - ADVANCED THEME MANAGEMENT v2.0
-// Enhanced Dark/Light Mode with Smooth Transitions
-// Advanced Animations & Interactions
+// KALVENES PAMATSKOLA - ULTIMATE ANIMATION ENGINE v3.0
+// Enhanced Dark/Light Mode + Scroll-Triggered Animations
+// Advanced Interactions & Performance Optimizations
 // ============================================
 
-// Enhanced theme application with better transitions
+// Enhanced theme application with ultra-smooth transitions
 function applyTheme(theme, instant = false) {
     const html = document.documentElement;
     const toggle = document.querySelector('.dark-mode-toggle');
@@ -13,7 +13,7 @@ function applyTheme(theme, instant = false) {
         html.classList.add('dark');
         localStorage.setItem('site-theme', 'dark');
         if (toggle) {
-            toggle.textContent = '☀️';
+            toggle.textContent = '🌙';
             toggle.setAttribute('aria-label', 'Switch to light mode');
             toggle.style.transform = 'rotate(0deg)';
         }
@@ -21,66 +21,112 @@ function applyTheme(theme, instant = false) {
         html.classList.remove('dark');
         localStorage.setItem('site-theme', 'light');
         if (toggle) {
-            toggle.textContent = '🌙';
+            toggle.textContent = '☀️';
             toggle.setAttribute('aria-label', 'Switch to dark mode');
             toggle.style.transform = 'rotate(0deg)';
         }
     }
     
-    // Trigger theme change animation
+    // Enhanced theme transition with ripple effect
     if (!instant) {
-        html.style.transition = 'background-color 0.5s ease, color 0.5s ease';
+        html.style.transition = 'background-color 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         setTimeout(() => {
             html.style.transition = '';
-        }, 500);
+        }, 1500);
     }
 }
 
-// Enhanced theme toggle with visual feedback
+// Enhanced theme toggle with spectacular visual feedback
 function toggleTheme() {
     const toggle = document.querySelector('.dark-mode-toggle');
     const isDark = document.documentElement.classList.contains('dark');
     
-    // Add rotation animation
+    // Multi-stage rotation animation
     if (toggle) {
-        toggle.style.transform = 'rotate(180deg) scale(1.2)';
+        toggle.style.transform = 'rotate(180deg) scale(1.3)';
+        toggle.style.boxShadow = '0 0 60px var(--accent-light)';
         setTimeout(() => {
             toggle.style.transform = '';
-        }, 300);
+            toggle.style.boxShadow = '';
+        }, 600);
     }
     
-    // Apply theme with slight delay for smooth transition
+    // Apply theme with enhanced delay for smooth transition
     setTimeout(() => {
         applyTheme(isDark ? 'light' : 'dark');
-    }, 150);
+    }, 300);
 }
 
-// Initialize theme on page load with system preference detection
+// Initialize theme with system preference and smooth loading
 document.addEventListener('DOMContentLoaded', () => {
-    // Determine initial theme with priority: saved > system > light
+    // Determine initial theme with enhanced priority
     const savedTheme = localStorage.getItem('site-theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
     
-    // Apply initial theme instantly to avoid flash
+    // Apply initial theme instantly for no flash
     applyTheme(initialTheme, true);
     
-    // Theme toggle button handler with enhanced feedback
+    // Enhanced theme toggle with multiple event listeners
     const themeToggle = document.querySelector('.dark-mode-toggle');
     if (themeToggle) {
         themeToggle.addEventListener('click', toggleTheme);
         
-        // Add keyboard support
+        // Enhanced keyboard support
         themeToggle.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 toggleTheme();
             }
         });
+        
+        // Touch support for mobile
+        themeToggle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            toggleTheme();
+        });
     }
     
     // ============================================
-    // ADVANCED MOBILE MENU
+    // ADVANCED SCROLL-TRIGGERED ANIMATIONS
+    // ============================================
+    
+    // Enhanced Intersection Observer with multiple thresholds
+    const scrollObserverOptions = {
+        threshold: [0.1, 0.3, 0.5, 0.7],
+        rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            const element = entry.target;
+            const ratio = entry.intersectionRatio;
+            
+            if (ratio >= 0.1) {
+                // Progressive animation based on visibility
+                const progress = Math.min(ratio * 2, 1);
+                element.style.opacity = progress;
+                element.style.transform = 	ranslateY(px) scale();
+                
+                if (ratio >= 0.5) {
+                    element.classList.add('revealed');
+                    scrollObserver.unobserve(element);
+                }
+            }
+        });
+    }, scrollObserverOptions);
+    
+    // Observe all animatable elements
+    const animatableElements = document.querySelectorAll('.card, .timeline-card, .section, .scroll-reveal');
+    animatableElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(50px) scale(0.9)';
+        element.style.transition = 'opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        scrollObserver.observe(element);
+    });
+    
+    // ============================================
+    // ENHANCED MOBILE MENU WITH ANIMATIONS
     // ============================================
     
     const menuToggle = document.querySelector('.menu-toggle');
@@ -89,26 +135,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggle && navbar) {
         menuToggle.addEventListener('click', (e) => {
             e.preventDefault();
+            const isExpanded = navbar.classList.contains('expanded');
+            
             navbar.classList.toggle('expanded');
             
-            // Animate hamburger icon
-            const isExpanded = navbar.classList.contains('expanded');
-            menuToggle.style.transform = isExpanded ? 'rotate(90deg)' : 'rotate(0deg)';
+            // Animated hamburger transformation
+            if (isExpanded) {
+                menuToggle.style.transform = 'rotate(0deg) scale(1)';
+                menuToggle.textContent = '☰';
+            } else {
+                menuToggle.style.transform = 'rotate(90deg) scale(1.1)';
+                menuToggle.textContent = '✕';
+                setTimeout(() => {
+                    menuToggle.style.transform = 'rotate(0deg) scale(1)';
+                }, 300);
+            }
         });
     }
     
-    // Close menu when clicking outside
+    // Enhanced close menu on outside click
     document.addEventListener('click', (e) => {
         if (navbar && !navbar.contains(e.target)) {
             navbar.classList.remove('expanded');
             if (menuToggle) {
-                menuToggle.style.transform = 'rotate(0deg)';
+                menuToggle.style.transform = 'rotate(0deg) scale(1)';
+                menuToggle.textContent = '☰';
             }
         }
     });
     
     // ============================================
-    // ENHANCED DROPDOWN MENUS
+    // ULTIMATE DROPDOWN MENUS WITH STAGGERED ANIMATIONS
     // ============================================
     
     function setupDropdown(dropdownId) {
@@ -122,22 +179,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let hideTimeout;
         
-        // Desktop hover behavior with smooth animations
+        // Enhanced desktop hover with smooth animations
         const showMenu = () => {
             if (window.innerWidth <= 768) return;
             clearTimeout(hideTimeout);
             content.classList.add('show');
             
-            // Stagger animation for menu items
+            // Staggered item animations with enhanced effects
             const items = content.querySelectorAll('a');
             items.forEach((item, index) => {
                 item.style.opacity = '0';
-                item.style.transform = 'translateX(-10px)';
+                item.style.transform = 'translateX(-30px) rotateY(-10deg)';
+                item.style.transition = 'opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                
                 setTimeout(() => {
-                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                     item.style.opacity = '1';
-                    item.style.transform = 'translateX(0)';
-                }, index * 50);
+                    item.style.transform = 'translateX(0) rotateY(0deg)';
+                }, index * 100);
             });
         };
         
@@ -145,13 +203,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.innerWidth <= 768) return;
             hideTimeout = setTimeout(() => {
                 content.classList.remove('show');
-            }, 200);
+                // Reset item styles
+                const items = content.querySelectorAll('a');
+                items.forEach(item => {
+                    item.style.opacity = '';
+                    item.style.transform = '';
+                });
+            }, 300);
         };
         
         dropdown.addEventListener('mouseenter', showMenu);
         dropdown.addEventListener('mouseleave', hideMenu);
         
-        // Mobile click behavior
+        // Enhanced mobile click behavior
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.innerWidth <= 768) {
@@ -162,6 +226,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Close other dropdowns first
                     document.querySelectorAll('.dropdown-content').forEach(c => c.classList.remove('show'));
                     content.classList.add('show');
+                    
+                    // Animate items in
+                    const items = content.querySelectorAll('a');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.animation = slideInLeftSlow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+                        }, index * 80);
+                    });
                 }
             }
         });
@@ -172,96 +244,129 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDropdown('AdmissionDropdown');
     
     // ============================================
-    // ADVANCED ANIMATIONS & INTERACTIONS
+    // ADVANCED PARALLAX & SCROLL EFFECTS
     // ============================================
     
-    // Intersection Observer for scroll-triggered animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                const element = entry.target;
-                const delay = index * 100; // Stagger animations
-                
-                setTimeout(() => {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }, delay);
-                
-                // Unobserve after animation to prevent re-triggering
-                observer.unobserve(element);
-            }
-        });
-    }, observerOptions);
-    
-    // Observe elements for animation
-    const animateElements = document.querySelectorAll('.card, .timeline-card, .section');
-    animateElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-        observer.observe(element);
-    });
-    
-    // Hero parallax effect (subtle)
+    // Enhanced hero parallax with multiple layers
     const heroVideo = document.querySelector('.hero-video');
+    const heroContent = document.querySelector('.hero-content');
+    
     if (heroVideo) {
+        let lastScrollY = window.scrollY;
+        
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
+            const scrolled = window.scrollY;
             const rate = scrolled * -0.5;
+            const blurRate = Math.min(scrolled * 0.001, 5);
+            
             heroVideo.style.transform = scale(1.1) translateY(px);
-        });
+            heroVideo.style.filter = rightness() blur(px);
+            
+            lastScrollY = scrolled;
+        }, { passive: true });
     }
     
+    // Floating elements animation
+    const floatingElements = document.querySelectorAll('.card, .timeline-card');
+    floatingElements.forEach((element, index) => {
+        const delay = index * 0.5;
+        element.style.animation = morphFloat 8s infinite ease-in-out s;
+    });
+    
     // ============================================
-    // FORM ENHANCEMENTS
+    // ENHANCED FORM INTERACTIONS
     // ============================================
     
-    // Enhanced input focus animations
+    // Ultimate input focus animations
     const inputs = document.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
             this.style.borderColor = 'var(--accent-primary)';
-            this.style.boxShadow = '0 0 0 3px rgba(216, 27, 96, 0.1)';
-            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 0 0 3px rgba(216, 27, 96, 0.15), 0 8px 16px rgba(216, 27, 96, 0.1)';
+            this.style.transform = 'translateY(-4px) scale(1.02)';
+            this.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            
+            // Ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(216, 27, 96, 0.1)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s linear';
+            ripple.style.left = '50%';
+            ripple.style.top = '50%';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.marginLeft = '-10px';
+            ripple.style.marginTop = '-10px';
+            this.parentNode.style.position = 'relative';
+            this.parentNode.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
         });
         
         input.addEventListener('blur', function() {
             this.style.borderColor = 'var(--border-color)';
             this.style.boxShadow = 'var(--shadow-sm)';
-            this.style.transform = 'translateY(0)';
+            this.style.transform = 'translateY(0) scale(1)';
         });
     });
     
-    // Button hover effects
+    // Enhanced button interactions
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
         button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-3px)';
+            this.style.transform = 'translateY(-6px) scale(1.05)';
+            this.style.boxShadow = '0 12px 24px rgba(216, 27, 96, 0.3)';
         });
         
         button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = 'var(--shadow-lg)';
+        });
+        
+        button.addEventListener('mousedown', function() {
+            this.style.transform = 'translateY(-2px) scale(1.02)';
+        });
+        
+        button.addEventListener('mouseup', function() {
+            this.style.transform = 'translateY(-6px) scale(1.05)';
         });
     });
     
     // ============================================
-    // RESPONSIVE BEHAVIOR & TOUCH SUPPORT
+    // ADVANCED RESPONSIVE BEHAVIOR
     // ============================================
     
-    // Touch device optimizations
+    // Touch device optimizations with enhanced feedback
     if ('ontouchstart' in window) {
         document.body.classList.add('touch-device');
         
-        // Add touch feedback for interactive elements
-        const interactiveElements = document.querySelectorAll('.nav-link, .dropdown-trigger, .card, button');
+        // Enhanced touch feedback
+        const interactiveElements = document.querySelectorAll('.nav-link, .dropdown-trigger, .card, .timeline-card, button');
         interactiveElements.forEach(element => {
-            element.addEventListener('touchstart', function() {
+            element.addEventListener('touchstart', function(e) {
                 this.style.transform = 'scale(0.98)';
+                this.style.transition = 'transform 0.1s ease';
+                
+                // Create touch ripple
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(216, 27, 96, 0.2)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.4s linear';
+                ripple.style.left = ${e.touches[0].clientX - this.getBoundingClientRect().left}px;
+                ripple.style.top = ${e.touches[0].clientY - this.getBoundingClientRect().top}px;
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.marginLeft = '-10px';
+                ripple.style.marginTop = '-10px';
+                ripple.style.pointerEvents = 'none';
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 400);
             });
             
             element.addEventListener('touchend', function() {
@@ -270,36 +375,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Resize handler with debouncing
+    // Enhanced resize handler with smooth transitions
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            // Close mobile menu on resize to desktop
+            // Smooth mobile menu transitions
             if (window.innerWidth > 768) {
                 if (navbar) {
                     navbar.classList.remove('expanded');
                 }
                 if (menuToggle) {
-                    menuToggle.style.transform = 'rotate(0deg)';
+                    menuToggle.style.transform = 'rotate(0deg) scale(1)';
+                    menuToggle.textContent = '☰';
                 }
                 
-                // Reset dropdown displays
+                // Reset dropdown displays with animation
                 document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                     content.classList.remove('show');
                 });
             }
-        }, 250);
+        }, 300);
     });
     
     // ============================================
     // ACCESSIBILITY ENHANCEMENTS
     // ============================================
     
-    // Keyboard navigation for dropdowns
+    // Enhanced keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            // Close all dropdowns and mobile menu
+            // Enhanced close all overlays
             document.querySelectorAll('.dropdown-content').forEach(content => {
                 content.classList.remove('show');
             });
@@ -307,7 +414,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 navbar.classList.remove('expanded');
             }
             if (menuToggle) {
-                menuToggle.style.transform = 'rotate(0deg)';
+                menuToggle.style.transform = 'rotate(0deg) scale(1)';
+                menuToggle.textContent = '☰';
+            }
+            
+            // Remove focus from interactive elements
+            document.activeElement.blur();
+        }
+        
+        // Enhanced tab navigation
+        if (e.key === 'Tab') {
+            const focusableElements = document.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    lastElement.focus();
+                    e.preventDefault();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    firstElement.focus();
+                    e.preventDefault();
+                }
             }
         }
     });
@@ -316,10 +446,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggle) {
         menuToggle.addEventListener('focus', () => {
             menuToggle.style.outline = '2px solid var(--accent-primary)';
+            menuToggle.style.boxShadow = '0 0 0 4px rgba(216, 27, 96, 0.1)';
         });
         
         menuToggle.addEventListener('blur', () => {
             menuToggle.style.outline = '';
+            menuToggle.style.boxShadow = '';
         });
     }
     
@@ -327,64 +459,113 @@ document.addEventListener('DOMContentLoaded', () => {
     // PERFORMANCE OPTIMIZATIONS
     // ============================================
     
-    // Lazy load images
-    const images = document.querySelectorAll('img[data-src]');
+    // Enhanced lazy loading with intersection observer
+    const lazyImages = document.querySelectorAll('img[data-src]');
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
                     img.src = img.dataset.src;
-                    img.classList.remove('lazy');
+                    img.classList.add('loaded');
                     imageObserver.unobserve(img);
                 }
             });
-        });
+        }, { rootMargin: '50px' });
         
-        images.forEach(img => imageObserver.observe(img));
+        lazyImages.forEach(img => imageObserver.observe(img));
     } else {
-        // Fallback for browsers without IntersectionObserver
-        images.forEach(img => {
+        // Enhanced fallback
+        lazyImages.forEach(img => {
             img.src = img.dataset.src;
+            img.classList.add('loaded');
         });
     }
+    
+    // Request animation frame for smooth animations
+    let animationFrame;
+    function smoothAnimations() {
+        // Update any continuous animations here
+        animationFrame = requestAnimationFrame(smoothAnimations);
+    }
+    smoothAnimations();
     
     // ============================================
     // UTILITY FUNCTIONS
     // ============================================
     
-    // Smooth scroll to element
-    window.smoothScrollTo = function(elementId) {
+    // Enhanced smooth scroll with easing
+    window.smoothScrollTo = function(elementId, duration = 1000) {
         const element = document.getElementById(elementId);
-        if (element) {
-            element.scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
+        if (!element) return;
+        
+        const start = window.pageYOffset;
+        const end = element.getBoundingClientRect().top + window.pageYOffset;
+        const distance = end - start;
+        let startTime = null;
+        
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            
+            // Easing function
+            const easeInOutCubic = progress < 0.5 
+                ? 4 * progress * progress * progress 
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+            
+            window.scrollTo(0, start + distance * easeInOutCubic);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animation);
+            }
         }
+        
+        requestAnimationFrame(animation);
     };
     
-    // Debounce function for performance
-    window.debounce = function(func, wait) {
+    // Enhanced debounce with immediate option
+    window.debounce = function(func, wait, immediate = false) {
         let timeout;
         return function executedFunction(...args) {
             const later = () => {
-                clearTimeout(timeout);
-                func(...args);
+                timeout = null;
+                if (!immediate) func(...args);
             };
+            const callNow = immediate && !timeout;
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
+            if (callNow) func(...args);
         };
     };
     
-    // Theme change listener for external scripts
+    // Theme change event dispatcher
     window.addEventListener('themeChange', (e) => {
         applyTheme(e.detail.theme);
     });
+    
+    // ============================================
+    // RIPPLE EFFECT CSS (for touch interactions)
+    // ============================================
+    
+    const style = document.createElement('style');
+    style.textContent = 
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .loaded {
+            animation: fadeInScale 0.6s ease-out;
+        }
+    ;
+    document.head.appendChild(style);
 });
 
 // ============================================
-// GLOBAL ERROR HANDLING
+// GLOBAL ERROR HANDLING & PERFORMANCE MONITORING
 // ============================================
 
 window.addEventListener('error', (e) => {
@@ -396,3 +577,19 @@ window.addEventListener('unhandledrejection', (e) => {
     console.warn('Unhandled promise rejection:', e.reason);
     // Could send to analytics service
 });
+
+// Performance monitoring
+if ('performance' in window && 'PerformanceObserver' in window) {
+    try {
+        const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+                if (entry.entryType === 'largest-contentful-paint') {
+                    console.log('LCP:', entry.startTime);
+                }
+            }
+        });
+        observer.observe({ entryTypes: ['largest-contentful-paint'] });
+    } catch (e) {
+        console.warn('Performance monitoring not supported');
+    }
+}
