@@ -382,7 +382,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    
+
+    // ============================================
+    // SCROLL PROGRESS BAR + BACK TO TOP
+    // ============================================
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    document.body.appendChild(progressBar);
+
+    const backToTop = document.createElement('button');
+    backToTop.className = 'back-to-top';
+    backToTop.type = 'button';
+    backToTop.ariaLabel = 'Back to top';
+    backToTop.innerHTML = '↑';
+    document.body.appendChild(backToTop);
+
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxHeight > 0 ? (scrolled / maxHeight) * 100 : 0;
+        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+
+        if (scrolled > 250) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    }, { passive: true });
+
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
     // Enhanced resize handler with smooth transitions
     let resizeTimeout;
     window.addEventListener('resize', () => {

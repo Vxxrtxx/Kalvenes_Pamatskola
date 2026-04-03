@@ -47,14 +47,18 @@ $result = $stmt->get_result();
 $item = $result->fetch_assoc();
 
 if (!$item) {
-    http_response_code(404);
-    exit('Page not found');
+    // Keep the page user-friendly when slug is not found.
+    $title = 'Aktualitāte nav atrasta';
+    $short = 'Iespējams, izmantojāt nepareizu saiti. Lūdzu, atgriezieties sākumlapā un mēģiniet vēlreiz.';
+    $details = 'Šī aktualitāte vēl nav pievienota vai ir izdzēsta. Lūdzu, sazinieties ar administrāciju, lai iegūtu jaunāko informāciju.';
+    $image = asset_url('/SkolaMainPage/SkolasAtteli/Bilde1.jpg', $project);
+} else {
+    $title = $item['title'] ?? '';
+    $short = $type === 'aktualitates' ? ($item['text'] ?? '') : ($item['description'] ?? '');
+    $details = $item['details'] ?? ($item['text'] ?? 'Papildu informācija tiks pievienota drīzumā.');
+    $image = asset_url($item['image'] ?? '', $project);
 }
 
-$title = $item['title'] ?? '';
-$short = $type === 'aktualitates' ? ($item['text'] ?? '') : ($item['description'] ?? '');
-$details = $item['details'] ?? '';
-$image = asset_url($item['image'] ?? '', $project);
 $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
 ?>
 <!DOCTYPE html>
