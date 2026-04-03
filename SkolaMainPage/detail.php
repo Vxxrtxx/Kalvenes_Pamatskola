@@ -73,67 +73,83 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
     <title><?= htmlspecialchars($title) ?></title>
     <style>
         body {
-            margin: 0;
-            background: #E1DFDF;
-            font-family: "Oswald", sans-serif;
-            color: #32373B;
+            background:
+                linear-gradient(130deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.78) 100%),
+                var(--bg-primary);
+            color: var(--text-primary);
         }
 
         .detail-page {
-            max-width: 1100px;
-            margin: 50px auto;
-            background: #ECDAD2;
-            border-radius: 20px;
+            max-width: 1120px;
+            margin: 0 auto;
+            background: var(--bg-glass);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: var(--radius-xl);
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-xl);
         }
 
         .detail-image {
             width: 100%;
-            height: 420px;
+            height: 430px;
             object-fit: cover;
             display: block;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .detail-content {
-            padding: 40px;
+            padding: 2.2rem 2rem 2.4rem;
         }
 
         .detail-content h1 {
-            font-size: 3rem;
-            margin: 0 0 15px;
-            color: #32373B;
+            font-size: clamp(2.2rem, 5vw, 3.3rem);
+            margin: 0 0 1rem;
+            color: var(--text-primary);
+            line-height: 1.15;
         }
 
         .detail-lead {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
+            font-size: 1.2rem;
+            margin-bottom: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 600;
         }
 
         .detail-text {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             line-height: 1.8;
             white-space: pre-line;
+            color: var(--text-secondary);
         }
 
         .back-btn {
             display: inline-block;
-            margin-top: 30px;
-            padding: 12px 18px;
-            background: #32373B;
-            color: #fff;
+            margin-top: 1.8rem;
+            padding: 0.75rem 1.2rem;
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        footer {
-            background-color: #ECDAD2;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: 700;
-            border-top: 4px solid #32373B;
-            margin-top: 40px;
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+        }
+
+        @media (max-width: 768px) {
+            .detail-image {
+                height: 260px;
+            }
+
+            .detail-content {
+                padding: 1.4rem 1.1rem 1.6rem;
+            }
         }
     </style>
 </head>
@@ -166,21 +182,23 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
     </div>
 </nav>
 
-<div class="detail-page">
-    <img class="detail-image" src="<?= htmlspecialchars($image ?: $fallbackImage) ?>" alt="<?= htmlspecialchars($title) ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($fallbackImage) ?>';">
+<div class="page-content">
+    <div class="detail-page">
+        <img class="detail-image" src="<?= htmlspecialchars($image ?: $fallbackImage) ?>" alt="<?= htmlspecialchars($title) ?>" onerror="this.onerror=null;this.src='<?= htmlspecialchars($fallbackImage) ?>';">
 
-    <div class="detail-content">
-        <h1><?= htmlspecialchars($title) ?></h1>
-        <div class="detail-lead"><?= htmlspecialchars($short) ?></div>
-        <div class="detail-text"><?= nl2br(htmlspecialchars($details)) ?></div>
-        <a class="back-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php">← Back</a>
+        <div class="detail-content">
+            <h1><?= htmlspecialchars($title) ?></h1>
+            <div class="detail-lead"><?= htmlspecialchars($short) ?></div>
+            <div class="detail-text"><?= nl2br(htmlspecialchars($details)) ?></div>
+            <a class="back-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php">← Atpakaļ</a>
+        </div>
     </div>
 </div>
 
-<footer>
-    © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
+<footer class="end-container">
+    <p>© 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.</p>
 </footer>
 
-<script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js"></script>
+<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js"></script>
 </body>
 </html>

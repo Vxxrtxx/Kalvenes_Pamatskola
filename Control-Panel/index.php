@@ -191,6 +191,9 @@ $akt  = $conn->query("SELECT * FROM aktualitates ORDER BY id DESC");
 $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
 $contacts = $conn->query("SELECT * FROM contacts WHERE id=1")->fetch_assoc();
 
+$aktCount = $akt ? $akt->num_rows : 0;
+$timeCount = $time ? $time->num_rows : 0;
+
 $msg = $_GET["msg"] ?? "";
 ?>
 <!DOCTYPE html>
@@ -198,12 +201,41 @@ $msg = $_GET["msg"] ?? "";
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Style.css?v=<?= urlencode((string)filemtime(__DIR__ . '/Style.css')) ?>">
     <title>Control Panel</title>
 </head>
 <body>
 
-<h1>Control Panel</h1>
+<div class="cp-top">
+    <h1>Control Panel</h1>
+    <p class="cp-subtitle">Pārvaldi mājaslapas saturu vienuviet: galveno sadaļu, aktualitātes, priekšrocības un kontaktinformāciju.</p>
+
+    <div class="cp-stats">
+        <div class="stat-card">
+            <span class="stat-label">Aktualitātes</span>
+            <strong><?= (int)$aktCount ?></strong>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Timeline ieraksti</span>
+            <strong><?= (int)$timeCount ?></strong>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Hero virsraksts</span>
+            <strong><?= !empty($hero['title']) ? 'Iestatīts' : 'Nav iestatīts' ?></strong>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Kontakti</span>
+            <strong><?= !empty($contacts['phone']) ? 'Atjaunināti' : 'Nav datu' ?></strong>
+        </div>
+    </div>
+
+    <nav class="cp-nav">
+        <a href="#hero-section">Hero</a>
+        <a href="#akt-section">Aktualitātes</a>
+        <a href="#timeline-section">Timeline</a>
+        <a href="#contacts-section">Kontakti</a>
+    </nav>
+</div>
 
 <?php if ($msg): ?>
     <div class="flash-message">
@@ -213,7 +245,7 @@ $msg = $_GET["msg"] ?? "";
 
 <div class="panel-shell">
 
-    <section class="panel-card">
+    <section class="panel-card" id="hero-section">
         <div class="section-header">
             <div>
                 <h2>Hero Section</h2>
@@ -222,6 +254,7 @@ $msg = $_GET["msg"] ?? "";
         </div>
 
         <form method="POST" enctype="multipart/form-data">
+            <div class="form-grid">
             <div class="form-group">
                 <label for="hero-title">Title</label>
                 <input id="hero-title" type="text" name="title" value="<?= htmlspecialchars($hero["title"] ?? "") ?>" placeholder="Title" required>
@@ -236,8 +269,9 @@ $msg = $_GET["msg"] ?? "";
                 <label for="hero-video">Video</label>
                 <input id="hero-video" type="file" name="video" accept="video/mp4,video/webm,video/ogg">
             </div>
+            </div>
 
-            <button type="submit" name="update_hero">Update Hero</button>
+            <button class="btn-primary" type="submit" name="update_hero">Update Hero</button>
         </form>
 
         <p class="hero-meta">
@@ -245,7 +279,7 @@ $msg = $_GET["msg"] ?? "";
         </p>
     </section>
 
-    <section class="panel-card">
+    <section class="panel-card" id="akt-section">
         <div class="section-header">
             <div>
                 <h2>Aktualitātes</h2>
@@ -254,6 +288,7 @@ $msg = $_GET["msg"] ?? "";
         </div>
 
         <form method="POST" enctype="multipart/form-data">
+            <div class="form-grid">
             <div class="form-group">
                 <label for="akt-image">Image</label>
                 <input id="akt-image" type="file" name="image" accept="image/png,image/jpeg,image/webp" required>
@@ -273,8 +308,9 @@ $msg = $_GET["msg"] ?? "";
                 <label for="akt-details">Full Details</label>
                 <textarea id="akt-details" name="details" placeholder="Full text for the More Info page" required></textarea>
             </div>
+            </div>
 
-            <button type="submit" name="add_akt">Add</button>
+            <button class="btn-primary" type="submit" name="add_akt">Add</button>
         </form>
 
         <div class="items-grid">
@@ -296,7 +332,7 @@ $msg = $_GET["msg"] ?? "";
         </div>
     </section>
 
-    <section class="panel-card">
+    <section class="panel-card" id="timeline-section">
         <div class="section-header">
             <div>
                 <h2>Timeline</h2>
@@ -305,6 +341,7 @@ $msg = $_GET["msg"] ?? "";
         </div>
 
         <form method="POST" enctype="multipart/form-data">
+            <div class="form-grid">
             <div class="form-group">
                 <label for="time-img">Image</label>
                 <input id="time-img" type="file" name="time_img" accept="image/png,image/jpeg,image/webp" required>
@@ -324,8 +361,9 @@ $msg = $_GET["msg"] ?? "";
                 <label for="time-details">Full Details</label>
                 <textarea id="time-details" name="time_details" placeholder="Full text for the More Info page" required></textarea>
             </div>
+            </div>
 
-            <button type="submit" name="add_time">Add</button>
+            <button class="btn-primary" type="submit" name="add_time">Add</button>
         </form>
 
         <div class="items-grid">
@@ -347,7 +385,7 @@ $msg = $_GET["msg"] ?? "";
         </div>
     </section>
 
-    <section class="panel-card">
+    <section class="panel-card" id="contacts-section">
         <div class="section-header">
             <div>
                 <h2>Contacts</h2>
@@ -356,6 +394,7 @@ $msg = $_GET["msg"] ?? "";
         </div>
 
         <form method="POST">
+            <div class="form-grid">
             <div class="form-group">
                 <label for="contacts-phone">Phone</label>
                 <input id="contacts-phone" type="text" name="phone" value="<?= htmlspecialchars($contacts["phone"] ?? "") ?>" placeholder="Phone number" required>
@@ -375,8 +414,9 @@ $msg = $_GET["msg"] ?? "";
                 <label for="contacts-map">Map Link</label>
                 <input id="contacts-map" type="url" name="map_link" value="<?= htmlspecialchars($contacts["map_link"] ?? "") ?>" placeholder="Google Maps link">
             </div>
+            </div>
 
-            <button type="submit" name="update_contacts">Update Contacts</button>
+            <button class="btn-primary" type="submit" name="update_contacts">Update Contacts</button>
         </form>
     </section>
 

@@ -105,9 +105,11 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                         alt="Aktualitāte"
                         onerror="this.onerror=null;this.src='<?= htmlspecialchars($fallbackImage) ?>';"
                     >
-                    <h3><?= htmlspecialchars($row['title'] ?? 'Nosaukums nav'); ?></h3>
-                    <p><?= htmlspecialchars($row['text'] ?? 'Apraksts nav'); ?></p>
-                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=<?= urlencode($row['slug'] ?: 'aktualitate-1') ?>">Vairāk informācija</a>
+                    <div class="card-body">
+                        <h3><?= htmlspecialchars($row['title'] ?? 'Nosaukums nav'); ?></h3>
+                        <p><?= htmlspecialchars($row['text'] ?? 'Apraksts nav'); ?></p>
+                        <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=<?= urlencode($row['slug'] ?: 'aktualitate-1') ?>">Vairāk informācija</a>
+                    </div>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
@@ -121,15 +123,19 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
             </div>
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 2">
-                <h3>Izglītība</h3>
-                <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
-                <a class="more-info-btn" href="#">Vairāk informācija</a>
+                <div class="card-body">
+                    <h3>Izglītība</h3>
+                    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
+                    <a class="more-info-btn" href="#">Vairāk informācija</a>
+                </div>
             </div>
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 3">
-                <h3>Kalvenes skola</h3>
-                <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
-                <a class="more-info-btn" href="#">Vairāk informācija</a>
+                <div class="card-body">
+                    <h3>Kalvenes skola</h3>
+                    <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
+                    <a class="more-info-btn" href="#">Vairāk informācija</a>
+                </div>
             </div>
         <?php endif; ?>
     </div>
