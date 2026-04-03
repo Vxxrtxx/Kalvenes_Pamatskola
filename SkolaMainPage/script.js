@@ -33,19 +33,27 @@ function toggleTheme() {
 
 function setupOpeningAnimation() {
     document.body.classList.add('is-preloading');
+    document.documentElement.classList.add('is-preloading');
 
     const overlay = document.createElement('div');
     overlay.className = 'page-opening-overlay';
+    overlay.innerHTML = `
+        <div class="opening-title" aria-hidden="true">
+            <span class="opening-line opening-line-one">Kalvenes</span>
+            <span class="opening-line opening-line-two">Pamatskola</span>
+        </div>
+    `;
     document.body.appendChild(overlay);
 
     window.setTimeout(() => {
         document.body.classList.add('opening-complete');
         document.body.classList.remove('is-preloading');
-    }, 650);
+        document.documentElement.classList.remove('is-preloading');
+    }, 2500);
 
     window.setTimeout(() => {
         overlay.remove();
-    }, 1500);
+    }, 3200);
 }
 
 function setupRevealAnimations() {
