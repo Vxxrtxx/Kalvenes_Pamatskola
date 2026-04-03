@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Progressive animation based on visibility
                 const progress = Math.min(ratio * 2, 1);
                 element.style.opacity = progress;
-                element.style.transform = 	ranslateY(px) scale();
+                element.style.transform = `translateY(${50 - progress * 50}px) scale(${0.9 + progress * 0.1})`;
                 
                 if (ratio >= 0.5) {
                     element.classList.add('revealed');
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const items = content.querySelectorAll('a');
                     items.forEach((item, index) => {
                         setTimeout(() => {
-                            item.style.animation = slideInLeftSlow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+                            item.style.animation = 'slideInLeftSlow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
                         }, index * 80);
                     });
                 }
@@ -259,8 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const rate = scrolled * -0.5;
             const blurRate = Math.min(scrolled * 0.001, 5);
             
-            heroVideo.style.transform = scale(1.1) translateY(px);
-            heroVideo.style.filter = rightness() blur(px);
+            heroVideo.style.transform = `scale(1.1) translateY(${rate}px)`;
+            heroVideo.style.filter = `brightness(${1 - blurRate * 0.1}) blur(${blurRate}px)`;
             
             lastScrollY = scrolled;
         }, { passive: true });
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const floatingElements = document.querySelectorAll('.card, .timeline-card');
     floatingElements.forEach((element, index) => {
         const delay = index * 0.5;
-        element.style.animation = morphFloat 8s infinite ease-in-out s;
+        element.style.animation = `morphFloat 8s infinite ease-in-out ${delay}s`;
     });
     
     // ============================================
@@ -356,8 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ripple.style.background = 'rgba(216, 27, 96, 0.2)';
                 ripple.style.transform = 'scale(0)';
                 ripple.style.animation = 'ripple 0.4s linear';
-                ripple.style.left = ${e.touches[0].clientX - this.getBoundingClientRect().left}px;
-                ripple.style.top = ${e.touches[0].clientY - this.getBoundingClientRect().top}px;
+                ripple.style.left = `${e.touches[0].clientX - this.getBoundingClientRect().left}px`;
+                ripple.style.top = `${e.touches[0].clientY - this.getBoundingClientRect().top}px`;
                 ripple.style.width = '20px';
                 ripple.style.height = '20px';
                 ripple.style.marginLeft = '-10px';
@@ -549,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     
     const style = document.createElement('style');
-    style.textContent = 
+    style.textContent = `
         @keyframes ripple {
             to {
                 transform: scale(4);
@@ -560,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .loaded {
             animation: fadeInScale 0.6s ease-out;
         }
-    ;
+    `;
     document.head.appendChild(style);
 });
 

@@ -241,6 +241,17 @@ img, video {
   }
 }
 
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* ============================================
    GLASSMORPHISM & VISUAL EFFECTS
    ============================================ */
@@ -326,7 +337,6 @@ html.dark .navbar {
 .logo:hover {
   transform: scale(1.05);
   filter: drop-shadow(0 0 30px var(--accent-light));
-  animation: morphFloat 2s infinite ease-in-out;
 }
 
 .nav-left, .nav-right {
@@ -731,7 +741,6 @@ html.dark .hero-content {
 .hero-btn:hover {
   transform: translateY(-8px) scale(1.05);
   box-shadow: var(--shadow-xl), 0 0 50px var(--accent-light);
-  animation: morphFloat 1s infinite ease-in-out;
 }
 
 .hero-btn:hover::before {
@@ -763,7 +772,6 @@ html.dark .hero-content {
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(216, 27, 96, 0.03) 0%, transparent 70%);
-  animation: parallaxFloat 15s infinite ease-in-out;
   pointer-events: none;
 }
 
@@ -829,6 +837,7 @@ html.dark .hero-content {
   animation-fill-mode: both;
   position: relative;
   overflow: hidden;
+  will-change: transform;
 }
 
 .timeline-card::before {
@@ -839,7 +848,6 @@ html.dark .hero-content {
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(216, 27, 96, 0.05) 0%, transparent 70%);
-  animation: parallaxFloat 12s infinite ease-in-out;
   pointer-events: none;
 }
 
@@ -859,7 +867,6 @@ html.dark .timeline-card {
   transform: translateY(-15px) scale(1.03) rotate(1deg);
   box-shadow: var(--shadow-xl), 0 0 50px var(--accent-light);
   border-color: var(--accent-primary);
-  animation: morphFloat 2s infinite ease-in-out;
 }
 
 .timeline-card img {
@@ -935,7 +942,6 @@ html.dark .timeline-card {
   background-position: right center;
   transform: translateY(-5px) scale(1.05);
   box-shadow: var(--shadow-lg), 0 0 30px var(--accent-light);
-  animation: pulseGlow 1s infinite ease-in-out;
 }
 
 .more-info-btn:hover::before {
@@ -976,6 +982,7 @@ html.dark .timeline-card {
   overflow: hidden;
   animation: slideInUpBounce var(--animation-duration-slow) ease-out;
   animation-fill-mode: both;
+  will-change: transform;
 }
 
 .card::before {
@@ -986,7 +993,6 @@ html.dark .timeline-card {
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(216, 27, 96, 0.05) 0%, transparent 70%);
-  animation: parallaxFloat 10s infinite ease-in-out;
   pointer-events: none;
 }
 
@@ -1006,7 +1012,6 @@ html.dark .card {
   transform: translateY(-20px) scale(1.05) rotate(2deg);
   box-shadow: var(--shadow-xl), 0 0 60px var(--accent-light);
   border-color: var(--accent-primary);
-  animation: morphFloat 2s infinite ease-in-out;
 }
 
 .card h3 {
@@ -1054,7 +1059,6 @@ form::before {
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(216, 27, 96, 0.03) 0%, transparent 70%);
-  animation: parallaxFloat 18s infinite ease-in-out;
   pointer-events: none;
 }
 
@@ -1132,7 +1136,6 @@ button:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow: var(--shadow-xl), 0 0 40px var(--accent-light);
   background-position: right center;
-  animation: morphFloat 1s infinite ease-in-out;
 }
 
 button:hover::before {
@@ -1167,7 +1170,6 @@ button:active {
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(216, 27, 96, 0.02) 0%, transparent 70%);
-  animation: parallaxFloat 25s infinite ease-in-out;
   pointer-events: none;
 }
 
@@ -1190,6 +1192,7 @@ button:active {
   opacity: 0;
   transform: translateY(50px) scale(0.9);
   transition: var(--transition-slow);
+  will-change: transform, opacity;
 }
 
 .scroll-reveal.revealed {
