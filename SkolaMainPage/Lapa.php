@@ -94,7 +94,10 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
 </section>
 
 <section class="aktualitates">
-    <h2>Aktualitātes</h2>
+    <div class="section-heading">
+        <h2>Aktualitātes</h2>
+        <p class="section-intro">Svarīgākie notikumi, paziņojumi un skolas ikdienas jaunumi vienuviet.</p>
+    </div>
     <div class="aktualitates-container">
         <?php if ($aktualitates && $aktualitates->num_rows > 0): ?>
             <?php while($row = $aktualitates->fetch_assoc()): ?>
@@ -105,8 +108,10 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                         onerror="this.onerror=null;this.src='<?= htmlspecialchars($fallbackImage) ?>';"
                     >
                     <div class="card-body">
-                        <h3><?= htmlspecialchars($row['title'] ?? 'Nosaukums nav'); ?></h3>
-                        <p><?= htmlspecialchars($row['text'] ?? 'Apraksts nav'); ?></p>
+                        <div class="card-copy">
+                            <h3><?= htmlspecialchars($row['title'] ?? 'Nosaukums nav'); ?></h3>
+                            <p><?= htmlspecialchars($row['text'] ?? 'Apraksts nav'); ?></p>
+                        </div>
                         <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=<?= urlencode($row['slug'] ?: 'aktualitate-1') ?>">Vairāk informācija</a>
                     </div>
                 </div>
@@ -115,24 +120,30 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 1">
                 <div class="card-body">
-                    <h3>Ziema</h3>
-                    <p>mūsdienīgs notikums par sezonālo skolas dzīvi.</p>
+                    <div class="card-copy">
+                        <h3>Ziema</h3>
+                        <p>Mūsdienīgs notikums par sezonālo skolas dzīvi.</p>
+                    </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=ziema">Vairāk informācija</a>
                 </div>
             </div>
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 2">
                 <div class="card-body">
-                    <h3>Izglītība</h3>
-                    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
+                    <div class="card-copy">
+                        <h3>Izglītība</h3>
+                        <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
+                    </div>
                     <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
             </div>
             <div class="aktualitate-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 3">
                 <div class="card-body">
-                    <h3>Kalvenes skola</h3>
-                    <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
+                    <div class="card-copy">
+                        <h3>Kalvenes skola</h3>
+                        <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
+                    </div>
                     <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
             </div>
@@ -141,7 +152,10 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
 </section>
 
 <section class="timeline-section">
-    <h2>Kāpēc izvēlēties Kalvenes pamatskolu?</h2>
+    <div class="section-heading">
+        <h2>Kāpēc izvēlēties Kalvenes pamatskolu?</h2>
+        <p class="section-intro">Galvenie iemesli, kāpēc mūsu skola ir droša, attīstoša un atbalstoša vide bērna izaugsmei.</p>
+    </div>
     <div class="timeline-container">
         <?php if ($timeline && $timeline->num_rows > 0): ?>
             <?php while($row = $timeline->fetch_assoc()): ?>
@@ -152,9 +166,11 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                         onerror="this.onerror=null;this.src='<?= htmlspecialchars($fallbackImage) ?>';"
                     >
                     <div class="timeline-text">
-                    <h3><?= htmlspecialchars($row['title'] ?: 'Nav nosaukuma') ?></h3>
-                    <p><?= htmlspecialchars($row['description'] ?: 'Nav apraksta') ?></p>
-                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=<?= urlencode($row['slug'] ?: 'izaugsme') ?>">Vairāk informācija</a>
+                        <div class="card-copy">
+                            <h3><?= htmlspecialchars($row['title'] ?: 'Nav nosaukuma') ?></h3>
+                            <p><?= htmlspecialchars($row['description'] ?: 'Nav apraksta') ?></p>
+                        </div>
+                        <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=<?= urlencode($row['slug'] ?: 'izaugsme') ?>">Vairāk informācija</a>
                     </div>
                 </div>
             <?php endwhile; ?>
@@ -162,8 +178,10 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
             <div class="timeline-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Ak1">
                 <div class="timeline-text">
-                    <h3>Kvalitatīva izglītība</h3>
-                    <p>Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm</p>
+                    <div class="card-copy">
+                        <h3>Kvalitatīva izglītība</h3>
+                        <p>Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm.</p>
+                    </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=kvalitativa-izglitiba">Vairāk informācija</a>
                 </div>
             </div>
@@ -171,8 +189,10 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
             <div class="timeline-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Ak2">
                 <div class="timeline-text">
-                    <h3>Atbalstoša vide</h3>
-                    <p>Veidojam draudzīgu un drošu vidi katram skolēnam.</p>
+                    <div class="card-copy">
+                        <h3>Atbalstoša vide</h3>
+                        <p>Veidojam draudzīgu un drošu vidi katram skolēnam.</p>
+                    </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=atbalstosa-vide">Vairāk informācija</a>
                 </div>
             </div>
@@ -180,8 +200,10 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
             <div class="timeline-card">
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Ak3">
                 <div class="timeline-text">
-                    <h3>Izaugsmes iespējas</h3>
-                    <p>Palīdzam attīstīt katra skolēna talantus un prasmes.</p>
+                    <div class="card-copy">
+                        <h3>Izaugsmes iespējas</h3>
+                        <p>Palīdzam attīstīt katra skolēna talantus un prasmes.</p>
+                    </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=izaugsmes-iespejas">Vairāk informācija</a>
                 </div>
             </div>
