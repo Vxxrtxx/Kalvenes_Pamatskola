@@ -71,10 +71,11 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
         </div>
 
         <div class="nav-right">
-            <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.html" class="hover-underline">Kontakti</a>
+            <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
             <a href="https://www.facebook.com/kalvene.pamatskola.9/?locale=lv_LV" target="_blank" class="facebook-icon">
                 <i class="fab fa-facebook-square"></i>
             </a>
+            <button type="button" class="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
         </div>
     </div>
 </nav>

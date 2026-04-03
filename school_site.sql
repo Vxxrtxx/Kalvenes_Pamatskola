@@ -115,13 +115,87 @@ CREATE TABLE `timeline` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `timeline`
+-- Table structure for table `contacts`
 --
 
-INSERT INTO `timeline` (`id`, `slug`, `image`, `title`, `description`, `details`) VALUES
-(1, 'timeline-1', '/SkolaMainPage/SkolasAtteli/Bilde1.jpg', 'Kvalitatīva izglītība', 'Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm.', NULL),
-(2, 'timeline-2', '/SkolaMainPage/SkolasAtteli/Bilde1.jpg', 'Atbalstoša vide', 'Veidojam draudzīgu un drošu vidi katram skolēnam.', NULL),
-(3, 'timeline-3', '/SkolaMainPage/SkolasAtteli/Bilde1.jpg', 'Izaugsmes iespējas', 'Palīdzam attīstīt katra skolēna talantus un prasmes.', NULL);
+CREATE TABLE `contacts` (
+  `id` int(11) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `map_link` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `phone`, `email`, `address`, `map_link`) VALUES
+(1, '+371 29577075', 'info@kalvene.edu.lv', 'Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443', 'https://maps.google.com/?q=Kalvenes+pamatskola');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `about_us`
+--
+
+CREATE TABLE `about_us` (
+  `id` int(11) NOT NULL,
+  `section` varchar(50) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `about_us`
+--
+
+INSERT INTO `about_us` (`id`, `section`, `title`, `content`, `image`) VALUES
+(1, 'mission', 'Mūsu misija', 'Kalvenes pamatskola piedāvā kvalitatīvu izglītību un atbalstošu vidi katram skolēnam.', NULL),
+(2, 'vision', 'Mūsu vīzija', 'Būt vadošai skolai reģionā ar inovatīviem mācību metodēm.', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admissions`
+--
+
+CREATE TABLE `admissions` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
+  `requirements` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admissions`
+--
+
+INSERT INTO `admissions` (`id`, `title`, `content`, `requirements`, `image`) VALUES
+(1, 'Uzņemšana skolā', 'Informācija par uzņemšanu Kalvenes pamatskolā.', 'Nepieciešamie dokumenti: dzimšanas apliecība, medicīniskā kartiņa.', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `school_history`
+--
+
+CREATE TABLE `school_history` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `year` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `school_history`
+--
+
+INSERT INTO `school_history` (`id`, `title`, `content`, `image`, `year`) VALUES
+(1, 'Skolas dibināšana', 'Kalvenes pamatskola tika dibināta 1995. gadā.', NULL, 1995);
 
 --
 -- Indexes for dumped tables
@@ -152,9 +226,27 @@ ALTER TABLE `media`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `timeline`
+-- Indexes for table `contacts`
 --
-ALTER TABLE `timeline`
+ALTER TABLE `contacts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `about_us`
+--
+ALTER TABLE `about_us`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `admissions`
+--
+ALTER TABLE `admissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `school_history`
+--
+ALTER TABLE `school_history`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -186,10 +278,28 @@ ALTER TABLE `media`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `timeline`
+-- AUTO_INCREMENT for table `contacts`
 --
-ALTER TABLE `timeline`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `contacts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `about_us`
+--
+ALTER TABLE `about_us`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `admissions`
+--
+ALTER TABLE `admissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `school_history`
+--
+ALTER TABLE `school_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

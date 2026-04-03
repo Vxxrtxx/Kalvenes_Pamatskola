@@ -1,10 +1,14 @@
+<?php
+$conn = @new mysqli("localhost", "root", "", "school_site");
+$contacts = $conn && !$conn->connect_error ? $conn->query("SELECT * FROM contacts WHERE id=1")->fetch_assoc() : null;
+?>
 <!DOCTYPE html>
 <html lang="lv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontakti</title>
-    <link rel="stylesheet" href="/Kalvenes_Pamatskola/Kontakti/CSS/KontaktiMain.css">
+    <link rel="stylesheet" href="/Kalvenes_Pamatskola/SkolaMainPage/Nav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
 </head>
@@ -28,10 +32,11 @@
             <a href="/Kalvenes_Pamatskola/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
         </div>
         <div class="nav-right">
-            <a href="/Kalvenes_Pamatskola/Kontakti/KontaktiMain.html" class="hover-underline">Kontakti</a>
+            <a href="/Kalvenes_Pamatskola/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
             <a href="https://www.facebook.com/kalvene.pamatskola.9/?locale=lv_LV" target="_blank" class="facebook-icon">
                 <i class="fab fa-facebook-square"></i>
             </a>
+            <button type="button" class="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
         </div>
     </div>
     </nav>
@@ -41,12 +46,16 @@
             <div class="contact-info">
             <div class="contact-item">
                 <i class="fas fa-phone"></i>
-            <span>+371 29577075</span>
+            <span><?= htmlspecialchars($contacts['phone'] ?? '+371 29577075') ?></span>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+                <span><?= htmlspecialchars($contacts['email'] ?? 'info@kalvene.edu.lv') ?></span>
         </div>
         <div class="contact-item">
             <i class="fas fa-map-marker-alt"></i>
-                <a href="https://maps.google.com/?q=Kalvenes+pamatskola" target="_blank" class="map-link">
-                    Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443
+                <a href="<?= htmlspecialchars($contacts['map_link'] ?? 'https://maps.google.com/?q=Kalvenes+pamatskola') ?>" target="_blank" class="map-link">
+                    <?= htmlspecialchars($contacts['address'] ?? 'Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443') ?>
                 </a>
             </div>
                 <div class="contact-item">
@@ -59,47 +68,6 @@
   <footer>
     © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
   </footer>
-    <script>
-        function setupDropdown(dropdownId) {
-            const dropdown = document.getElementById(dropdownId);
-            const menu = dropdown.querySelector('.dropdown-content');
-            let hideTimeout;
-
-            const showMenu = () => {
-                clearTimeout(hideTimeout);
-                menu.classList.add('show');
-            };
-
-            const hideMenu = () => {
-                hideTimeout = setTimeout(() => {
-                    menu.classList.remove('show');
-                }, 200);
-            };
-
-            dropdown.addEventListener('mouseenter', showMenu);
-            dropdown.addEventListener('mouseleave', hideMenu);
-        }
-
-        setupDropdown('SchoolDropdown');
-        setupDropdown('AdmissionDropdown');
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggle = document.querySelector('.menu-toggle');
-    const navbar = document.querySelector('.navbar');
-
-  toggle.addEventListener('click', () => {
-    navbar.classList.toggle('expanded');
-  });
-});
-
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".dropdown-trigger").forEach(trigger => {
-      trigger.addEventListener("click", function (e) {
-        const parent = this.closest(".dropdown");
-        parent.classList.toggle("open");
-      });
-    });
-  });
-    </script>
+    <script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js"></script>
 </body>
 </html>

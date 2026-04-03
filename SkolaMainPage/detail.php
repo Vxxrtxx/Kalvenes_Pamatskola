@@ -152,10 +152,11 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
             <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
         </div>
         <div class="nav-right">
-            <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.html" class="hover-underline">Kontakti</a>
+            <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
             <a href="https://www.facebook.com/kalvene.pamatskola.9/?locale=lv_LV" target="_blank" class="facebook-icon">
                 <i class="fab fa-facebook-square"></i>
             </a>
+            <button type="button" class="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
         </div>
     </div>
 </nav>
@@ -175,10 +176,6 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
     © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
 </footer>
 
-<script>
-document.querySelector(".menu-toggle")?.addEventListener("click", function () {
-    document.querySelector(".navbar")?.classList.toggle("expanded");
-});
-</script>
+<script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js"></script>
 </body>
 </html>

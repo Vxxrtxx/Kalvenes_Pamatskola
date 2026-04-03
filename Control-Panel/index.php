@@ -170,14 +170,18 @@ if (isset($_POST["add_time"])) {
     exit;
 }
 
-// ====== DELETE TIMELINE ======
-if (isset($_GET["delete_time"])) {
-    $id = (int)$_GET["delete_time"];
-    $stmt = $conn->prepare("DELETE FROM timeline WHERE id=?");
-    $stmt->bind_param("i", $id);
+// ====== UPDATE CONTACTS ======
+if (isset($_POST["update_contacts"])) {
+    $phone = trim($_POST["phone"] ?? "");
+    $email = trim($_POST["email"] ?? "");
+    $address = trim($_POST["address"] ?? "");
+    $map_link = trim($_POST["map_link"] ?? "");
+
+    $stmt = $conn->prepare("UPDATE contacts SET phone=?, email=?, address=?, map_link=? WHERE id=1");
+    $stmt->bind_param("ssss", $phone, $email, $address, $map_link);
     $stmt->execute();
 
-    header("Location: index.php?msg=" . urlencode("Timeline deleted."));
+    header("Location: index.php?msg=" . urlencode("Contacts updated."));
     exit;
 }
 
@@ -185,6 +189,7 @@ if (isset($_GET["delete_time"])) {
 $hero = $conn->query("SELECT * FROM content WHERE id=1")->fetch_assoc();
 $akt  = $conn->query("SELECT * FROM aktualitates ORDER BY id DESC");
 $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
+$contacts = $conn->query("SELECT * FROM contacts WHERE id=1")->fetch_assoc();
 
 $msg = $_GET["msg"] ?? "";
 ?>
@@ -340,6 +345,39 @@ $msg = $_GET["msg"] ?? "";
                 </div>
             <?php endwhile; ?>
         </div>
+    </section>
+
+    <section class="panel-card">
+        <div class="section-header">
+            <div>
+                <h2>Contacts</h2>
+                <p class="subtext">Update contact information displayed on the contacts page.</p>
+            </div>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="contacts-phone">Phone</label>
+                <input id="contacts-phone" type="text" name="phone" value="<?= htmlspecialchars($contacts["phone"] ?? "") ?>" placeholder="Phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contacts-email">Email</label>
+                <input id="contacts-email" type="email" name="email" value="<?= htmlspecialchars($contacts["email"] ?? "") ?>" placeholder="Email address">
+            </div>
+
+            <div class="form-group">
+                <label for="contacts-address">Address</label>
+                <textarea id="contacts-address" name="address" placeholder="Full address" required><?= htmlspecialchars($contacts["address"] ?? "") ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="contacts-map">Map Link</label>
+                <input id="contacts-map" type="url" name="map_link" value="<?= htmlspecialchars($contacts["map_link"] ?? "") ?>" placeholder="Google Maps link">
+            </div>
+
+            <button type="submit" name="update_contacts">Update Contacts</button>
+        </form>
     </section>
 
 </div>
