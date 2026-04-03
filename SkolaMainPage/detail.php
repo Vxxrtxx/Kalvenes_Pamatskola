@@ -138,6 +138,7 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
 <nav class="navbar">
     <button class="menu-toggle">&#9776;</button>
     <div class="nav-wrapper">
+        <div class="logo">KALVENES</div>
         <div class="nav-left">
             <div class="dropdown" id="SchoolDropdown">
                 <a href="#" class="hover-underline dropdown-trigger">Par Skolu▼</a>
