@@ -1,58 +1,86 @@
 ﻿// ============================================
-// THEME MANAGEMENT - Dark/Light Mode Toggle
+// KALVENES PAMATSKOLA - ADVANCED THEME MANAGEMENT v2.0
+// Enhanced Dark/Light Mode with Smooth Transitions
+// Advanced Animations & Interactions
 // ============================================
 
-// Apply theme with smooth transition
-function applyTheme(theme) {
+// Enhanced theme application with better transitions
+function applyTheme(theme, instant = false) {
     const html = document.documentElement;
+    const toggle = document.querySelector('.dark-mode-toggle');
     
     if (theme === 'dark') {
         html.classList.add('dark');
         localStorage.setItem('site-theme', 'dark');
-        updateThemeIcon('light'); // Show light mode icon (click to go light)
+        if (toggle) {
+            toggle.textContent = '☀️';
+            toggle.setAttribute('aria-label', 'Switch to light mode');
+            toggle.style.transform = 'rotate(0deg)';
+        }
     } else {
         html.classList.remove('dark');
         localStorage.setItem('site-theme', 'light');
-        updateThemeIcon('dark'); // Show dark mode icon (click to go dark)
+        if (toggle) {
+            toggle.textContent = '🌙';
+            toggle.setAttribute('aria-label', 'Switch to dark mode');
+            toggle.style.transform = 'rotate(0deg)';
+        }
+    }
+    
+    // Trigger theme change animation
+    if (!instant) {
+        html.style.transition = 'background-color 0.5s ease, color 0.5s ease';
+        setTimeout(() => {
+            html.style.transition = '';
+        }, 500);
     }
 }
 
-// Update the theme toggle button icon
-function updateThemeIcon(nextTheme) {
+// Enhanced theme toggle with visual feedback
+function toggleTheme() {
     const toggle = document.querySelector('.dark-mode-toggle');
-    if (!toggle) return;
+    const isDark = document.documentElement.classList.contains('dark');
     
-    if (nextTheme === 'light') {
-        toggle.textContent = '☀️';
-        toggle.setAttribute('aria-label', 'Switch to light mode');
-    } else {
-        toggle.textContent = '🌙';
-        toggle.setAttribute('aria-label', 'Switch to dark mode');
+    // Add rotation animation
+    if (toggle) {
+        toggle.style.transform = 'rotate(180deg) scale(1.2)';
+        setTimeout(() => {
+            toggle.style.transform = '';
+        }, 300);
     }
+    
+    // Apply theme with slight delay for smooth transition
+    setTimeout(() => {
+        applyTheme(isDark ? 'light' : 'dark');
+    }, 150);
 }
 
-// Initialize theme on page load
+// Initialize theme on page load with system preference detection
 document.addEventListener('DOMContentLoaded', () => {
-    // Determine initial theme
+    // Determine initial theme with priority: saved > system > light
     const savedTheme = localStorage.getItem('site-theme');
-    const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (preferDark ? 'dark' : 'light');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
     
-    // Apply initial theme
-    applyTheme(initialTheme);
+    // Apply initial theme instantly to avoid flash
+    applyTheme(initialTheme, true);
     
-    // Theme toggle button handler
+    // Theme toggle button handler with enhanced feedback
     const themeToggle = document.querySelector('.dark-mode-toggle');
     if (themeToggle) {
-        themeToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const isDark = document.documentElement.classList.contains('dark');
-            applyTheme(isDark ? 'light' : 'dark');
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Add keyboard support
+        themeToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleTheme();
+            }
         });
     }
     
     // ============================================
-    // MOBILE MENU TOGGLE
+    // ADVANCED MOBILE MENU
     // ============================================
     
     const menuToggle = document.querySelector('.menu-toggle');
@@ -62,6 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggle.addEventListener('click', (e) => {
             e.preventDefault();
             navbar.classList.toggle('expanded');
+            
+            // Animate hamburger icon
+            const isExpanded = navbar.classList.contains('expanded');
+            menuToggle.style.transform = isExpanded ? 'rotate(90deg)' : 'rotate(0deg)';
         });
     }
     
@@ -69,11 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         if (navbar && !navbar.contains(e.target)) {
             navbar.classList.remove('expanded');
+            if (menuToggle) {
+                menuToggle.style.transform = 'rotate(0deg)';
+            }
         }
     });
     
     // ============================================
-    // DROPDOWN MENUS
+    // ENHANCED DROPDOWN MENUS
     // ============================================
     
     function setupDropdown(dropdownId) {
@@ -87,11 +122,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let hideTimeout;
         
-        // Desktop hover behavior
+        // Desktop hover behavior with smooth animations
         const showMenu = () => {
             if (window.innerWidth <= 768) return;
             clearTimeout(hideTimeout);
             content.classList.add('show');
+            
+            // Stagger animation for menu items
+            const items = content.querySelectorAll('a');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-10px)';
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 50);
+            });
         };
         
         const hideMenu = () => {
@@ -108,7 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.innerWidth <= 768) {
-                content.classList.toggle('show');
+                const isOpen = content.classList.contains('show');
+                if (isOpen) {
+                    content.classList.remove('show');
+                } else {
+                    // Close other dropdowns first
+                    document.querySelectorAll('.dropdown-content').forEach(c => c.classList.remove('show'));
+                    content.classList.add('show');
+                }
             }
         });
     }
@@ -118,106 +172,227 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDropdown('AdmissionDropdown');
     
     // ============================================
-    // SMOOTH SCROLL & ANIMATIONS
+    // ADVANCED ANIMATIONS & INTERACTIONS
     // ============================================
     
-    // Hero content fade-in animation
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        const observer = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        heroContent.style.opacity = '1';
-                        heroContent.style.transform = 'translateY(0)';
-                    }
-                });
-            },
-            { threshold: 0.3 }
-        );
-        
-        observer.observe(heroContent);
-    }
+    // Intersection Observer for scroll-triggered animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
     
-    // Animate cards on scroll
-    const cards = document.querySelectorAll('.card');
-    const cardObserver = new IntersectionObserver(
-        entries => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }, index * 100);
-                }
-            });
-        },
-        { threshold: 0.1 }
-    );
-    
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        cardObserver.observe(card);
-    });
-    
-    // ============================================
-    // RESPONSIVE BEHAVIOR
-    // ============================================
-    
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            // Close mobile menu on resize to desktop
-            if (navbar) {
-                navbar.classList.remove('expanded');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                const delay = index * 100; // Stagger animations
+                
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, delay);
+                
+                // Unobserve after animation to prevent re-triggering
+                observer.unobserve(element);
             }
-            
-            // Reset dropdown displays
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                content.classList.remove('show');
-            });
-        }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    const animateElements = document.querySelectorAll('.card, .timeline-card, .section');
+    animateElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        observer.observe(element);
     });
+    
+    // Hero parallax effect (subtle)
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            heroVideo.style.transform = scale(1.1) translateY(px);
+        });
+    }
     
     // ============================================
     // FORM ENHANCEMENTS
     // ============================================
     
-    // Add focus animations to form inputs
+    // Enhanced input focus animations
     const inputs = document.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
-            this.style.borderColor = 'var(--accent-color)';
+            this.style.borderColor = 'var(--accent-primary)';
+            this.style.boxShadow = '0 0 0 3px rgba(216, 27, 96, 0.1)';
+            this.style.transform = 'translateY(-2px)';
         });
         
         input.addEventListener('blur', function() {
             this.style.borderColor = 'var(--border-color)';
+            this.style.boxShadow = 'var(--shadow-sm)';
+            this.style.transform = 'translateY(0)';
         });
+    });
+    
+    // Button hover effects
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+    
+    // ============================================
+    // RESPONSIVE BEHAVIOR & TOUCH SUPPORT
+    // ============================================
+    
+    // Touch device optimizations
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+        
+        // Add touch feedback for interactive elements
+        const interactiveElements = document.querySelectorAll('.nav-link, .dropdown-trigger, .card, button');
+        interactiveElements.forEach(element => {
+            element.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            element.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+    }
+    
+    // Resize handler with debouncing
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Close mobile menu on resize to desktop
+            if (window.innerWidth > 768) {
+                if (navbar) {
+                    navbar.classList.remove('expanded');
+                }
+                if (menuToggle) {
+                    menuToggle.style.transform = 'rotate(0deg)';
+                }
+                
+                // Reset dropdown displays
+                document.querySelectorAll('.dropdown-content').forEach(content => {
+                    content.classList.remove('show');
+                });
+            }
+        }, 250);
+    });
+    
+    // ============================================
+    // ACCESSIBILITY ENHANCEMENTS
+    // ============================================
+    
+    // Keyboard navigation for dropdowns
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // Close all dropdowns and mobile menu
+            document.querySelectorAll('.dropdown-content').forEach(content => {
+                content.classList.remove('show');
+            });
+            if (navbar) {
+                navbar.classList.remove('expanded');
+            }
+            if (menuToggle) {
+                menuToggle.style.transform = 'rotate(0deg)';
+            }
+        }
+    });
+    
+    // Focus management for mobile menu
+    if (menuToggle) {
+        menuToggle.addEventListener('focus', () => {
+            menuToggle.style.outline = '2px solid var(--accent-primary)';
+        });
+        
+        menuToggle.addEventListener('blur', () => {
+            menuToggle.style.outline = '';
+        });
+    }
+    
+    // ============================================
+    // PERFORMANCE OPTIMIZATIONS
+    // ============================================
+    
+    // Lazy load images
+    const images = document.querySelectorAll('img[data-src]');
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        
+        images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        images.forEach(img => {
+            img.src = img.dataset.src;
+        });
+    }
+    
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    
+    // Smooth scroll to element
+    window.smoothScrollTo = function(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    };
+    
+    // Debounce function for performance
+    window.debounce = function(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    };
+    
+    // Theme change listener for external scripts
+    window.addEventListener('themeChange', (e) => {
+        applyTheme(e.detail.theme);
     });
 });
 
 // ============================================
-// UTILITY FUNCTIONS
+// GLOBAL ERROR HANDLING
 // ============================================
 
-// Smooth scroll to element
-function smoothScrollTo(elementId) {
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    }
-}
+window.addEventListener('error', (e) => {
+    console.warn('JavaScript error:', e.error);
+    // Could send to analytics service
+});
 
-// Debounce function for performance
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+window.addEventListener('unhandledrejection', (e) => {
+    console.warn('Unhandled promise rejection:', e.reason);
+    // Could send to analytics service
+});
