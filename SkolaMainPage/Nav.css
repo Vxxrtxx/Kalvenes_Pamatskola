@@ -19,7 +19,8 @@
   --accent-secondary: #454c56;
   --accent-light: rgba(0, 0, 0, 0.24);
   --accent-dark: #1b2027;
-  --border-color: #e8eaed;
+  --border-color: rgba(250, 210, 184, 0.34);
+  --border-color-strong: rgba(250, 210, 184, 0.52);
   --shadow-sm: 0 1px 3px rgba(60, 64, 67, 0.08);
   --shadow-md: 0 4px 6px rgba(60, 64, 67, 0.1);
   --shadow-lg: 0 8px 25px rgba(60, 64, 67, 0.15);
@@ -51,7 +52,8 @@ html.dark {
   --accent-secondary: #5b646f;
   --accent-light: rgba(0, 0, 0, 0.28);
   --accent-dark: #252b33;
-  --border-color: #333333;
+  --border-color: rgba(250, 210, 184, 0.28);
+  --border-color-strong: rgba(250, 210, 184, 0.44);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.5);
@@ -330,7 +332,7 @@ img, video {
   background: var(--bg-glass);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
 }
 
@@ -338,7 +340,7 @@ img, video {
   background: var(--bg-glass-dark);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
 }
 
@@ -355,7 +357,7 @@ img, video {
   background: var(--bg-glass);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid var(--border-color-strong);
   padding: 1rem 2rem;
   box-shadow: var(--shadow-lg);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -365,7 +367,7 @@ img, video {
 
 html.dark .navbar {
   background: var(--bg-glass-dark);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .nav-wrapper {
@@ -513,7 +515,7 @@ html.dark .navbar {
   background: var(--bg-glass);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   min-width: 220px;
   max-width: 260px;
@@ -538,7 +540,7 @@ html.dark .navbar {
 
 html.dark .dropdown-content {
   background: var(--bg-glass-dark);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--border-color);
 }
 
 .dropdown-content.show {
@@ -783,7 +785,7 @@ html.dark .dropdown-content {
 
 .left-content, .right-info {
   background: var(--bg-glass);
-  border: 1px solid rgba(255,255,255,0.16);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 1.5rem;
   box-shadow: var(--shadow-lg);
@@ -831,7 +833,7 @@ html.dark .dropdown-content {
 
 .doc-card, .achievement-card, .info-card {
   background: var(--bg-glass);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-md);
@@ -854,7 +856,7 @@ html.dark .dropdown-content {
   grid-template-columns: 1fr;
   gap: 1rem;
   background: var(--bg-glass);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 2rem;
   box-shadow: var(--shadow-lg);
@@ -872,7 +874,7 @@ html.dark .dropdown-content {
   gap: 0.8rem;
   background: rgba(0,0,0,0.2);
   padding: 0.8rem 1rem;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
 }
 
@@ -883,7 +885,7 @@ html.dark .dropdown-content {
 
 .page-hero {
   background: linear-gradient(125deg, rgba(250,210,184,0.22), rgba(0,0,0,0.62));
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 2rem;
   margin-bottom: 1.5rem;
@@ -910,7 +912,7 @@ html.dark .dropdown-content {
 
 .about-intro {
   background: var(--bg-glass);
-  border: 1px solid rgba(255,255,255,0.16);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
 }
@@ -995,7 +997,7 @@ html.dark .dropdown-content {
   background: rgba(10, 12, 16, 0.46);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--border-color-strong);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
   animation: scaleInBounce var(--animation-duration-slow) cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s both;
@@ -1003,7 +1005,7 @@ html.dark .dropdown-content {
 
 html.dark .hero-content {
   background: rgba(8, 10, 14, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--border-color);
 }
 
 .hero h1 {
@@ -1148,7 +1150,7 @@ html.dark .hero-content {
 
 .aktualitate-card {
   background: var(--bg-glass);
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   display: flex;
@@ -1213,7 +1215,7 @@ html.dark .hero-content {
   background: var(--bg-glass);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 2rem;
   box-shadow: var(--shadow-lg);
@@ -1248,7 +1250,7 @@ html.dark .hero-content {
 
 html.dark .timeline-card {
   background: var(--bg-glass-dark);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .timeline-card:hover {
@@ -1268,7 +1270,6 @@ html.dark .timeline-card {
 
 .timeline-card:hover img {
   transform: scale(1.1) rotate(-2deg);
-  filter: brightness(1.1) contrast(1.1);
 }
 
 .timeline-text {
@@ -1361,7 +1362,7 @@ html.dark .timeline-card {
   background: var(--bg-glass);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 2.5rem;
   box-shadow: var(--shadow-lg);
