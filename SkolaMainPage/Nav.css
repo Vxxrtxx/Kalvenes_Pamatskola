@@ -25,9 +25,9 @@
   --shadow-lg: 0 8px 25px rgba(60, 64, 67, 0.15);
   --shadow-xl: 0 20px 40px rgba(60, 64, 67, 0.2);
   --blur: blur(20px);
-  --transition-slow: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --transition-normal: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --transition-fast: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-normal: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-fast: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -68,12 +68,13 @@ html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: var(--transition-slow);
+  transition: background-color 0.5s ease, color 0.5s ease;
   line-height: 1.6;
   font-feature-settings: 'kern' 1, 'liga' 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  contain: layout style paint;
 }
 
 a {
@@ -333,13 +334,14 @@ img, video {
   right: 0;
   z-index: 1000;
   background: var(--bg-glass);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding: 1rem 2rem;
   box-shadow: var(--shadow-lg);
-  transition: var(--transition-slow);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   animation: slideInUpBounce var(--animation-duration-normal) ease-out;
+  will-change: transform;
 }
 
 html.dark .navbar {
@@ -560,7 +562,6 @@ html.dark .dropdown-content {
 .dark-mode-toggle:hover {
   transform: scale(1.2) rotate(180deg);
   box-shadow: 0 0 40px var(--accent-light);
-  animation: pulseGlow 1.5s infinite ease-in-out;
 }
 
 .dark-mode-toggle:hover::before {
@@ -821,7 +822,7 @@ html.dark .hero-content {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(216, 27, 96, 0.03) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 210, 184, 0.03) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -897,7 +898,7 @@ html.dark .hero-content {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(216, 27, 96, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 210, 184, 0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -1144,9 +1145,8 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.1), var(--shadow-md);
-  transform: translateY(-3px) scale(1.02);
-  animation: pulseGlow 1s infinite ease-in-out;
+  box-shadow: 0 0 0 3px rgba(250, 210, 184, 0.1), var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 textarea {
@@ -1219,7 +1219,7 @@ button:active {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(216, 27, 96, 0.02) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 210, 184, 0.02) 0%, transparent 70%);
   pointer-events: none;
 }
 

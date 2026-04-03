@@ -88,13 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // ============================================
-    // ADVANCED SCROLL-TRIGGERED ANIMATIONS
+    // OPTIMIZED SCROLL-TRIGGERED ANIMATIONS
     // ============================================
     
-    // Enhanced Intersection Observer with multiple thresholds
+    // Enhanced Intersection Observer with optimized thresholds
     const scrollObserverOptions = {
-        threshold: [0.1, 0.3, 0.5, 0.7],
-        rootMargin: '0px 0px -100px 0px'
+        threshold: [0.1, 0.5], // Reduced thresholds
+        rootMargin: '50px 0px -50px 0px' // Added margin to trigger earlier
     };
     
     const scrollObserver = new IntersectionObserver((entries) => {
@@ -103,30 +103,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const ratio = entry.intersectionRatio;
             
             if (ratio >= 0.1) {
-                // Progressive animation based on visibility
-                const progress = Math.min(ratio * 2, 1);
-                element.style.opacity = progress;
-                element.style.transform = `translateY(${50 - progress * 50}px) scale(${0.9 + progress * 0.1})`;
+                // Simplified progressive animation
+                element.style.opacity = ratio;
+                element.style.transform = `translateY(${20 - ratio * 20}px) scale(${0.95 + ratio * 0.05})`;
                 
                 if (ratio >= 0.5) {
                     element.classList.add('revealed');
-                    scrollObserver.unobserve(element);
+                    scrollObserver.unobserve(element); // Stop observing once revealed
                 }
             }
         });
     }, scrollObserverOptions);
     
-    // Observe all animatable elements
-    const animatableElements = document.querySelectorAll('.card, .timeline-card, .section, .scroll-reveal, .fade-in-up-modern, .fade-in-left-modern, .fade-in-right-modern, .stagger-fade-in, p, h1, h2, h3, h4, li, .info-text, .content-text');
+    // Observe fewer, more targeted elements
+    const animatableElements = document.querySelectorAll('.card, .timeline-card, .section, .scroll-reveal, .fade-in-up-modern, .fade-in-left-modern, .fade-in-right-modern, .stagger-fade-in, h1, h2, h3, h4');
     animatableElements.forEach((element, index) => {
-        // Set initial styles for scroll-triggered animation
+        // Set appropriate classes
         if (element.tagName.match(/^H[1-4]$/)) {
             element.classList.add('fade-in-heading');
         } else if (!element.classList.contains('scroll-reveal') && !element.classList.contains('fade-in-up-modern') && !element.classList.contains('fade-in-left-modern') && !element.classList.contains('fade-in-right-modern') && !element.classList.contains('stagger-fade-in')) {
             element.classList.add('stagger-fade-in');
         }
-        // Set stagger delay
-        element.style.setProperty('--stagger-delay', index % 10);
+        // Reduced stagger delay
+        element.style.setProperty('--stagger-delay', Math.min(index % 5, 3));
         scrollObserver.observe(element);
     });
     
@@ -249,34 +248,38 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDropdown('AdmissionDropdown');
     
     // ============================================
-    // ADVANCED PARALLAX & SCROLL EFFECTS
+    // OPTIMIZED PARALLAX & SCROLL EFFECTS
     // ============================================
     
-    // Enhanced hero parallax with multiple layers
+    // Enhanced hero parallax with throttling
     const heroVideo = document.querySelector('.hero-video');
-    const heroContent = document.querySelector('.hero-content');
     
     if (heroVideo) {
         let lastScrollY = window.scrollY;
+        let ticking = false;
         
-        window.addEventListener('scroll', () => {
+        const updateParallax = () => {
             const scrolled = window.scrollY;
-            const rate = scrolled * -0.5;
-            const blurRate = Math.min(scrolled * 0.001, 5);
+            const rate = scrolled * -0.3; // Reduced intensity
+            const blurRate = Math.min(scrolled * 0.0005, 3); // Reduced blur
             
-            heroVideo.style.transform = `scale(1.1) translateY(${rate}px)`;
-            heroVideo.style.filter = `brightness(${1 - blurRate * 0.1}) blur(${blurRate}px)`;
+            heroVideo.style.transform = `scale(1.05) translateY(${rate}px)`;
+            heroVideo.style.filter = `brightness(${1 - blurRate * 0.05}) blur(${blurRate}px)`;
             
             lastScrollY = scrolled;
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
         }, { passive: true });
     }
     
-    // Floating elements animation
-    const floatingElements = document.querySelectorAll('.card, .timeline-card');
-    floatingElements.forEach((element, index) => {
-        const delay = index * 0.5;
-        element.style.animation = `morphFloat 8s infinite ease-in-out ${delay}s`;
-    });
+    // Remove heavy infinite animations for better performance
+    // Floating elements animation removed for performance
     
     // ============================================
     // ENHANCED FORM INTERACTIONS
