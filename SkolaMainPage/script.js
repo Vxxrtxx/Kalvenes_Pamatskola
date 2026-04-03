@@ -69,11 +69,7 @@ function setupRevealAnimations() {
         rootMargin: '0px 0px -40px 0px'
     });
 
-    revealTargets.forEach((element, index) => {
-        if (element.classList.contains('aktualitate-card') || element.classList.contains('timeline-card')) {
-            const delay = Math.min(index % 6, 5) * 90;
-            element.style.transitionDelay = `${delay}ms`;
-        }
+    revealTargets.forEach((element) => {
         observer.observe(element);
     });
 }
