@@ -1,25 +1,4 @@
 <?php
-$conn = @new mysqli("localhost", "root", "", "school_site");
-$historyRows = [];
-
-if ($conn && !$conn->connect_error) {
-    $result = $conn->query("SELECT year, title, content FROM school_history ORDER BY year ASC");
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $historyRows[] = $row;
-        }
-    }
-}
-
-if (count($historyRows) === 0) {
-    $historyRows = [
-        ['year' => 1700, 'title' => '18. gadsimta sākums', 'content' => 'Tāšu Padures muiža izveidojās kā nozīmīgs lauku īpašums Kurzemē un bija cieši saistīta ar apkārtējo saimniecību dzīvi.'],
-        ['year' => 1800, 'title' => '19. gadsimts', 'content' => 'Muiža piedzīvoja attīstību un modernizāciju, tika paplašināti saimniecības kompleksi un ainavu parki.'],
-        ['year' => 1900, 'title' => '20. gadsimts', 'content' => 'Pēc agrārās reformas muižas zeme tika sadalīta jaunsaimniekiem, bet ēkas ieguva jaunas funkcijas un vēlāk kļuva par skolu.'],
-        ['year' => 1922, 'title' => 'Skolas dibināšana', 'content' => 'Kalvenes pamatskola dibināta 1922. gadā muižas ēkā, saglabājot vēsturiskās arhitektūras vērtības.']
-    ];
-}
-
 $project = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
 ?>
 <!DOCTYPE html>
@@ -61,10 +40,23 @@ $project = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
     <div class="history-container">
         <img src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/SkolasAtteli/Bilde3.jpg" alt="Tāšu Padures muiža">
         <div class="history-text">
-            <h2>Tāšu Padures muižas un Kalvenes skolas vēsture</h2>
-            <?php foreach ($historyRows as $row): ?>
-                <p><strong><?= htmlspecialchars((string)$row['year']) ?> - <?= htmlspecialchars($row['title'] ?? 'Vēstures notikums') ?>:</strong> <?= htmlspecialchars($row['content'] ?? '') ?></p>
-            <?php endforeach; ?>
+            <h2>Padures muižas un Kalvenes skolas vēsture</h2>
+
+            <p><strong>Padures muiža</strong> (vācu: Paddern) ir viena no ievērojamākajām klasicisma stila muižām Latvijā.</p>
+
+            <p>Muiža izveidojās jau 18. gadsimtā, bet tās pašreizējā pils celta ap 19. gadsimta sākumu, ap 1820. gadu. To būvēja baronu fon Firksu (von Fircks) dzimta, kas bija ietekmīga Kurzemes muižniecībā. Ēka izceļas ar klasicisma arhitektūru, simetrisku fasādi, kolonnām un atturīgu eleganci. Muiža bija ne tikai dzīvojamā ēka, bet arī saimniecības centrs ar plašu parku un lauksaimniecības teritorijām.</p>
+
+            <p><strong>20. gadsimts:</strong> Pēc Latvijas agrārreformas 1920. gados muiža tika nacionalizēta. Tajā dažādos laikos atradās skola, kultūras iestādes un dzīvokļi. Padomju laikā ēka tika izmantota praktiskiem mērķiem, bet daļēji zaudēja sākotnējo greznību.</p>
+
+            <p><strong>Mūsdienās:</strong> Muiža ir atjaunota un saglabāta kā kultūrvēsturisks objekts. Tajā notiek pasākumi, ekskursijas un kultūras aktivitātes.</p>
+
+            <p><strong>Kalvenes pamatskola</strong> ir cieši saistīta ar vietējās kopienas attīstību.</p>
+
+            <p>Izglītība Kalvenē aizsākās jau 19. gadsimtā, kad lauku teritorijās sāka veidoties pirmās tautskolas. Sākotnēji skola darbojās vienkāršās ēkās un nodrošināja pamatizglītību vietējiem bērniem.</p>
+
+            <p><strong>20. gadsimts:</strong> Latvijas brīvvalsts laikā no 1918. līdz 1940. gadam skolu sistēma tika sakārtota, un Kalvenē izveidojās stabila pamatskola. Padomju periodā skola tika paplašināta, uzlabota infrastruktūra un mācību iespējas.</p>
+
+            <p><strong>Mūsdienās:</strong> Kalvenes pamatskola turpina darboties kā vietējās izglītības centrs, nodrošinot pamatizglītību. Skola ir nozīmīga ne tikai izglītībā, bet arī kultūras un sabiedriskajā dzīvē Kalvenē.</p>
         </div>
     </div>
 </div>
