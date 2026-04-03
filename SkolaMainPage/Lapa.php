@@ -46,7 +46,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
-<body>
+<body data-enable-opening="1">
 
 <nav class="navbar">
     <button class="menu-toggle">&#9776;</button>
@@ -67,7 +67,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
             </div>
 
             <a href="/<?= htmlspecialchars($project) ?>/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a>
-            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
+            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline home-page-link">🏠︎</a>
         </div>
 
         <div class="nav-right">
@@ -83,6 +83,46 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
 <div class="page-content">
 
 <section class="hero">
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="<?= asset_url($hero['video_path'] ?? $fallbackVideo, $project) ?>" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="hero-content">
+        <h1><?= !empty($hero['title']) ? htmlspecialchars($hero['title']) : 'Kalvenes pamatskola' ?></h1>
+        <p><?= !empty($hero['subtitle']) ? htmlspecialchars($hero['subtitle']) : 'Izglītība nākotnei' ?></p>
+    </div>
+</section>
+
+<section class="aktualitates">
+    <h2>Aktualitātes</h2>
+    <div class="aktualitates-container">
+        <?php if ($aktualitates && $aktualitates->num_rows > 0): ?>
+            <?php while($row = $aktualitates->fetch_assoc()): ?>
+                <div class="aktualitate-card">
+                    <img
+                        src="<?= asset_url($row['image'] ?? '', $project) ?>"
+                        alt="Aktualitāte"
+                        onerror="this.onerror=null;this.src='<?= htmlspecialchars($fallbackImage) ?>';"
+                    >
+                    <div class="card-body">
+                        <h3><?= htmlspecialchars($row['title'] ?? 'Nosaukums nav'); ?></h3>
+                        <p><?= htmlspecialchars($row['text'] ?? 'Apraksts nav'); ?></p>
+                        <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=<?= urlencode($row['slug'] ?: 'aktualitate-1') ?>">Vairāk informācija</a>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <div class="aktualitate-card">
+                <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 1">
+                <div class="card-body">
+                    <h3>Ziema</h3>
+                    <p>mūsdienīgs notikums par sezonālo skolas dzīvi.</p>
+                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=ziema">Vairāk informācija</a>
+                </div>
+            </div>
+            <div class="aktualitate-card">
+                <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 2">
+                <div class="card-body">
                     <h3>Izglītība</h3>
                     <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
                     <a class="more-info-btn" href="#">Vairāk informācija</a>
@@ -124,7 +164,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Kvalitatīva izglītība</h3>
                     <p>Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm</p>
-                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=izaugsmes ceļš">Vairāk informācija</a>
+                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=kvalitativa-izglitiba">Vairāk informācija</a>
                 </div>
             </div>
 
@@ -133,7 +173,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Atbalstoša vide</h3>
                     <p>Veidojam draudzīgu un drošu vidi katram skolēnam.</p>
-                    <a class="more-info-btn" href="#">Vairāk informācija</a>
+                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=atbalstosa-vide">Vairāk informācija</a>
                 </div>
             </div>
 
@@ -142,7 +182,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Izaugsmes iespējas</h3>
                     <p>Palīdzam attīstīt katra skolēna talantus un prasmes.</p>
-                    <a class="more-info-btn" href="#">Vairāk informācija</a>
+                    <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=izaugsmes-iespejas">Vairāk informācija</a>
                 </div>
             </div>
         <?php endif; ?>
@@ -155,7 +195,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
     <p>© 2025 Kalvenes pamatskola. All rights reserved.</p>
 </footer>
 
-<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js"></script>
+<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js?v=20260403"></script>
 
 </body>
 </html>

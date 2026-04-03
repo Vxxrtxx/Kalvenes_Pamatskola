@@ -50,7 +50,7 @@ $project = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
             </div>
             <a href="/<?= htmlspecialchars($project) ?>/Pienemsana/Uznemsana.php" class="hover-underline">Uzņemšana</a>
             <a href="/<?= htmlspecialchars($project) ?>/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a>
-            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
+            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline home-page-link">🏠︎</a>
         </div>
         <div class="nav-right">
             <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
@@ -79,6 +79,6 @@ $project = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
 <footer class="end-container">
     <p>© 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.</p>
 </footer>
-<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js"></script>
+<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js?v=20260403"></script>
 </body>
 </html>

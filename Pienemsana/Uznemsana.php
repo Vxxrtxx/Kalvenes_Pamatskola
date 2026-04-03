@@ -40,7 +40,7 @@ $reqItems = array_values(array_filter(array_map('trim', $reqItems)));
             </div>
             <a href="/<?= htmlspecialchars($project) ?>/Pienemsana/Uznemsana.php" class="hover-underline">Uzņemšana</a>
             <a href="/<?= htmlspecialchars($project) ?>/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a>
-            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
+            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline home-page-link">🏠︎</a>
         </div>
         <div class="nav-right">
             <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
@@ -66,13 +66,15 @@ $reqItems = array_values(array_filter(array_map('trim', $reqItems)));
             </ul>
 
             <h2>Veidlapas</h2>
-            <p><a class="download-button" href="/<?= htmlspecialchars($project) ?>/Pienemsana/Pamatskola_iesniegums.docx" download>Pamatizglītības programma</a></p>
-            <p><a class="download-button" href="/<?= htmlspecialchars($project) ?>/Pienemsana/Pirmskola_Iesniegums.docx" download>Pirmsskolas programma</a></p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a class="download-button" href="/<?= htmlspecialchars($project) ?>/Pienemsana/Pamatskola_iesniegums.docx" download>Pamatizglītības programma</a>
+                <a class="download-button" href="/<?= htmlspecialchars($project) ?>/Pienemsana/Pirmskola_Iesniegums.docx" download>Pirmsskolas programma</a>
+            </div>
         </article>
 
         <aside class="right-info">
             <h2>Kontakti uzņemšanai</h2>
-            <p><strong>Tālrunis:</strong> +371 29577075</p>
+            <p><strong>Tālrunis:</strong> +371 <?= isset($contacts) && !empty($contacts['phone']) ? htmlspecialchars(substr(preg_replace('/[^0-9]/', '', $contacts['phone']), -8)) : '29577075' ?></p>
             <p><strong>E-pasts:</strong> info@kalvene.edu.lv</p>
             <p><strong>Adrese:</strong> Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443</p>
             <div class="map-button">
@@ -86,6 +88,6 @@ $reqItems = array_values(array_filter(array_map('trim', $reqItems)));
 <footer class="end-container">
     <p>© 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.</p>
 </footer>
-<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js"></script>
+<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js?v=20260403"></script>
 </body>
 </html>

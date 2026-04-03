@@ -185,14 +185,42 @@ if (isset($_POST["update_contacts"])) {
     exit;
 }
 
+// ====== DELETE SUBMISSION ======
+if (isset($_GET["delete_submission"])) {
+    $id = (int)$_GET["delete_submission"];
+    
+    // Check if column exists, if not add it
+    $checkCol = $conn->query("SHOW COLUMNS FROM contact_submissions LIKE 'is_deleted'");
+    if (!$checkCol->num_rows) {
+        $conn->query("ALTER TABLE contact_submissions ADD COLUMN is_deleted TINYINT(1) DEFAULT 0");
+    }
+    
+    // Soft delete - mark as deleted
+    $stmt = $conn->prepare("UPDATE contact_submissions SET is_deleted=1 WHERE id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    header("Location: index.php?msg=" . urlencode("Submission deleted."));
+    exit;
+}
+
 // ====== FETCH DATA ======
 $hero = $conn->query("SELECT * FROM content WHERE id=1")->fetch_assoc();
 $akt  = $conn->query("SELECT * FROM aktualitates ORDER BY id DESC");
 $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
 $contacts = $conn->query("SELECT * FROM contacts WHERE id=1")->fetch_assoc();
 
+// Ensure is_deleted column exists
+$checkCol = $conn->query("SHOW COLUMNS FROM contact_submissions LIKE 'is_deleted'");
+if (!$checkCol->num_rows) {
+    $conn->query("ALTER TABLE contact_submissions ADD COLUMN is_deleted TINYINT(1) DEFAULT 0");
+}
+
+$submissions = $conn->query("SELECT * FROM contact_submissions WHERE is_deleted=0 ORDER BY created_at DESC");
+
 $aktCount = $akt ? $akt->num_rows : 0;
 $timeCount = $time ? $time->num_rows : 0;
+$submissionCount = $submissions ? $submissions->num_rows : 0;
 
 $msg = $_GET["msg"] ?? "";
 ?>
@@ -227,6 +255,10 @@ $msg = $_GET["msg"] ?? "";
             <span class="stat-label">Kontakti</span>
             <strong><?= !empty($contacts['phone']) ? 'Atjaunināti' : 'Nav datu' ?></strong>
         </div>
+        <div class="stat-card">
+            <span class="stat-label">Sazinājušies</span>
+            <strong><?= (int)$submissionCount ?></strong>
+        </div>
     </div>
 
     <nav class="cp-nav">
@@ -234,6 +266,7 @@ $msg = $_GET["msg"] ?? "";
         <a href="#akt-section">Aktualitātes</a>
         <a href="#timeline-section">Timeline</a>
         <a href="#contacts-section">Kontakti</a>
+        <a href="#submissions-section">Sazinājušies</a>
     </nav>
 </div>
 
@@ -397,12 +430,12 @@ $msg = $_GET["msg"] ?? "";
             <div class="form-grid">
             <div class="form-group">
                 <label for="contacts-phone">Phone</label>
-                <input id="contacts-phone" type="text" name="phone" value="<?= htmlspecialchars($contacts["phone"] ?? "") ?>" placeholder="Phone number" required>
+                <input id="contacts-phone" type="text" name="phone" value="<?= htmlspecialchars($contacts["phone"] ?? "") ?>" placeholder="Phone number" maxlength="8" required>
             </div>
 
             <div class="form-group">
                 <label for="contacts-email">Email</label>
-                <input id="contacts-email" type="email" name="email" value="<?= htmlspecialchars($contacts["email"] ?? "") ?>" placeholder="Email address">
+                <input id="contacts-email" type="email" name="email" value="<?= htmlspecialchars($contacts["email"] ?? "") ?>" placeholder="Email address" required>
             </div>
 
             <div class="form-group">
@@ -418,6 +451,41 @@ $msg = $_GET["msg"] ?? "";
 
             <button class="btn-primary" type="submit" name="update_contacts">Update Contacts</button>
         </form>
+    </section>
+
+    <section class="panel-card" id="submissions-section">
+        <div class="section-header">
+            <div>
+                <h2>Saņemtās ziņas</h2>
+                <p class="subtext">Kontaktformas ziņas no apmeklētājiem.</p>
+            </div>
+        </div>
+
+        <?php if ($submissionCount === 0): ?>
+            <p style="text-align: center; color: #666; padding: 2rem;">Nav saņemtu ziņu.</p>
+        <?php else: ?>
+            <div class="submissions-list">
+                <?php 
+                $submissions = $conn->query("SELECT * FROM contact_submissions WHERE is_deleted=0 ORDER BY created_at DESC");
+                while($row = $submissions->fetch_assoc()): 
+                ?>
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <h4><?= htmlspecialchars($row["name"] ?? "") ?></h4>
+                            <div class="submission-header-right">
+                                <span class="submission-date"><?= date('d.m.Y H:i', strtotime($row["created_at"] ?? '')) ?></span>
+                                <a class="delete-link" href="?delete_submission=<?= (int)$row["id"] ?>">Dzēst</a>
+                            </div>
+                        </div>
+                        <p class="submission-email"><strong>E-pasts:</strong> <a href="mailto:<?= htmlspecialchars($row["email"] ?? "") ?>"><?= htmlspecialchars($row["email"] ?? "") ?></a></p>
+                        <div class="submission-message">
+                            <strong>Ziņa:</strong>
+                            <p><?= htmlspecialchars($row["message"] ?? "") ?></p>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        <?php endif; ?>
     </section>
 
 </div>

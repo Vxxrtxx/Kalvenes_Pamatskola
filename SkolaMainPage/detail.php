@@ -46,6 +46,35 @@ $stmt->execute();
 $result = $stmt->get_result();
 $item = $result->fetch_assoc();
 
+if (!$item && $type === 'timeline') {
+    $fallbackTimelineDetails = [
+        'kvalitativa-izglitiba' => [
+            'title' => 'Kvalitatīva izglītība',
+            'short' => 'Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm.',
+            'details' => "Mūsu mērķis ir nodrošināt skolēniem stabilu pamatu tālākām mācībām, attīstot zināšanas, prasmes un pārliecību par sevi.",
+        ],
+        'atbalstosa-vide' => [
+            'title' => 'Atbalstoša vide',
+            'short' => 'Veidojam draudzīgu un drošu vidi katram skolēnam.',
+            'details' => "Skolā svarīga ir cieņa, drošība un savstarpējs atbalsts. Mēs rūpējamies, lai ikviens skolēns justos pieņemts un motivēts augt.",
+        ],
+        'izaugsmes-iespejas' => [
+            'title' => 'Izaugsmes iespējas',
+            'short' => 'Palīdzam attīstīt katra skolēna talantus un prasmes.',
+            'details' => "Mēs atbalstām skolēnu intereses, piedāvājam iespējas piedalīties dažādās aktivitātēs un palīdzam attīstīt individualitāti.",
+        ],
+    ];
+
+    if (isset($fallbackTimelineDetails[$slug])) {
+        $fallback = $fallbackTimelineDetails[$slug];
+        $title = $fallback['title'];
+        $short = $fallback['short'];
+        $details = $fallback['details'];
+        $image = asset_url('/SkolaMainPage/SkolasAtteli/Bilde1.jpg', $project);
+        $item = true;
+    }
+}
+
 if (!$item) {
     // Keep the page user-friendly when slug is not found.
     $title = 'Aktualitāte nav atrasta';
@@ -170,7 +199,7 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
             </div>
             <a href="/<?= htmlspecialchars($project) ?>/Pienemsana/Uznemsana.php" class="hover-underline">Uzņemšana</a>
             <a href="/<?= htmlspecialchars($project) ?>/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a>
-            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
+            <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline home-page-link">🏠︎</a>
         </div>
         <div class="nav-right">
             <a href="/<?= htmlspecialchars($project) ?>/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
@@ -199,6 +228,6 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
     <p>© 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.</p>
 </footer>
 
-<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js"></script>
+<script src="/<?= htmlspecialchars($project) ?>/SkolaMainPage/script.js?v=20260403"></script>
 </body>
 </html>

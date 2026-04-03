@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="/Kalvenes_Pamatskola/Pienemsana/Uznemsana.php" class="hover-underline dropdown-trigger">Uzņemšana</a>
             </div>
             <a href="/Kalvenes_Pamatskola/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a> <!--Parunāt ar Sk.Vitu-->
-            <a href="/Kalvenes_Pamatskola/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
+            <a href="/Kalvenes_Pamatskola/SkolaMainPage/Lapa.php" class="hover-underline home-page-link">🏠︎</a>
         </div>
         <div class="nav-right">
             <a href="/Kalvenes_Pamatskola/Kontakti/KontaktiMain.php" class="hover-underline">Kontakti</a>
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="contact-info">
             <div class="contact-item">
                 <i class="fas fa-phone"></i>
-            <span><?= htmlspecialchars($contacts['phone'] ?? '+371 29577075') ?></span>
+            <span><?= htmlspecialchars('+371 ' . substr(preg_replace('/[^0-9]/', '', $contacts['phone'] ?? '29577075'), -8)) ?></span>
         </div>
         <div class="contact-item">
             <i class="fas fa-envelope"></i>
@@ -80,10 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?= htmlspecialchars($contacts['address'] ?? 'Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443') ?>
                 </a>
             </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>kalvenes.skola@dkn.lv</span>
-                </div>
             </div>
             <div class="contact-form">
                 <h2>Sazināsimies</h2>
@@ -105,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <footer>
     © 2025 Kalvenes Pamatskola. Visas tiesības aizsargātas.
   </footer>
-    <script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js"></script>
+    <script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js?v=20260403"></script>
 </body>
 </html>
 

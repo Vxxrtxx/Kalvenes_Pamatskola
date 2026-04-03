@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    KALVENES PAMATSKOLA - ULTIMATE 2026 DESIGN
    Authentic School Pink (#D81B60) + Glassmorphism
    Unique Slower Animations & Scroll Effects
@@ -12,8 +12,8 @@
   --bg-tertiary: #f1f3f4;
   --bg-glass: rgba(255, 255, 255, 0.96);
   --bg-glass-dark: rgba(22, 22, 24, 0.9);
-  --text-primary: #202124;
-  --text-secondary: #5f6368;
+  --text-primary: #000000;
+  --text-secondary: #333333;
   --text-tertiary: #80868b;
   --accent-primary: #fad0b7;
   --accent-secondary: #e6bfa4;
@@ -25,7 +25,7 @@
   --shadow-md: 0 4px 6px rgba(60, 64, 67, 0.1);
   --shadow-lg: 0 8px 25px rgba(60, 64, 67, 0.15);
   --shadow-xl: 0 20px 40px rgba(60, 64, 67, 0.2);
-  --blur: blur(20px);
+  --blur: blur(12px);
   --transition-slow: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-normal: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-fast: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -144,15 +144,15 @@ body.is-preloading {
   background-clip: text;
   opacity: 0;
   transform: translateY(14px) scale(0.99);
-  animation: openingTextReveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards, openingTextFill 2.5s ease-in-out 0.1s forwards;
+  animation: openingTextReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards, openingTextFill 1.4s ease-in-out 0.06s forwards;
 }
 
 .opening-line-one {
-  animation-delay: 0.12s, 0.18s;
+  animation-delay: 0.08s, 0.12s;
 }
 
 .opening-line-two {
-  animation-delay: 0.3s, 0.38s;
+  animation-delay: 0.18s, 0.22s;
 }
 
 @keyframes openingTextReveal {
@@ -458,14 +458,13 @@ img, video {
   right: 0;
   z-index: 1000;
   background: var(--bg-glass);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-bottom: 1px solid var(--border-color-strong);
   padding: 1rem 2rem;
   box-shadow: var(--shadow-lg);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeInDown 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-  will-change: transform;
+  animation: fadeInDown 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 html.dark .navbar {
@@ -497,7 +496,7 @@ html.dark .navbar {
 }
 
 body:not(.dark) .logo {
-  color: var(--accent-primary);
+  color: #000000;
 }
 
 .logo::after {
@@ -509,11 +508,11 @@ body:not(.dark) .logo {
   height: 3px;
   background: rgba(255, 255, 255, 0.85);
   border-radius: 2px;
-  animation: shimmer 3s infinite linear;
+  animation: none;
 }
 
 body:not(.dark) .logo::after {
-  background: var(--accent-primary);
+  background: #000000;
 }
 
 .logo:hover {
@@ -575,7 +574,7 @@ body:not(.dark) .nav-link,
 body:not(.dark) .dropdown-trigger,
 body:not(.dark) .nav-left > a.hover-underline,
 body:not(.dark) .nav-right > a.hover-underline {
-  color: var(--accent-primary);
+  color: #000000;
 }
 
 .nav-link::before, .dropdown-trigger::before, .nav-left > a.hover-underline::before, .nav-right > a.hover-underline::before {
@@ -633,7 +632,7 @@ body:not(.dark) .nav-right > a.hover-underline:hover {
 }
 
 body:not(.dark) .facebook-icon {
-  color: var(--accent-primary);
+  color: #000000;
 }
 
 .facebook-icon:hover,
@@ -665,8 +664,8 @@ body:not(.dark) .facebook-icon {
   left: 0;
   right: auto;
   background: var(--bg-glass);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   min-width: 220px;
@@ -750,7 +749,7 @@ body:not(.dark) .dropdown-content a::before {
 }
 
 .dropdown-content a::before {
-  content: '✦';
+  content: '•';
   position: absolute;
   left: 1rem;
   opacity: 0;
@@ -1006,7 +1005,8 @@ html.dark .dark-mode-toggle:hover {
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+  opacity: 0.75;
 }
 
 .download-button:hover, .button:hover, .more-info-btn:hover {
@@ -1166,7 +1166,7 @@ html.dark .dark-mode-toggle:hover {
   object-fit: cover;
   filter: brightness(0.62) contrast(1.08) saturate(1.02);
   transition: var(--transition-slow);
-  animation: floatSoft 12s ease-in-out infinite;
+  animation: none;
 }
 
 .hero::before {
@@ -1212,7 +1212,7 @@ html.dark .hero-content {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: gradientShift 4s infinite ease-in-out;
+  animation: none;
 }
 
 .hero p {
@@ -1405,7 +1405,7 @@ body:not(.dark) .hero p {
   background-size: 200% 200%;
   margin: 1rem auto 0;
   border-radius: 2px;
-  animation: shimmer 2s infinite linear, gradientShift 4s infinite ease-in-out;
+  animation: none;
 }
 
 .section-subtitle {
@@ -1421,7 +1421,7 @@ body:not(.dark) .hero p {
 }
 
 /* ============================================
-   AKTUĀLITĀTES & TIMELINE - Horizontal Rows with Unique Animations
+   AKTUALITATES & TIMELINE - Horizontal Rows with Unique Animations
    ============================================ */
 
 .aktualitates-container {
@@ -1445,7 +1445,7 @@ body:not(.dark) .hero p {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-  will-change: transform, opacity;
+  will-change: auto;
 }
 
 .aktualitate-card.revealed,
@@ -1459,6 +1459,8 @@ body:not(.dark) .hero p {
   width: 100%;
   height: 240px;
   object-fit: cover;
+  border-radius: var(--radius-md);
+  transition: var(--transition-normal);
 }
 
 .aktualitate-card .card-body,
@@ -1471,14 +1473,18 @@ body:not(.dark) .hero p {
 }
 
 .aktualitate-card h3,
+.timeline-card h3,
 .timeline-text h3 {
   margin: 0;
   font-size: clamp(1.7rem, 3vw, 2.25rem);
   line-height: 1.12;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .aktualitate-card p,
-.timeline-text p {
+.timeline-text p,
+.timeline-card p {
   flex: 1;
   margin: 0;
   line-height: 1.8;
@@ -1487,6 +1493,7 @@ body:not(.dark) .hero p {
 }
 
 .aktualitate-card .more-info-btn,
+.timeline-card .more-info-btn,
 .timeline-text .more-info-btn {
   margin-top: auto;
 }
@@ -1506,27 +1513,24 @@ body:not(.dark) .hero p {
   margin-top: 2rem;
 }
 
+.aktualitate-card,
 .timeline-card {
   padding: 1.25rem;
 }
 
+html.dark .aktualitate-card,
 html.dark .timeline-card {
   background: var(--bg-glass-dark);
   border: 1px solid var(--border-color);
 }
 
-.timeline-card:hover {
-  transform: translateY(0);
-  box-shadow: var(--shadow-xl);
+html.dark .aktualitate-card:hover,
+html.dark .aktualitate-card.revealed:hover,
+html.dark .timeline-card:hover {
   border-color: var(--accent-primary);
 }
 
-.timeline-card img {
-  height: 240px;
-  border-radius: var(--radius-md);
-  transition: var(--transition-normal);
-}
-
+.aktualitate-card:hover img,
 .timeline-card:hover img {
   opacity: 0.9;
 }
@@ -1535,16 +1539,10 @@ html.dark .timeline-card {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
-.timeline-text h3 {
-  font-size: clamp(1.55rem, 2.6vw, 2rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  line-height: 1.2;
-}
+
 
 .timeline-text p {
   color: var(--text-secondary);
@@ -1595,7 +1593,7 @@ html.dark .timeline-card {
 }
 
 .more-info-btn::after {
-  content: '→';
+  content: '•';
   transition: var(--transition-normal);
   animation: slideInRightSlow 0.6s ease-out;
 }
@@ -1626,7 +1624,7 @@ html.dark .timeline-card {
   overflow: hidden;
   animation: slideInUpBounce var(--animation-duration-slow) ease-out;
   animation-fill-mode: both;
-  will-change: transform;
+  will-change: auto;
 }
 
 .card::before {

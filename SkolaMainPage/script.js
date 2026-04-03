@@ -31,6 +31,13 @@ function toggleTheme() {
     applyTheme(isDark ? 'light' : 'dark');
 }
 
+function canShowOpeningOverlay() {
+    const openingEnabled = document.body?.dataset.enableOpening === '1';
+    const currentPath = window.location.pathname.toLowerCase();
+
+    return openingEnabled && currentPath.endsWith('/skolamainpage/lapa.php');
+}
+
 function setupOpeningAnimation() {
     document.body.classList.add('is-preloading');
     document.documentElement.classList.add('is-preloading');
@@ -49,16 +56,16 @@ function setupOpeningAnimation() {
         document.body.classList.add('opening-complete');
         document.body.classList.remove('is-preloading');
         document.documentElement.classList.remove('is-preloading');
-    }, 2500);
+    }, 1400);
 
     window.setTimeout(() => {
         overlay.remove();
-    }, 3200);
+    }, 1900);
 }
 
 function setupRevealAnimations() {
     const revealTargets = [
-        ...document.querySelectorAll('.hero-content, .logo, .aktualitate-card, .timeline-card, .card, .section h2, .section-subtitle')
+        ...document.querySelectorAll('.hero-content, .aktualitate-card, .timeline-card')
     ];
 
     if (!('IntersectionObserver' in window)) {
@@ -87,6 +94,8 @@ function setupMobileMenu() {
     const navbar = document.querySelector('.navbar');
     if (!menuToggle || !navbar) return;
 
+    let resizeFrame = null;
+
     menuToggle.addEventListener('click', (event) => {
         event.preventDefault();
         const expanded = navbar.classList.toggle('expanded');
@@ -100,10 +109,15 @@ function setupMobileMenu() {
     });
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            navbar.classList.remove('expanded');
-            menuToggle.textContent = '☰';
-        }
+        if (resizeFrame !== null) return;
+
+        resizeFrame = window.requestAnimationFrame(() => {
+            resizeFrame = null;
+            if (window.innerWidth > 768) {
+                navbar.classList.remove('expanded');
+                menuToggle.textContent = '☰';
+            }
+        });
     });
 }
 
@@ -151,7 +165,10 @@ function setupScrollUI() {
     backToTop.textContent = '↑';
     document.body.appendChild(backToTop);
 
-    const onScroll = () => {
+    let scrollFrame = null;
+
+    const updateScrollUI = () => {
+        scrollFrame = null;
         const scrolled = window.scrollY;
         const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
         const progress = maxHeight > 0 ? (scrolled / maxHeight) * 100 : 0;
@@ -164,8 +181,13 @@ function setupScrollUI() {
         }
     };
 
+    const onScroll = () => {
+        if (scrollFrame !== null) return;
+        scrollFrame = window.requestAnimationFrame(updateScrollUI);
+    };
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    updateScrollUI();
 
     backToTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -201,9 +223,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('site-theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    const openingEnabled = canShowOpeningOverlay();
 
     applyTheme(initialTheme, true);
-    setupOpeningAnimation();
+
+    if (openingEnabled) {
+        setupOpeningAnimation();
+    } else {
+        document.body.classList.add('opening-complete');
+        document.body.classList.remove('is-preloading');
+        document.documentElement.classList.remove('is-preloading');
+
+        const staleOverlay = document.querySelector('.page-opening-overlay');
+        if (staleOverlay) {
+            staleOverlay.remove();
+        }
+    }
 
     const themeToggle = document.querySelector('.dark-mode-toggle');
     if (themeToggle) {
@@ -219,7 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileMenu();
     setupDropdown('SchoolDropdown');
     setupDropdown('AdmissionDropdown');
-    setupRevealAnimations();
+    if (openingEnabled) {
+        setupRevealAnimations();
+    }
     setupScrollUI();
     setupLazyImages();
 
