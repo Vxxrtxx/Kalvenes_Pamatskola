@@ -33,6 +33,9 @@ function asset_url(?string $path, string $project): string {
 
 $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
 $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola video3.mp4";
+$heroTitle = !empty($hero['title']) ? $hero['title'] : 'Kalvenes Pamatskola';
+$heroTitle = preg_replace('/\\bpamatskola\\b/ui', 'Pamatskola', $heroTitle);
+$heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nākotnei';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +47,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Manrope:wght@500;600&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body data-enable-opening="1">
@@ -88,8 +92,8 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
         Your browser does not support the video tag.
     </video>
     <div class="hero-content">
-        <h1><?= !empty($hero['title']) ? htmlspecialchars($hero['title']) : 'Kalvenes pamatskola' ?></h1>
-        <p><?= !empty($hero['subtitle']) ? htmlspecialchars($hero['subtitle']) : 'Izglītība nākotnei' ?></p>
+        <h1><?= htmlspecialchars($heroTitle) ?></h1>
+        <p><?= htmlspecialchars($heroSubtitle) ?></p>
     </div>
 </section>
 

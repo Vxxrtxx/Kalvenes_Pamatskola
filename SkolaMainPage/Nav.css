@@ -861,26 +861,41 @@ html.dark .dark-mode-toggle:hover {
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .navbar {
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1rem;
   }
 
   .nav-wrapper {
-    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
   }
 
   .menu-toggle {
     display: flex;
-    order: 3;
+    order: 1;
+    margin-left: auto;
+    align-items: center;
+    justify-content: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    padding: 0;
+    border-radius: 12px;
+    font-size: 1.65rem;
+    line-height: 1;
   }
 
   .nav-left, .nav-right {
     display: none;
     flex-direction: column;
+    align-items: stretch;
     width: 100%;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-    gap: 1rem;
+    margin-top: 0.3rem;
+    padding: 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    background: var(--bg-glass);
+    gap: 0.3rem;
   }
 
   .navbar.expanded .nav-left,
@@ -893,24 +908,91 @@ html.dark .dark-mode-toggle:hover {
   }
 
   .nav-right {
-    order: 4;
+    order: 3;
+    margin-top: 0.45rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .dropdown {
+    width: 100%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .nav-left > a.hover-underline,
+  .nav-right > a.hover-underline,
+  .dropdown-trigger {
+    width: 100%;
+    min-width: 0;
+    padding: 0.8rem 0.9rem;
+    justify-content: space-between;
+    text-align: left;
+    border-radius: 10px;
+    font-size: 1rem;
+  }
+
+  .nav-link:hover,
+  .dropdown-trigger:hover,
+  .nav-left > a.hover-underline:hover,
+  .nav-right > a.hover-underline:hover {
+    transform: none;
   }
 
   .dropdown-content {
     position: static;
-    opacity: 1;
-    visibility: visible;
+    opacity: 0;
+    visibility: hidden;
     transform: none;
-    background: var(--bg-tertiary);
+    background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     box-shadow: none;
-    margin-top: 0;
-    border: none;
+    margin-top: 0.35rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    max-width: none;
+    min-width: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.28s ease, opacity 0.2s ease;
+  }
+
+  .dropdown-content.show {
+    opacity: 1;
+    visibility: visible;
+    max-height: 360px;
+    pointer-events: auto;
+  }
+
+  .dropdown-content a {
+    padding: 0.8rem 0.95rem;
+    transform: none;
+    opacity: 1;
+    animation: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .dropdown-content a:hover {
+    padding-left: 0.95rem;
+    transform: none;
   }
 
   .logo {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
+    max-width: calc(100% - 3.3rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+
+  .dark-mode-toggle {
+    width: 3.4rem;
+    height: 2.2rem;
+    align-self: flex-start;
   }
 }
 
@@ -1181,52 +1263,59 @@ html.dark .dark-mode-toggle:hover {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 1000px;
-  padding: 4rem 3rem;
-  background: rgba(10, 12, 16, 0.46);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-color-strong);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  width: min(92vw, 980px);
+  padding: clamp(1.1rem, 2vw, 1.5rem);
+  background: rgba(7, 9, 14, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(230, 191, 164, 0.42);
+  border-radius: 1.8rem;
+  box-shadow: 0 24px 46px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   animation: none;
   opacity: 0;
   transform: translateY(18px);
 }
 
 html.dark .hero-content {
-  background: rgba(8, 10, 14, 0.58);
-  border: 1px solid var(--border-color);
+  background: rgba(7, 9, 14, 0.58);
+  border: 1px solid rgba(230, 191, 164, 0.3);
 }
 
 .hero h1 {
+  font-family: 'League Spartan', 'Segoe UI', sans-serif;
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 900;
-  margin-bottom: 2rem;
+  margin: 0;
+  display: inline-block;
+  padding: 0;
   letter-spacing: -0.03em;
+  text-transform: uppercase;
   color: var(--text-primary);
   line-height: 1.1;
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   animation: none;
 }
 
 .hero p {
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: clamp(1.2rem, 4vw, 1.5rem);
   color: var(--text-secondary);
-  margin: 2rem 0 3rem;
+  margin: 1rem auto 0;
+  display: block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
   line-height: 1.7;
   animation: none;
 }
 
 html.dark .hero h1 {
   color: #ffffff;
-  background: none;
-  -webkit-text-fill-color: initial;
   text-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
@@ -1279,14 +1368,12 @@ html.dark .nav-right > a.hover-underline:hover {
 }
 
 body:not(.dark) .hero-content {
-  background: rgba(9, 11, 15, 0.56);
-  border-color: var(--border-color-strong);
+  background: rgba(7, 9, 14, 0.5);
+  border-color: rgba(230, 191, 164, 0.42);
 }
 
 body:not(.dark) .hero h1 {
   color: #ffffff;
-  background: none;
-  -webkit-text-fill-color: initial;
   text-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
@@ -2040,15 +2127,17 @@ h1, h2, h3, h4 {
   }
 
   .hero-content {
-    padding: 2.5rem 2rem;
+    padding: 1rem;
   }
 
   .hero h1 {
     font-size: 2rem;
+    border-radius: 1.1rem;
   }
 
   .hero p {
     font-size: 1.1rem;
+    margin-top: 0.85rem;
   }
 
   .timeline-card {
@@ -2071,7 +2160,7 @@ h1, h2, h3, h4 {
   }
 
   .logo {
-    font-size: 1.25rem;
+    font-size: 0.95rem;
   }
 
   .nav-link, .dropdown-trigger {
@@ -2080,7 +2169,7 @@ h1, h2, h3, h4 {
   }
 
   .hero-content {
-    padding: 2rem 1.5rem;
+    padding: 0.85rem;
   }
 
   .hero h1 {

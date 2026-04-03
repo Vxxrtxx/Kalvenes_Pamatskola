@@ -1,16 +1,26 @@
 <?php
 $conn = @new mysqli("localhost", "root", "", "school_site");
 $admission = null;
+$contacts = null;
 
 if ($conn && !$conn->connect_error) {
     $result = $conn->query("SELECT * FROM admissions ORDER BY id DESC LIMIT 1");
     $admission = $result ? $result->fetch_assoc() : null;
+
+    $contactResult = $conn->query("SELECT * FROM contacts WHERE id=1");
+    $contacts = $contactResult ? $contactResult->fetch_assoc() : null;
 }
 
 $project = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
 $title = $admission['title'] ?? 'Uzņemšana skolā';
 $content = $admission['content'] ?? 'Informācija par uzņemšanu Kalvenes pamatskolā.';
 $requirements = $admission['requirements'] ?? 'Nepieciešamie dokumenti: dzimšanas apliecība; medicīniskā kartiņa; vecāku iesniegums.';
+
+$phoneDigits = preg_replace('/[^0-9]/', '', $contacts['phone'] ?? '29577075');
+$phoneDisplay = '+371 ' . substr($phoneDigits, -8);
+$emailDisplay = $contacts['email'] ?? 'info@kalvene.edu.lv';
+$addressDisplay = $contacts['address'] ?? 'Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443';
+$mapLink = $contacts['map_link'] ?? 'https://maps.google.com/?q=Kalvenes+pamatskola';
 
 $reqItems = preg_split('/\r\n|\r|\n|;/', $requirements);
 $reqItems = array_values(array_filter(array_map('trim', $reqItems)));
@@ -74,12 +84,12 @@ $reqItems = array_values(array_filter(array_map('trim', $reqItems)));
 
         <aside class="right-info">
             <h2>Kontakti uzņemšanai</h2>
-            <p><strong>Tālrunis:</strong> +371 <?= isset($contacts) && !empty($contacts['phone']) ? htmlspecialchars(substr(preg_replace('/[^0-9]/', '', $contacts['phone']), -8)) : '29577075' ?></p>
-            <p><strong>E-pasts:</strong> info@kalvene.edu.lv</p>
-            <p><strong>Adrese:</strong> Skolas iela 1, Kalvenes pagasts, Dienvidkurzemes novads, LV-3443</p>
+            <p><strong>Tālrunis:</strong> <?= htmlspecialchars($phoneDisplay) ?></p>
+            <p><strong>E-pasts:</strong> <?= htmlspecialchars($emailDisplay) ?></p>
+            <p><strong>Adrese:</strong> <?= htmlspecialchars($addressDisplay) ?></p>
             <div class="map-button">
                 <i class="fa-solid fa-location-dot"></i>
-                <a href="https://maps.google.com/?q=Kalvenes+pamatskola" target="_blank">Skatīt kartē ></a>
+                <a href="<?= htmlspecialchars($mapLink) ?>" target="_blank" rel="noopener noreferrer">Skatīt kartē ></a>
             </div>
         </aside>
     </div>
