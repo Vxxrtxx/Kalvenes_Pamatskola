@@ -851,6 +851,64 @@ html.dark .dropdown-content {
   text-decoration: underline;
 }
 
+.page-hero {
+  background: linear-gradient(125deg, rgba(250,210,184,0.22), rgba(0,0,0,0.62));
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-hero h1 {
+  margin: 0 0 0.9rem;
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.page-hero p {
+  color: #f5e9df;
+  max-width: 900px;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+}
+
+.about-intro {
+  background: var(--bg-glass);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.content-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.documents-header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.25rem;
+}
+
+.documents-grid .doc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: 220px;
+}
+
+.documents-grid .button {
+  margin-top: auto;
+}
+
 @media (max-width: 880px) {
   .main-container {
     grid-template-columns: 1fr;
@@ -1608,16 +1666,16 @@ button:active {
 
 /* Apply fade-in to common elements by default */
 p, li, .info-text, .content-text {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: none;
   transition: var(--transition-normal);
   will-change: transform, opacity;
 }
 
 h1, h2, h3, h4 {
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  filter: blur(5px);
+  opacity: 1;
+  transform: none;
+  filter: none;
   transition: var(--transition-slow);
   will-change: transform, opacity, filter;
 }
@@ -1641,6 +1699,10 @@ h1, h2, h3, h4 {
   .page-content {
     padding: 1.5rem 1rem;
     margin-top: 80px;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr;
   }
 
   .section {

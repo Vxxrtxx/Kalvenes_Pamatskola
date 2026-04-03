@@ -44,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="dropdown-content"> <!--Vajag 3 file-->
                     <a href="/Kalvenes_Pamatskola/skola/ParMumsNav.html">Par mums</a>
                     <a href="/Kalvenes_Pamatskola/skola/DokumentiNav.html">Dokumentācija</a>
-                    <a href="/Kalvenes_Pamatskola/skola/SasniegumiNav.html">Sasniegumi</a>
+                    <a href="/Kalvenes_Pamatskola/skola/SasniegumiNav.php">Sasniegumi</a>
                 </div>
             </div>
             <div class="dropdown" id="AdmissionDropdown">
-                <a href="/Kalvenes_Pamatskola/Pienemsana/Uznemsana.html" class="hover-underline dropdown-trigger">Uzņemšana</a>
+                <a href="/Kalvenes_Pamatskola/Pienemsana/Uznemsana.php" class="hover-underline dropdown-trigger">Uzņemšana</a>
             </div>
-            <a href="/Kalvenes_Pamatskola/Skolasvest/Vesture.html" class="hover-underline">Skolas vēsture</a> <!--Parunāt ar Sk.Vitu-->
+            <a href="/Kalvenes_Pamatskola/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a> <!--Parunāt ar Sk.Vitu-->
             <a href="/Kalvenes_Pamatskola/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
         </div>
         <div class="nav-right">
@@ -108,3 +108,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="/Kalvenes_Pamatskola/SkolaMainPage/script.js"></script>
 </body>
 </html>
+

@@ -197,6 +197,45 @@ CREATE TABLE `school_history` (
 INSERT INTO `school_history` (`id`, `title`, `content`, `image`, `year`) VALUES
 (1, 'Skolas dibināšana', 'Kalvenes pamatskola tika dibināta 1995. gadā.', NULL, 1995);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `achievements`
+--
+
+CREATE TABLE `achievements` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `icon` varchar(50) DEFAULT 'fa-award',
+  `sort_order` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `achievements`
+--
+
+INSERT INTO `achievements` (`id`, `title`, `description`, `icon`, `sort_order`) VALUES
+(1, '2. vieta matemātikā', 'Skolēns Alans Strazds ieguvis 2. vietu matemātikas olimpiādē.', 'fa-brain', 1),
+(2, 'Mākslas konkurss', 'Keitas Lagzdas mākslas darbs ieguvis 3. pakāpi Kurzemes zonā.', 'fa-paint-brush', 2),
+(3, 'Pavasara kross', 'Oskars Kronbergs ieguva 1. vietu pavasara krosā.', 'fa-running', 3),
+(4, 'Runas konkurss', 'Skolēni ieguvuši 1. pakāpi skatuves runas konkursā.', 'fa-microphone', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_submissions`
+--
+
+CREATE TABLE `contact_submissions` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` longtext NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -244,9 +283,21 @@ ALTER TABLE `admissions`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `achievements`
+--
+ALTER TABLE `achievements`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `school_history`
 --
 ALTER TABLE `school_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact_submissions`
+--
+ALTER TABLE `contact_submissions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -296,10 +347,22 @@ ALTER TABLE `admissions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `achievements`
+--
+ALTER TABLE `achievements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `school_history`
 --
 ALTER TABLE `school_history`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `contact_submissions`
+--
+ALTER TABLE `contact_submissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

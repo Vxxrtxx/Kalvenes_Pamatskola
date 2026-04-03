@@ -149,11 +149,11 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
                 <div class="dropdown-content">
                     <a href="/<?= htmlspecialchars($project) ?>/skola/ParMumsNav.html">Par mums</a>
                     <a href="/<?= htmlspecialchars($project) ?>/skola/DokumentiNav.html">Dokumentācija</a>
-                    <a href="/<?= htmlspecialchars($project) ?>/skola/SasniegumiNav.html">Sasniegumi</a>
+                    <a href="/<?= htmlspecialchars($project) ?>/skola/SasniegumiNav.php">Sasniegumi</a>
                 </div>
             </div>
-            <a href="/<?= htmlspecialchars($project) ?>/Pienemsana/Uznemsana.html" class="hover-underline">Uzņemšana</a>
-            <a href="/<?= htmlspecialchars($project) ?>/Skolasvest/Vesture.html" class="hover-underline">Skolas vēsture</a>
+            <a href="/<?= htmlspecialchars($project) ?>/Pienemsana/Uznemsana.php" class="hover-underline">Uzņemšana</a>
+            <a href="/<?= htmlspecialchars($project) ?>/Skolasvest/Vesture.php" class="hover-underline">Skolas vēsture</a>
             <a href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/Lapa.php" class="hover-underline">🏠︎</a>
         </div>
         <div class="nav-right">
