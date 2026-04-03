@@ -15,10 +15,10 @@
   --text-primary: #202124;
   --text-secondary: #5f6368;
   --text-tertiary: #80868b;
-  --accent-primary: #D81B60; /* Authentic school pink */
-  --accent-secondary: #e91e63;
-  --accent-light: #fce4ec;
-  --accent-dark: #ad1457;
+  --accent-primary: #FAD2B8; /* Modern 2026 peach */
+  --accent-secondary: #F0B894;
+  --accent-light: #FEF7F2;
+  --accent-dark: #E6A67A;
   --border-color: #e8eaed;
   --shadow-sm: 0 1px 3px rgba(60, 64, 67, 0.08);
   --shadow-md: 0 4px 6px rgba(60, 64, 67, 0.1);
@@ -47,10 +47,10 @@ html.dark {
   --text-primary: #ffffff;
   --text-secondary: #e0e0e0;
   --text-tertiary: #a0a0a0;
-  --accent-primary: #ff4081;
-  --accent-secondary: #ff80ab;
-  --accent-light: #fce4ec;
-  --accent-dark: #c2185b;
+  --accent-primary: #FAD2B8;
+  --accent-secondary: #F5C6A8;
+  --accent-light: #FEF7F2;
+  --accent-dark: #E6A67A;
   --border-color: #333333;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
@@ -249,6 +249,56 @@ img, video {
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes fadeInUpModern {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeInLeftModern {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.95);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeInRightModern {
+  0% {
+    opacity: 0;
+    transform: translateX(40px) scale(0.95);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes staggerFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -1197,6 +1247,85 @@ button:active {
 
 .scroll-reveal.revealed {
   animation: scrollReveal var(--animation-duration-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ============================================
+   MODERN 2026 FADE-IN UTILITY CLASSES
+   ============================================ */
+
+.fade-in-up-modern {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  filter: blur(10px);
+  transition: var(--transition-slow);
+  will-change: transform, opacity, filter;
+}
+
+.fade-in-up-modern.revealed {
+  animation: fadeInUpModern var(--animation-duration-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.fade-in-left-modern {
+  opacity: 0;
+  transform: translateX(-40px) scale(0.95);
+  filter: blur(10px);
+  transition: var(--transition-slow);
+  will-change: transform, opacity, filter;
+}
+
+.fade-in-left-modern.revealed {
+  animation: fadeInLeftModern var(--animation-duration-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.fade-in-right-modern {
+  opacity: 0;
+  transform: translateX(40px) scale(0.95);
+  filter: blur(10px);
+  transition: var(--transition-slow);
+  will-change: transform, opacity, filter;
+}
+
+.fade-in-right-modern.revealed {
+  animation: fadeInRightModern var(--animation-duration-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.stagger-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: var(--transition-normal);
+  will-change: transform, opacity;
+}
+
+.stagger-fade-in.revealed {
+  animation: staggerFadeIn var(--animation-duration-fast) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.fade-in-heading {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  filter: blur(5px);
+  transition: var(--transition-slow);
+  will-change: transform, opacity, filter;
+}
+
+.fade-in-heading.revealed {
+  animation: fadeInUpModern var(--animation-duration-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Apply fade-in to common elements by default */
+p, li, .info-text, .content-text {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: var(--transition-normal);
+  will-change: transform, opacity;
+}
+
+h1, h2, h3, h4 {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  filter: blur(5px);
+  transition: var(--transition-slow);
+  will-change: transform, opacity, filter;
 }
 
 /* ============================================

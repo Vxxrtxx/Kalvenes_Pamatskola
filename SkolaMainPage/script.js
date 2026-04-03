@@ -117,11 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }, scrollObserverOptions);
     
     // Observe all animatable elements
-    const animatableElements = document.querySelectorAll('.card, .timeline-card, .section, .scroll-reveal');
-    animatableElements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(50px) scale(0.9)';
-        element.style.transition = 'opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    const animatableElements = document.querySelectorAll('.card, .timeline-card, .section, .scroll-reveal, .fade-in-up-modern, .fade-in-left-modern, .fade-in-right-modern, .stagger-fade-in, p, h1, h2, h3, h4, li, .info-text, .content-text');
+    animatableElements.forEach((element, index) => {
+        // Set initial styles for scroll-triggered animation
+        if (element.tagName.match(/^H[1-4]$/)) {
+            element.classList.add('fade-in-heading');
+        } else if (!element.classList.contains('scroll-reveal') && !element.classList.contains('fade-in-up-modern') && !element.classList.contains('fade-in-left-modern') && !element.classList.contains('fade-in-right-modern') && !element.classList.contains('stagger-fade-in')) {
+            element.classList.add('stagger-fade-in');
+        }
+        // Set stagger delay
+        element.style.setProperty('--stagger-delay', index % 10);
         scrollObserver.observe(element);
     });
     
