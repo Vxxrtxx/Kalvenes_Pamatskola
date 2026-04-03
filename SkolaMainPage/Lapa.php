@@ -5,6 +5,8 @@ $connOk = !$conn->connect_error;
 $hero = $connOk ? $conn->query("SELECT * FROM content WHERE id=1")->fetch_assoc() : null;
 $aktualitates = $connOk ? $conn->query("SELECT * FROM aktualitates ORDER BY id DESC LIMIT 3") : null;
 $timeline = $connOk ? $conn->query("SELECT * FROM timeline ORDER BY id DESC LIMIT 3") : null;
+$aktualitatesCount = $aktualitates ? $aktualitates->num_rows : 0;
+$timelineCount = $timeline ? $timeline->num_rows : 0;
 
 $project = explode("/", trim($_SERVER["SCRIPT_NAME"], "/"))[0];
 
@@ -91,6 +93,46 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
     <div class="hero-content">
         <h1><?= !empty($hero['title']) ? htmlspecialchars($hero['title']) : 'Kalvenes pamatskola' ?></h1>
         <p><?= !empty($hero['subtitle']) ? htmlspecialchars($hero['subtitle']) : 'Izglītība nākotnei' ?></p>
+    </div>
+</section>
+
+<section class="section school-intro">
+    <div class="school-intro-layout">
+        <div class="school-intro-copy">
+            <p class="section-kicker">Par skolu</p>
+            <h2>Kalvenes pamatskola veido vidi, kur bērns var augt droši un pārliecinoši</h2>
+            <p class="section-subtitle intro-subtitle">
+                Mēs apvienojam mūsdienīgu mācīšanos, sakārtotu vidi un cilvēcīgu pieeju, lai katram skolēnam būtu skaidrs ceļš uz izaugsmi.
+            </p>
+
+            <div class="intro-stat-grid">
+                <article class="intro-stat-card">
+                    <span class="intro-stat-value"><?= max(1, (int)$aktualitatesCount) ?></span>
+                    <span class="intro-stat-label">Aktualitātes šobrīd</span>
+                    <p>Regulāri atjaunoti skolas notikumi un svarīgākie jaunumi.</p>
+                </article>
+                <article class="intro-stat-card">
+                    <span class="intro-stat-value"><?= max(1, (int)$timelineCount) ?></span>
+                    <span class="intro-stat-label">Iemesli izvēlēties mūs</span>
+                    <p>Stipra skolas identitāte, droša vide un labas attīstības iespējas.</p>
+                </article>
+                <article class="intro-stat-card">
+                    <span class="intro-stat-value">100%</span>
+                    <span class="intro-stat-label">Skolas gars</span>
+                    <p>Silta, cilvēcīga atmosfēra, kur svarīgs ir katrs skolēns.</p>
+                </article>
+            </div>
+        </div>
+
+        <div class="school-intro-visual">
+            <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Kalvenes pamatskola">
+            <div class="school-intro-note">
+                <span class="school-intro-note-label">Skolas vērtības</span>
+                <p>
+                    Mēs ticam skaidram ritmam, augstām prasībām un siltai attieksmei. Šī kombinācija rada vidi, kur mācības izskatās un jūtas labi.
+                </p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -183,7 +225,7 @@ $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola vi
                 <div class="timeline-text">
                     <h3>Izaugsmes iespējas</h3>
                     <p>Palīdzam attīstīt katra skolēna talantus un prasmes.</p>
-                    <a class="more-info-btn" href="#">More info</a>
+                    <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
             </div>
         <?php endif; ?>
