@@ -705,6 +705,161 @@ html.dark .dropdown-content {
   min-height: 100vh;
 }
 
+.history-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  background: linear-gradient(130deg, rgba(250,210,184,0.2), rgba(0,0,0,0.45));
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.history-container img {
+  width: 100%;
+  max-height: 440px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+}
+
+.history-text {
+  color: #f8f1eb;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.history-text h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.history-text p {
+  margin-bottom: 1rem;
+  color: #f6f0e9;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.left-content, .right-info {
+  background: var(--bg-glass);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.left-content h2, .achievements-hero h1, .contact-container h1 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.left-content ul, .info-card p, .achievement-card p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.left-content ul li {
+  margin-bottom: 0.7rem;
+}
+
+.download-button, .button, .more-info-btn {
+  display: inline-block;
+  padding: 0.8rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.download-button:hover, .button:hover, .more-info-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+}
+
+.documents-grid, .achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.doc-card, .achievement-card, .info-card {
+  background: var(--bg-glass);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.doc-card h2, .achievement-card h2, .info-card h2 {
+  margin-top: 0;
+  color: var(--text-primary);
+}
+
+.achievements-hero {
+  background: linear-gradient(125deg, rgba(250,210,184,0.3), rgba(0,0,0,0.6));
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+  margin-bottom: 1.5rem;
+}
+
+.contact-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  background: var(--bg-glass);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.contact-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(0,0,0,0.2);
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+}
+
+.map-link {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+@media (max-width: 880px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+  .page-content {
+    padding: 1.5rem;
+  }
+}
+
 /* ============================================
    HERO SECTION - Advanced Parallax & Effects
    ============================================ */

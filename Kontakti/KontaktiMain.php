@@ -1,6 +1,27 @@
 <?php
 $conn = @new mysqli("localhost", "root", "", "school_site");
 $contacts = $conn && !$conn->connect_error ? $conn->query("SELECT * FROM contacts WHERE id=1")->fetch_assoc() : null;
+
+$statusMessage = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $message = trim($_POST['message'] ?? '');
+
+    if ($name && $email && $message) {
+        $stmt = $conn->prepare("INSERT INTO contact_submissions (name, email, message, created_at) VALUES (?, ?, ?, NOW())");
+        if ($stmt) {
+            $stmt->bind_param('sss', $name, $email, $message);
+            $stmt->execute();
+            $stmt->close();
+            $statusMessage = 'Paldies! Ziņa nosūtīta.';
+        } else {
+            $statusMessage = 'Radās tehniska kļūda. Lūdzu mēģiniet vēlreiz.';
+        }
+    } else {
+        $statusMessage = 'Lūdzu aizpildiet visus laukus.';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="lv">
@@ -63,6 +84,21 @@ $contacts = $conn && !$conn->connect_error ? $conn->query("SELECT * FROM contact
                     <i class="fas fa-envelope"></i>
                     <span>kalvenes.skola@dkn.lv</span>
                 </div>
+            </div>
+            <div class="contact-form">
+                <h2>Sazināsimies</h2>
+                <form action="/Kalvenes_Pamatskola/Kontakti/KontaktiMain.php" method="post" class="contact-form-inner">
+                    <label for="name">Vārds un uzvārds</label>
+                    <input type="text" id="name" name="name" required />
+
+                    <label for="email">E-pasts</label>
+                    <input type="email" id="email" name="email" required />
+
+                    <label for="message">Ziņa</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit" class="button">Nosūtīt ziņu</button>
+                </form>
             </div>
         </div>
     </div>

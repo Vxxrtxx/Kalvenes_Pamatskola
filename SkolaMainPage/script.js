@@ -219,27 +219,39 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.addEventListener('mouseenter', showMenu);
         dropdown.addEventListener('mouseleave', hideMenu);
         
-        // Enhanced mobile click behavior
+        // Enhanced dropdown toggle
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
-            if (window.innerWidth <= 768) {
-                const isOpen = content.classList.contains('show');
+            const isMobile = window.innerWidth <= 768;
+            const isOpen = content.classList.contains('show');
+
+            if (isMobile) {
                 if (isOpen) {
                     content.classList.remove('show');
                 } else {
                     // Close other dropdowns first
                     document.querySelectorAll('.dropdown-content').forEach(c => c.classList.remove('show'));
                     content.classList.add('show');
-                    
-                    // Animate items in
-                    const items = content.querySelectorAll('a');
-                    items.forEach((item, index) => {
-                        setTimeout(() => {
-                            item.style.animation = 'slideInLeftSlow 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
-                        }, index * 80);
-                    });
+                }
+            } else {
+                if (!isOpen) {
+                    showMenu();
+                } else {
+                    hideMenu();
                 }
             }
+
+            // Staggered item animations
+            const items = content.querySelectorAll('a');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-30px) rotateY(-10deg)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0) rotateY(0deg)';
+                }, index * 70);
+            });
         });
     }
     
