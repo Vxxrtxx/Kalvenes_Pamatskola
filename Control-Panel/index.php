@@ -1,4 +1,55 @@
 <?php
+ini_set("session.use_strict_mode", "1");
+ini_set("session.cookie_lifetime", "0");
+session_set_cookie_params([
+    "lifetime" => 0,
+    "path" => "/",
+    "httponly" => true,
+    "samesite" => "Strict"
+]);
+session_start();
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
+
+const ADMIN_USER = "Admin";
+const ADMIN_PASS = "1234";
+
+$loginError = "";
+
+function perform_logout(): void {
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), "", time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+    }
+    session_destroy();
+}
+
+if (isset($_GET["logout"])) {
+    perform_logout();
+    header("Location: index.php");
+    exit;
+}
+
+if (isset($_POST["admin_login"])) {
+    $user = trim($_POST["login_user"] ?? "");
+    $pass = (string)($_POST["login_pass"] ?? "");
+
+    if (strcasecmp($user, ADMIN_USER) === 0 && $pass === ADMIN_PASS) {
+        session_regenerate_id(true);
+        $_SESSION["cp_logged_in"] = true;
+        $_SESSION["cp_user"] = ADMIN_USER;
+        header("Location: index.php");
+        exit;
+    }
+
+    $loginError = "Nepareizs lietotajvards vai parole.";
+}
+
+$isAuthenticated = !empty($_SESSION["cp_logged_in"]);
+
 // ====== DB CONNECT ======
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
@@ -52,6 +103,43 @@ function upload_file(string $inputName, string $destFsDir, string $destWebDir, a
 
     $webPath = rtrim($destWebDir, "/") . "/" . $finalName;
     return [true, $webPath, null];
+}
+
+if (!$isAuthenticated) {
+?>
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="Style.css?v=<?= urlencode((string)filemtime(__DIR__ . '/Style.css')) ?>">
+    <title>Admin Login</title>
+</head>
+<body class="login-body">
+    <main class="login-wrap">
+        <section class="login-card">
+            <h1>Admin Login</h1>
+            <p>Piekluve tikai administratoram.</p>
+
+            <?php if ($loginError !== ""): ?>
+                <div class="login-error"><?= htmlspecialchars($loginError) ?></div>
+            <?php endif; ?>
+
+            <form method="POST" class="login-form">
+                <label for="login-user">User</label>
+                <input id="login-user" type="text" name="login_user" required autocomplete="username">
+
+                <label for="login-pass">Password</label>
+                <input id="login-pass" type="password" name="login_pass" required autocomplete="current-password">
+
+                <button type="submit" name="admin_login">Login</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
+<?php
+    exit;
 }
 
 // ====== HERO UPDATE ======
@@ -267,6 +355,7 @@ $msg = $_GET["msg"] ?? "";
         <a href="#timeline-section">Timeline</a>
         <a href="#contacts-section">Kontakti</a>
         <a href="#submissions-section">Sazinājušies</a>
+        <a href="?logout=1" class="logout-link">Logout</a>
     </nav>
 </div>
 
