@@ -15,6 +15,8 @@ header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
 
 const ADMIN_USER = "Admin";
 const ADMIN_PASS = "1234";
+const CARD_TITLE_LIMIT = 34;
+const CARD_SUMMARY_LIMIT = 140;
 
 $loginError = "";
 
@@ -66,6 +68,8 @@ $UPLOAD_FS_DIR  = __DIR__ . DIRECTORY_SEPARATOR . "uploads";
 $HERO_VIDEO_WEB_DIR = "/" . $PROJECT . "/SkolaMainPage/SkolasAtteli";
 $HERO_VIDEO_FS_DIR  = __DIR__ . "/../SkolaMainPage/SkolasAtteli";
 
+$DEFAULT_CARD_IMAGE = "/" . $PROJECT . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
+
 $msg = "";
 
 // ====== HELPERS ======
@@ -103,6 +107,86 @@ function upload_file(string $inputName, string $destFsDir, string $destWebDir, a
 
     $webPath = rtrim($destWebDir, "/") . "/" . $finalName;
     return [true, $webPath, null];
+}
+
+function text_length(string $text): int {
+    if (function_exists("mb_strlen")) {
+        return mb_strlen($text);
+    }
+
+    return strlen($text);
+}
+
+function seed_default_aktualitates(mysqli $conn, string $imagePath): void {
+    $count = (int) ($conn->query("SELECT COUNT(*) AS total FROM aktualitates")->fetch_assoc()["total"] ?? 0);
+
+    if ($count > 0) {
+        return;
+    }
+
+    $defaults = [
+        [
+            "slug" => "ziema",
+            "title" => "Ziema",
+            "text" => "Mūsdienīgs notikums par sezonālo skolas dzīvi.",
+            "details" => "Mūsdienīgs notikums par sezonālo skolas dzīvi. Plašāka informācija tiks papildināta vadības panelī.",
+        ],
+        [
+            "slug" => "izglitiba",
+            "title" => "Izglītība",
+            "text" => "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.",
+            "details" => "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Plašāka informācija tiks papildināta vadības panelī.",
+        ],
+        [
+            "slug" => "kalvenes-skola",
+            "title" => "Kalvenes skola",
+            "text" => "Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.",
+            "details" => "Integer vitae sem dapibus, facilisis lorem ac, finibus ligula. Plašāka informācija tiks papildināta vadības panelī.",
+        ],
+    ];
+
+    $stmt = $conn->prepare("INSERT INTO aktualitates (image, slug, title, text, details) VALUES (?, ?, ?, ?, ?)");
+
+    foreach ($defaults as $item) {
+        $stmt->bind_param("sssss", $imagePath, $item["slug"], $item["title"], $item["text"], $item["details"]);
+        $stmt->execute();
+    }
+}
+
+function seed_default_timeline(mysqli $conn, string $imagePath): void {
+    $count = (int) ($conn->query("SELECT COUNT(*) AS total FROM timeline")->fetch_assoc()["total"] ?? 0);
+
+    if ($count > 0) {
+        return;
+    }
+
+    $defaults = [
+        [
+            "slug" => "kvalitativa-izglitiba",
+            "title" => "Kvalitatīva izglītība",
+            "description" => "Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm.",
+            "details" => "Mūsu mērķis ir nodrošināt skolēniem stabilu pamatu tālākām mācībām, attīstot zināšanas, prasmes un pārliecību par sevi.",
+        ],
+        [
+            "slug" => "atbalstosa-vide",
+            "title" => "Atbalstoša vide",
+            "description" => "Veidojam draudzīgu un drošu vidi katram skolēnam.",
+            "details" => "Skolā svarīga ir cieņa, drošība un savstarpējs atbalsts. Mēs rūpējamies, lai ikviens skolēns justos pieņemts un motivēts augt.",
+        ],
+        [
+            "slug" => "izaugsmes-iespejas",
+            "title" => "Izaugsmes iespējas",
+            "description" => "Palīdzam attīstīt katra skolēna talantus un prasmes.",
+            "details" => "Mēs atbalstām skolēnu intereses, piedāvājam iespējas piedalīties dažādās aktivitātēs un palīdzam attīstīt individualitāti.",
+        ],
+    ];
+
+    $stmt = $conn->prepare("INSERT INTO timeline (image, slug, title, description, details) VALUES (?, ?, ?, ?, ?)");
+
+    foreach ($defaults as $item) {
+        $stmt->bind_param("sssss", $imagePath, $item["slug"], $item["title"], $item["description"], $item["details"]);
+        $stmt->execute();
+    }
 }
 
 if (!$isAuthenticated) {
@@ -186,6 +270,16 @@ if (isset($_POST["add_akt"])) {
         exit;
     }
 
+    if (text_length($title) > CARD_TITLE_LIMIT) {
+        header("Location: index.php?msg=" . urlencode("Aktualitāte title cannot exceed " . CARD_TITLE_LIMIT . " characters."));
+        exit;
+    }
+
+    if (text_length($text) > CARD_SUMMARY_LIMIT) {
+        header("Location: index.php?msg=" . urlencode("Aktualitāte short description cannot exceed " . CARD_SUMMARY_LIMIT . " characters."));
+        exit;
+    }
+
     [$ok, $imgWeb, $err] = upload_file(
         "image",
         $UPLOAD_FS_DIR,
@@ -233,6 +327,16 @@ if (isset($_POST["add_time"])) {
         exit;
     }
 
+    if (text_length($title) > CARD_TITLE_LIMIT) {
+        header("Location: index.php?msg=" . urlencode("Timeline title cannot exceed " . CARD_TITLE_LIMIT . " characters."));
+        exit;
+    }
+
+    if (text_length($desc) > CARD_SUMMARY_LIMIT) {
+        header("Location: index.php?msg=" . urlencode("Timeline short description cannot exceed " . CARD_SUMMARY_LIMIT . " characters."));
+        exit;
+    }
+
     [$ok, $imgWeb, $err] = upload_file(
         "time_img",
         $UPLOAD_FS_DIR,
@@ -255,6 +359,17 @@ if (isset($_POST["add_time"])) {
     $stmt->execute();
 
     header("Location: index.php?msg=" . urlencode("Timeline added."));
+    exit;
+}
+
+// ====== DELETE TIMELINE ======
+if (isset($_GET["delete_time"])) {
+    $id = (int)$_GET["delete_time"];
+    $stmt = $conn->prepare("DELETE FROM timeline WHERE id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    header("Location: index.php?msg=" . urlencode("Timeline deleted."));
     exit;
 }
 
@@ -293,6 +408,9 @@ if (isset($_GET["delete_submission"])) {
 }
 
 // ====== FETCH DATA ======
+seed_default_aktualitates($conn, $DEFAULT_CARD_IMAGE);
+seed_default_timeline($conn, $DEFAULT_CARD_IMAGE);
+
 $hero = $conn->query("SELECT * FROM content WHERE id=1")->fetch_assoc();
 $akt  = $conn->query("SELECT * FROM aktualitates ORDER BY id DESC");
 $time = $conn->query("SELECT * FROM timeline ORDER BY id DESC");
@@ -418,12 +536,14 @@ $msg = $_GET["msg"] ?? "";
 
             <div class="form-group">
                 <label for="akt-title">Title</label>
-                <input id="akt-title" type="text" name="title" placeholder="Header / Title" required>
+                <input id="akt-title" type="text" name="title" placeholder="Header / Title" maxlength="<?= CARD_TITLE_LIMIT ?>" required>
+                <small class="field-hint">Max <?= CARD_TITLE_LIMIT ?> characters</small>
             </div>
 
             <div class="form-group">
                 <label for="akt-text">Short Description</label>
-                <textarea id="akt-text" name="text" placeholder="Short text shown on card" required></textarea>
+                <textarea id="akt-text" name="text" placeholder="Short text shown on card" maxlength="<?= CARD_SUMMARY_LIMIT ?>" required></textarea>
+                <small class="field-hint">Max <?= CARD_SUMMARY_LIMIT ?> characters</small>
             </div>
 
             <div class="form-group">
@@ -471,12 +591,14 @@ $msg = $_GET["msg"] ?? "";
 
             <div class="form-group">
                 <label for="time-title">Title</label>
-                <input id="time-title" type="text" name="time_title" placeholder="Title" required>
+                <input id="time-title" type="text" name="time_title" placeholder="Title" maxlength="<?= CARD_TITLE_LIMIT ?>" required>
+                <small class="field-hint">Max <?= CARD_TITLE_LIMIT ?> characters</small>
             </div>
 
             <div class="form-group">
                 <label for="time-desc">Short Description</label>
-                <textarea id="time-desc" name="time_desc" placeholder="Short text shown on card" required></textarea>
+                <textarea id="time-desc" name="time_desc" placeholder="Short text shown on card" maxlength="<?= CARD_SUMMARY_LIMIT ?>" required></textarea>
+                <small class="field-hint">Max <?= CARD_SUMMARY_LIMIT ?> characters</small>
             </div>
 
             <div class="form-group">

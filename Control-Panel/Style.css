@@ -177,6 +177,11 @@ form {
   gap: 6px;
 }
 
+.field-hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 label {
   font-size: 0.9rem;
   font-weight: 700;
@@ -267,12 +272,16 @@ button:hover {
   margin: 0 0 8px;
   font-size: 1rem;
   color: var(--accent);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .item-content p {
   margin: 0 0 10px;
   line-height: 1.5;
   color: #d9dee7;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .item-meta {
@@ -286,6 +295,9 @@ code {
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 0.85rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 .submissions-list {

@@ -1557,6 +1557,7 @@ body:not(.dark) .hero p {
   transform: translateY(18px);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
   will-change: auto;
+  min-width: 0;
 }
 
 .aktualitate-card.revealed,
@@ -1582,6 +1583,7 @@ body:not(.dark) .hero p {
   flex: 1;
   justify-content: space-between;
   gap: 1.25rem;
+  min-width: 0;
 }
 
 .card-copy {
@@ -1590,6 +1592,7 @@ body:not(.dark) .hero p {
   gap: 0.8rem;
   flex: 1;
   min-height: 8.5rem;
+  min-width: 0;
 }
 
 .aktualitate-card h3,
@@ -1600,6 +1603,8 @@ body:not(.dark) .hero p {
   line-height: 1.18;
   font-weight: 700;
   color: var(--text-primary);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .aktualitate-card p,
@@ -1610,6 +1615,8 @@ body:not(.dark) .hero p {
   line-height: 1.75;
   color: var(--text-secondary);
   font-size: 0.98rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .aktualitate-card .more-info-btn,

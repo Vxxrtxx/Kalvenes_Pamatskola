@@ -31,11 +31,57 @@ function asset_url(?string $path, string $project): string {
     return implode("/", $parts);
 }
 
+function text_slice(string $text, int $start, int $length): string {
+    if (function_exists('mb_substr')) {
+        return mb_substr($text, $start, $length);
+    }
+
+    return substr($text, $start, $length);
+}
+
+function text_length(string $text): int {
+    if (function_exists('mb_strlen')) {
+        return mb_strlen($text);
+    }
+
+    return strlen($text);
+}
+
+function text_last_space(string $text): int|false {
+    if (function_exists('mb_strrpos')) {
+        return mb_strrpos($text, ' ');
+    }
+
+    return strrpos($text, ' ');
+}
+
+function truncate_text(?string $text, int $limit): string {
+    $text = trim((string) $text);
+    $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+
+    if ($text === '' || text_length($text) <= $limit) {
+        return $text;
+    }
+
+    $slice = text_slice($text, 0, $limit + 1);
+    $lastSpace = text_last_space($slice);
+
+    if ($lastSpace !== false && $lastSpace > (int) floor($limit * 0.6)) {
+        $slice = text_slice($slice, 0, $lastSpace);
+    } else {
+        $slice = text_slice($text, 0, $limit);
+    }
+
+    return rtrim($slice, " \t\n\r\0\x0B.,;:-") . '...';
+}
+
 $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
 $fallbackVideo = "/" . $project . "/SkolaMainPage/SkolasAtteli/Kalvenes skola video3.mp4";
 $heroTitle = !empty($hero['title']) ? $hero['title'] : 'Kalvenes Pamatskola';
 $heroTitle = preg_replace('/\\bpamatskola\\b/ui', 'Pamatskola', $heroTitle);
 $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nākotnei';
+$cardTitleLimit = 34;
+$cardTextLimit = 140;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,8 +159,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                     >
                     <div class="card-body">
                         <div class="card-copy">
-                            <h3><?= htmlspecialchars($row['title'] ?? 'Nosaukums nav'); ?></h3>
-                            <p><?= htmlspecialchars($row['text'] ?? 'Apraksts nav'); ?></p>
+                            <h3><?= htmlspecialchars(truncate_text($row['title'] ?? 'Nosaukums nav', $cardTitleLimit)); ?></h3>
+                            <p><?= htmlspecialchars(truncate_text($row['text'] ?? 'Apraksts nav', $cardTextLimit)); ?></p>
                         </div>
                         <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=<?= urlencode($row['slug'] ?: 'aktualitate-1') ?>">Vairāk informācija</a>
                     </div>
@@ -125,8 +171,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 1">
                 <div class="card-body">
                     <div class="card-copy">
-                        <h3>Ziema</h3>
-                        <p>Mūsdienīgs notikums par sezonālo skolas dzīvi.</p>
+                        <h3><?= htmlspecialchars(truncate_text('Ziema', $cardTitleLimit)) ?></h3>
+                        <p><?= htmlspecialchars(truncate_text('Mūsdienīgs notikums par sezonālo skolas dzīvi.', $cardTextLimit)) ?></p>
                     </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=aktualitates&slug=ziema">Vairāk informācija</a>
                 </div>
@@ -135,8 +181,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 2">
                 <div class="card-body">
                     <div class="card-copy">
-                        <h3>Izglītība</h3>
-                        <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>
+                        <h3><?= htmlspecialchars(truncate_text('Izglītība', $cardTitleLimit)) ?></h3>
+                        <p><?= htmlspecialchars(truncate_text('Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.', $cardTextLimit)) ?></p>
                     </div>
                     <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
@@ -145,8 +191,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Aktualitāte 3">
                 <div class="card-body">
                     <div class="card-copy">
-                        <h3>Kalvenes skola</h3>
-                        <p>Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.</p>
+                        <h3><?= htmlspecialchars(truncate_text('Kalvenes skola', $cardTitleLimit)) ?></h3>
+                        <p><?= htmlspecialchars(truncate_text('Integer vitae sem dapibus, facilisis lorem ac, finibus ligula.', $cardTextLimit)) ?></p>
                     </div>
                     <a class="more-info-btn" href="#">Vairāk informācija</a>
                 </div>
@@ -171,8 +217,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                     >
                     <div class="timeline-text">
                         <div class="card-copy">
-                            <h3><?= htmlspecialchars($row['title'] ?: 'Nav nosaukuma') ?></h3>
-                            <p><?= htmlspecialchars($row['description'] ?: 'Nav apraksta') ?></p>
+                            <h3><?= htmlspecialchars(truncate_text($row['title'] ?: 'Nav nosaukuma', $cardTitleLimit)) ?></h3>
+                            <p><?= htmlspecialchars(truncate_text($row['description'] ?: 'Nav apraksta', $cardTextLimit)) ?></p>
                         </div>
                         <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=<?= urlencode($row['slug'] ?: 'izaugsme') ?>">Vairāk informācija</a>
                     </div>
@@ -183,8 +229,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Ak1">
                 <div class="timeline-text">
                     <div class="card-copy">
-                        <h3>Kvalitatīva izglītība</h3>
-                        <p>Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm.</p>
+                        <h3><?= htmlspecialchars(truncate_text('Kvalitatīva izglītība', $cardTitleLimit)) ?></h3>
+                        <p><?= htmlspecialchars(truncate_text('Piedāvājam izcilu izglītību ar mūsdienīgiem mācību materiāliem un metodēm.', $cardTextLimit)) ?></p>
                     </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=kvalitativa-izglitiba">Vairāk informācija</a>
                 </div>
@@ -194,8 +240,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Ak2">
                 <div class="timeline-text">
                     <div class="card-copy">
-                        <h3>Atbalstoša vide</h3>
-                        <p>Veidojam draudzīgu un drošu vidi katram skolēnam.</p>
+                        <h3><?= htmlspecialchars(truncate_text('Atbalstoša vide', $cardTitleLimit)) ?></h3>
+                        <p><?= htmlspecialchars(truncate_text('Veidojam draudzīgu un drošu vidi katram skolēnam.', $cardTextLimit)) ?></p>
                     </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=atbalstosa-vide">Vairāk informācija</a>
                 </div>
@@ -205,8 +251,8 @@ $heroSubtitle = !empty($hero['subtitle']) ? $hero['subtitle'] : 'Izglītība nā
                 <img src="<?= htmlspecialchars($fallbackImage) ?>" alt="Ak3">
                 <div class="timeline-text">
                     <div class="card-copy">
-                        <h3>Izaugsmes iespējas</h3>
-                        <p>Palīdzam attīstīt katra skolēna talantus un prasmes.</p>
+                        <h3><?= htmlspecialchars(truncate_text('Izaugsmes iespējas', $cardTitleLimit)) ?></h3>
+                        <p><?= htmlspecialchars(truncate_text('Palīdzam attīstīt katra skolēna talantus un prasmes.', $cardTextLimit)) ?></p>
                     </div>
                     <a class="more-info-btn" href="/<?= htmlspecialchars($project) ?>/SkolaMainPage/detail.php?type=timeline&slug=izaugsmes-iespejas">Vairāk informācija</a>
                 </div>

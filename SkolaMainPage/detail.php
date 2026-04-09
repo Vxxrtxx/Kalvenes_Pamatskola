@@ -137,6 +137,8 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
             margin: 0 0 1rem;
             color: var(--text-primary);
             line-height: 1.15;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .detail-lead {
@@ -144,6 +146,8 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
             margin-bottom: 1.3rem;
             color: var(--text-secondary);
             font-weight: 600;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .detail-text {
@@ -151,6 +155,8 @@ $fallbackImage = "/" . $project . "/SkolaMainPage/SkolasAtteli/Bilde1.jpg";
             line-height: 1.8;
             white-space: pre-line;
             color: var(--text-secondary);
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .back-btn {
